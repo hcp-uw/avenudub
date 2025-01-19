@@ -9,7 +9,7 @@ headers = {
 response = requests.get(url, headers=headers)
 
 if response.status_code == 200:
-    with open("output.pdf", "wb") as file:
+    with open("output.pdf", "wb") as file: 
         file.write(response.content)
     print("PDF downloaded successfully!")
 else:
