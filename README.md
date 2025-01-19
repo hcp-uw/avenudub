@@ -3,3 +3,5 @@ This is the start of our super awesome super cool project once I can stop being 
 Did this work? Hopefully it did. One more time. 
 
 Testing github commits!
+
+Lets make sure everyone is listed as a contributor tho :)
