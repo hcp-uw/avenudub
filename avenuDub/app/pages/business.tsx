@@ -1,8 +1,9 @@
 import React from 'react'
+import { View } from 'react-native'
 
 function business() {
   return (
-    <div>business</div>
+    <View>business</View>
   )
 }
 
