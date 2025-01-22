@@ -1,8 +1,13 @@
 import React from 'react'
+import { Text, View } from 'react-native'
 
 function safety() {
   return (
-    <div>safety</div>
+    <View>
+      <Text>
+      safety
+      </Text>
+    </View>
   )
 }
 

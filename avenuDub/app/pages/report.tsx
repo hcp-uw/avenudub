@@ -1,8 +1,13 @@
 import React from 'react'
+import { Text, View } from 'react-native'
 
 function report() {
   return (
-    <div>report</div>
+    <View>
+      <Text>
+        report
+      </Text>
+    </View>
   )
 }
 
