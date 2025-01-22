@@ -1,7 +1,0 @@
-Setting up the Virtual Environment
-
-1. cd to the avenudub/backend directory
-2. python3 -m venv avenudub_venv
-3. . avenudub_venv/bin/activate
-4. pip install -r requirement.txt
-5. <brew.txt xargs brew install

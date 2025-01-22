@@ -1,0 +1,6 @@
+Setting up the Virtual Environment
+
+1. cd to the avenudub directory
+2. python3 -m venv .venv
+3. . .venv/bin/activate
+4. pip install -r requirements.txt
