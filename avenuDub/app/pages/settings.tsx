@@ -20,6 +20,7 @@ function settings(user: string, email: string, password: string) {
     </View>
   )
 }
+
 const styles = StyleSheet.create({
   header: {
     fontSize: 20
