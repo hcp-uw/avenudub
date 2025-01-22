@@ -3,7 +3,7 @@ import { Text, View } from 'react-native'
 
 function safety() {
   return (
-    <View>
+    <View style={{backgroundColor : "#5e30b3"}}>
       <Text>
       safety
       </Text>

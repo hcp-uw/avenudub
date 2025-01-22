@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 
 function settings(user: string, email: string, password: string) {
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.header}>
         {user}'s Settings
       </Text>
@@ -29,6 +29,12 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 0,
+    backgroundColor : "#5e30b3"
   },
 })
 

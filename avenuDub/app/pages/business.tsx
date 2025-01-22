@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 
 function business() {
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.header}>
         Business Catalog
       </Text>
@@ -14,12 +14,19 @@ function business() {
 
 const styles = StyleSheet.create({
   header: {
-    fontSize: 20
+    fontSize: 20,
+    color: "white"
   },
   separator: {
     marginVertical: 8,
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 0,
+    backgroundColor : "#5e30b3"
   },
 })
 
