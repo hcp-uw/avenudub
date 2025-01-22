@@ -11,6 +11,7 @@ Jinja2==3.1.5
 MarkupSafe==3.0.2
 mysqlclient==2.2.7
 PyMySQL==1.1.1
+PyPDF2==3.0.1
 requests==2.32.3
 soupsieve==2.6
 urllib3==2.3.0
