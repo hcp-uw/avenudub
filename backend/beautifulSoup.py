@@ -16,5 +16,13 @@ else:
     print(f"Failed to download PDF. HTTP Status Code: {response.status_code}")
 
 soup = BeautifulSoup(response.text, 'html.parser')
-pdf_link = soup.find('a', href=True, span='Download PDF')
-print(pdf_link)
+pdf_links = soup.find_all('a', href=True)
+pdf_link = ""
+for link in pdf_links: 
+    href = link.get('href')
+    if "https://police.uw.edu/wp-content/uploads/2023/05/" in href:
+        pdf_link=href
+        print(f"Found matching PDF link: {href}")
+        break
+
+
