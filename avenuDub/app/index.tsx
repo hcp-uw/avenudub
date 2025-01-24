@@ -1,15 +1,16 @@
-import {Text, View} from "react-native";
+import {Text,Button,View, StyleSheet} from "react-native";
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import { NavigationContainer } 
          from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button } from '@react-navigation/elements';
+//import { Button } from '@react-navigation/elements';
+import { TouchableOpacity } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
-const TabNavigator = () =>{
+export default function App(){
   return(
       <Tab.Navigator 
         screenOptions={{
@@ -18,16 +19,27 @@ const TabNavigator = () =>{
         },
       }} 
     >
-        <Tab.Screen name="Home" component={Home}/>
-        <Tab.Screen name="Settings" component={Settings}/>
-        <Tab.Screen name="Business" component={Business}/>
-        <Tab.Screen name="Safety" component={Business}/>
+        <Tab.Screen name="Home" component={HomeStackScreen}/>
+        <Tab.Screen name="Businesses" component={BusinessScreen}/>
+        <Tab.Screen name="Safety" component={SafetyScreen}/>
       </Tab.Navigator>
   );
 
 } 
 
-function Settings(){
+const HomeStack = createNativeStackNavigator();
+
+    function HomeStackScreen() {
+      return (
+        <HomeStack.Navigator>
+          <HomeStack.Screen name="Home" component={HomeScreen}/>
+          <HomeStack.Screen name="Settings" component={SettingsScreen} />
+          <HomeStack.Screen name="Reports" component={ReportsScreen} />
+        </HomeStack.Navigator>
+      );
+    }
+
+function SettingsScreen(){
   return(
     <View>
       <Text>Settings! Lame but it exists</Text>
@@ -35,7 +47,7 @@ function Settings(){
   )
 }
 
-function Reports(){
+function ReportsScreen(){
   return(
     <View>
       <Text>For now you will have to rely on word of mouth. Sorry</Text>
@@ -43,17 +55,31 @@ function Reports(){
   );
 }
 
-function Home(){
-
-  const navigation = useNavigation();
+function HomeScreen(){
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   return(
-    <View>
-       <Text>This is lame but it will do for now.</Text>
+    <View style = {styles.container}>
+      <Button
+        title="Go to Settings"
+        onPress={() => navigation.navigate('Settings')}
+      />
+      <Button
+        title="Go to Reports"
+        onPress={() => navigation.navigate('Reports')}
+      />
     </View>
   )
 }
-function Business() {
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row', // Align children horizontally
+    justifyContent: 'space-around', // Evenly space buttons 
+    alignItems: 'center',
+    color:'#5e30b3'
+  },
+});
+function BusinessScreen() {
   return(
     <View>
       <Text>Welcome to Businesses!</Text>
@@ -61,33 +87,10 @@ function Business() {
   );
 }
 
-function Safety() {
+function SafetyScreen() {
   return(
     <View>
       <Text>Nothing yet. The world is currently a safe place.</Text>
     </View>
   );
 }
-
-export default TabNavigator
-/*
-function Home() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-    
-     <Button onPress={() => navigation.navigate("Business")}>
-          Businesses
-       </Button>
-      <Button color = '#5e30b3' onPress={() => navigation.navigate('Safety')}>
-        Safety
-      </Button>
-    </View>
-  );
-}
-*/
