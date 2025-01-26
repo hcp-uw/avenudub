@@ -7,6 +7,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //import { Button } from '@react-navigation/elements';
 import { TouchableOpacity } from 'react-native';
+import business from "./pages/business";
 
 const Tab = createBottomTabNavigator();
 
@@ -20,7 +21,7 @@ export default function App(){
       }} 
     >
         <Tab.Screen name="Home" component={HomeStackScreen}/>
-        <Tab.Screen name="Businesses" component={BusinessScreen}/>
+        <Tab.Screen name="Businesses" component={business}/>
         <Tab.Screen name="Safety" component={SafetyScreen}/>
       </Tab.Navigator>
   );
@@ -79,13 +80,13 @@ const styles = StyleSheet.create({
     color:'#5e30b3'
   },
 });
-function BusinessScreen() {
-  return(
-    <View>
-      <Text>Welcome to Businesses!</Text>
-    </View>
-  );
-}
+// function BusinessScreen() {
+//   return(
+//     <View>
+//       <Text>Welcome to Businesses!</Text>
+//     </View>
+//   );
+// }
 
 function SafetyScreen() {
   return(

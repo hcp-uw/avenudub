@@ -1,9 +1,11 @@
+import BackButton from '@/components/BackButton'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
 function business() {
   return (
     <View style={styles.container}>
+      <BackButton/>
       <Text style={styles.header}>
         Business Catalog
       </Text>
