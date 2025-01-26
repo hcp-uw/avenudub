@@ -12,7 +12,7 @@ import MySQLdb
 connection = None
 cursor = None
 serverName = "avenudubmysql.mysql.database.azure.com" 
-defaultDB = "test"
+defaultDB = "avenudb"
 # IF THE FOLDER NAME FOR THE BACKEND CHANGES, THIS PATH WILL ALSO NEED TO CHANGE
 certificate="backend/DigiCertGlobalRootCA.crt.pem"
 # currently a test/dev server, subject to change
@@ -103,7 +103,6 @@ def tblCreate(table, entries = "(column name) (datatype)", delimiter = "|"):
             i -= 1
         cmd = cmd[:(len(cmd)-1)] + ");"
         cursor.execute(cmd)
-        
     except MySQLdb.Error as err:
         if err.args[0] == 1050:
             print("Table already exists")
@@ -136,11 +135,52 @@ def tblInsert(table, values = []):
             cmd += "%s, "
         cmd = cmd[:len(cmd)-2] + ");"
         cursor.execute(cmd, values)
-        connection.commit()
+        cursor.execute("COMMIT")
     except MySQLdb.Error as err:
         print(err)
     else:
         print("Entry successfully added!")
+
+# returns requested columns from a table
+# TODO: use dynamic sql to avoid injection hazards
+
+def tblGet(table, columns = ["*"], values = {"column":"value"}):
+    try:
+        dbConnect()
+        print(table, columns, values)
+        params = []
+        cmd = "SELECT "
+
+        # for i in columns:
+        #     cmd += "%s, "
+            # params.append(i)
+
+        for i in columns:
+            cmd += i + ", "
+        cmd = cmd[:-2] + " FROM " + table
+        if(len(values) != 0):
+            cmd += " WHERE "
+
+            # for i in values.keys():
+            #     cmd += "%s = %s AND"
+            #     params.append(i)
+            #     params.append(values.get(i))
+
+            for i in values.keys():
+                cmd += i + " = %s AND"
+                params.append(values.get(i))
+
+            cmd = cmd[:-3]
+            print(cmd)
+
+        cursor.execute(cmd, params)
+        # print(cursor._executed)
+    except MySQLdb.Error as err:
+        print(err)
+    else:
+        print("Data successfully accessed!")
+        return cursor.fetchone() #returns a touple
+
 
 # closes the connection
 def close():

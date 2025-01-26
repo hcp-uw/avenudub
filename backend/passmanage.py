@@ -1,18 +1,22 @@
 import bcrypt
+import MySQLCommands as sql
 # TODO: conversion for use with MySQL database
 
-
+# encrypts new user password upon account creation
 def encrypt(password):
     bytes = password.encode("utf-8")
     salt = bcrypt.gensalt()
+    return [salt, bcrypt.hashpw(bytes,salt)]
     
-
-def passcheck(password): #checks to see if root password is correct
-    rootpass = bytes(f.readlines()[0], "utf-8")
-    userBytes = password.encode("utf-8")
-    return bcrypt.checkpw(userBytes, rootpass)
+# checks user password against MySQL database
+def passcheck(username, password):
+    pw = bytes(sql.tblGet("gen_user", columns = ["pwhash"], values = {"username":username})[0], "utf-8")
+    password = bytes(password, "utf-8")
+    return bcrypt.checkpw(password, pw)
     
-def syslogin():
+# def syslogin():
 
-    rootpass = bytes(f.readlines()[0], "utf-8")
-    return rootpass.decode("utf-8")
+#     rootpass = bytes(f.readlines()[0], "utf-8")
+#     return rootpass.decode("utf-8")
+
+
