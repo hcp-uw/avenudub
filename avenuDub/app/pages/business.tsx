@@ -2,7 +2,7 @@ import BackButton from '@/components/BackButton'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-function business() {
+function Business() {
   return (
     <View style={styles.container}>
       <BackButton/>
@@ -17,7 +17,7 @@ function business() {
 const styles = StyleSheet.create({
   header: {
     fontSize: 20,
-    color: "white"
+    color: "black"
   },
   separator: {
     marginVertical: 8,
@@ -28,8 +28,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     marginHorizontal: 0,
-    backgroundColor : "#5e30b3"
   },
 })
 
-export default business
+export default Business

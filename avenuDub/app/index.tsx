@@ -7,7 +7,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //import { Button } from '@react-navigation/elements';
 import { TouchableOpacity } from 'react-native';
-import business from "./pages/business";
+import Business from "./pages/business";
+import Settings from "./pages/settings";
+import colors from "../assets/colors"
 
 const Tab = createBottomTabNavigator();
 
@@ -20,8 +22,8 @@ export default function App(){
         },
       }} 
     >
-        <Tab.Screen name="Home" component={HomeStackScreen}/>
-        <Tab.Screen name="Businesses" component={business}/>
+        <Tab.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false }}/>
+        <Tab.Screen name="Businesses" component={Business}/>
         <Tab.Screen name="Safety" component={SafetyScreen}/>
       </Tab.Navigator>
   );
@@ -34,7 +36,7 @@ const HomeStack = createNativeStackNavigator();
       return (
         <HomeStack.Navigator>
           <HomeStack.Screen name="Home" component={HomeScreen}/>
-          <HomeStack.Screen name="Settings" component={SettingsScreen} />
+          <HomeStack.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
           <HomeStack.Screen name="Reports" component={ReportsScreen} />
         </HomeStack.Navigator>
       );
@@ -77,16 +79,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row', // Align children horizontally
     justifyContent: 'space-around', // Evenly space buttons 
     alignItems: 'center',
-    color:'#5e30b3'
+    color: colors.primary
   },
 });
-// function BusinessScreen() {
-//   return(
-//     <View>
-//       <Text>Welcome to Businesses!</Text>
-//     </View>
-//   );
-// }
+function BusinessScreen() {
+  return(
+    <View>
+      <Text>Welcome to Businesses!</Text>
+    </View>
+  );
+}
 
 function SafetyScreen() {
   return(

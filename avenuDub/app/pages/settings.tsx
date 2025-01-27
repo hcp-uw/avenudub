@@ -1,21 +1,25 @@
+import BackButton from '@/components/BackButton'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-function settings(user: string, email: string, password: string) {
+// add user and email props later
+function Settings() {
   return (
     <View style={styles.container}>
+      <BackButton/>
       <Text style={styles.header}>
-        {user}'s Settings
+        [user's] {"\n"}Settings
       </Text>
-      <Text>
-        Name: {user} {"\n"}
-        Email: {email} {"\n"}
-        Password: {"\n"}
+      <Text style={styles.p}>
+        Name: user {"\n"}
+        Email: email {"\n"}
+        Password:
       </Text>
       <View style={styles.separator} />
-      <Text>
+      <Text style={styles.p}>
         Favorite Locations: {"\n"}
         {/* Pass in an array here?? */}
+        <Text>[Location]</Text>
       </Text>
     </View>
   )
@@ -23,7 +27,12 @@ function settings(user: string, email: string, password: string) {
 
 const styles = StyleSheet.create({
   header: {
-    fontSize: 20
+    fontSize: 50
+  },
+  p: {
+    fontSize: 20,
+    paddingBottom: 10,
+    paddingTop: 10
   },
   separator: {
     marginVertical: 8,
@@ -32,10 +41,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
     marginHorizontal: 0,
-    backgroundColor : "#5e30b3"
+    padding: 30,
+    paddingTop: 50
   },
 })
 
-export default settings
+export default Settings
