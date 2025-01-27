@@ -11,6 +11,7 @@ import Business from "./pages/business";
 import Settings from "./pages/settings";
 import colors from "../assets/colors"
 import Report from "./pages/report";
+import Safety from "./pages/safety";
 
 const Tab = createBottomTabNavigator();
 
@@ -24,8 +25,8 @@ export default function App(){
       }} 
     >
         <Tab.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false }}/>
-        <Tab.Screen name="Businesses" component={Business}/>
-        <Tab.Screen name="Safety" component={SafetyScreen}/>
+        <Tab.Screen name="Businesses" component={Business} options={{ headerShown: false }}/>
+        <Tab.Screen name="Safety" component={Safety} options={{ headerShown: false }}/>
       </Tab.Navigator>
   );
 
