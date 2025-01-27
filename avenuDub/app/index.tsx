@@ -10,6 +10,7 @@ import { TouchableOpacity } from 'react-native';
 import Business from "./pages/business";
 import Settings from "./pages/settings";
 import colors from "../assets/colors"
+import Report from "./pages/report";
 
 const Tab = createBottomTabNavigator();
 
@@ -37,7 +38,7 @@ const HomeStack = createNativeStackNavigator();
         <HomeStack.Navigator>
           <HomeStack.Screen name="Home" component={HomeScreen}/>
           <HomeStack.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
-          <HomeStack.Screen name="Reports" component={ReportsScreen} />
+          <HomeStack.Screen name="Reports" component={Report} options={{ headerShown: false }}/>
         </HomeStack.Navigator>
       );
     }
