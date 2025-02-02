@@ -18,7 +18,7 @@ const Tab = createBottomTabNavigator();
 
 export default function App(){
   return(
-    <UserContext.Provider value={{ username: 'username', email: 'email@gmail.com'}}>
+    <UserContext.Provider value={null}>
       <Tab.Navigator 
         screenOptions={{
           tabBarStyle: {

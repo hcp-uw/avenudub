@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, ReactNode, useState } from "react";
 
 interface User {
     username: string;
@@ -6,5 +6,6 @@ interface User {
 }
 
 const UserContext = createContext<User | null>(null);
+
 
 export default UserContext;
