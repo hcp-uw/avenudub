@@ -12,11 +12,13 @@ import Settings from "./pages/settings";
 import colors from "../assets/colors"
 import Report from "./pages/report";
 import Safety from "./pages/safety";
+import UserContext from "@/components/user-context";
 
 const Tab = createBottomTabNavigator();
 
 export default function App(){
   return(
+    <UserContext.Provider value={{ username: 'username', email: 'email@gmail.com'}}>
       <Tab.Navigator 
         screenOptions={{
           tabBarStyle: {
@@ -28,6 +30,7 @@ export default function App(){
         <Tab.Screen name="Businesses" component={Business} options={{ headerShown: false }}/>
         <Tab.Screen name="Safety" component={Safety} options={{ headerShown: false }}/>
       </Tab.Navigator>
+    </UserContext.Provider>
   );
 
 } 

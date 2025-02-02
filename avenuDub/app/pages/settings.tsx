@@ -1,18 +1,22 @@
 import BackButton from '@/components/BackButton'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import UserContext from '@/components/user-context'
+import { useContext } from 'react'
 
 // add user and email props later
 function Settings() {
+  const user = useContext(UserContext);
+
   return (
     <View style={styles.container}>
       <BackButton/>
       <Text style={styles.header}>
-        [user's] {"\n"}Settings
+        {user?.username}'s {"\n"}Settings
       </Text>
       <Text style={styles.p}>
-        Name: user {"\n"}
-        Email: email {"\n"}
+        Name: {user?.username} {"\n"}
+        Email: {user?.email} {"\n"}
         Password:
       </Text>
       <View style={styles.separator} />
