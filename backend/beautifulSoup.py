@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pdfplumber
+from datetime import datetime
 
 url = "https://police.uw.edu/60-day-log/attachment/01172025/"
 headers = {
@@ -40,7 +41,26 @@ with pdfplumber.open("latest_log.pdf") as pdf:
         tables = page.extract_tables()
         for table in tables:
             for i in range(3, len(table)):
-                raw_data.append(table[i]) 
+                print(table[i])
+                dateIndex = 0
+                if table[i][0]==None:
+                    dateIndex = 1
+                if table[i] and table[i][dateIndex]!=None: 
+                    month_part = table[i][dateIndex].strip()[:2]
+                    if month_part.isdigit() and int(datetime.now().strftime("%m")) == int(month_part):
+                        print('month matches')
+                        raw_data.append(table[i])
+                    elif month_part.isdigit():
+                        day_part = table[i][dateIndex][3:5]
+                        if day_part.isdigit():
+                            day = int(day_part)
+                            if int(datetime.now().strftime("%d")) <= day and int(datetime.now().strftime("%m"))>=int(month_part):
+                                print('less than a month ago')
+                                raw_data.append(table[i])
+                            else:
+                                break
+
+
 
 
         
