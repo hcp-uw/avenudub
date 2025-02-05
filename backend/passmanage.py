@@ -1,5 +1,5 @@
 import bcrypt
-import MySQLCommands as sql
+import mysqlcommands as sql
 # TODO: conversion for use with MySQL database
 
 # encrypts new user password upon account creation
