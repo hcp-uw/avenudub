@@ -7,11 +7,17 @@ import colors from '@/assets/colors'
 
 // add user and email props later
 function Settings() {
-  const user = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  if (!user) {
+  const handleLogin = () => {
+    if (username && password) {
+      setUser({ username, email: username, loggedIn: true });
+    }
+  }
+
+  if (!user.loggedIn) {
     return (
       <View style={styles.loginContainer}>
         <BackButton/>
@@ -24,7 +30,7 @@ function Settings() {
           style={styles.input} 
           onChangeText={setPassword} 
           value={password}/>
-        <TouchableOpacity style={styles.submitButton}>
+        <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
       </View>

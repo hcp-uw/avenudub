@@ -13,12 +13,14 @@ import colors from "../assets/colors"
 import Report from "./pages/report";
 import Safety from "./pages/safety";
 import UserContext from "@/components/user-context";
+import { useState } from "react";
 
 const Tab = createBottomTabNavigator();
 
 export default function App(){
+  const [user, setUser] = useState({ username: "", email: "", loggedIn: false });
   return(
-    <UserContext.Provider value={null}>
+    <UserContext.Provider value={{ user, setUser }}>
       <Tab.Navigator 
         screenOptions={{
           tabBarStyle: {
