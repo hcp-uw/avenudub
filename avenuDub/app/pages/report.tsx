@@ -1,7 +1,7 @@
 import colors from '@/assets/colors'
 import BackButton from '@/components/BackButton'
 import React, { useState } from 'react'
-import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Modal } from 'react-native'
 import UserContext from '@/components/user-context'
 import { useContext } from 'react'
 
@@ -26,10 +26,37 @@ function Report() {
   // stores description of report
   const [desc, setDesc] = useState("");
   // determines if modal for when report is sent successfully/unsuccessfully is shown
-  const [modalVis, toggleModal] = useState(false);
+  const [modalVisible, toggleModal] = useState(false);
+
+  const handleReport = () => {
+    if (title && location && desc) {
+      toggleModal(!modalVisible);
+      setTitle("");
+      setLocation("");
+      setDesc("");
+    }
+  }
   return (
     <View style={styles.container}>
       <BackButton/>
+      <Modal
+       animationType='none'
+       transparent={true}
+       visible={modalVisible}
+       onRequestClose={() =>
+         toggleModal(!modalVisible)
+       }>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+          <Text>
+            Report successfully sent!
+          </Text>
+          <TouchableOpacity style={styles.closeButton} onPress={() => toggleModal((curr) => !curr)}>
+            <Text style={styles.buttonText}>Close</Text>
+          </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <Text style={styles.header}>
         Report a {"\n"}Hazard
       </Text>
@@ -39,6 +66,7 @@ function Report() {
       <TextInput 
        placeholder='Title' 
        style={styles.input}
+       value={title}
        onChangeText={setTitle}
       />
       <Text>
@@ -47,6 +75,7 @@ function Report() {
       <TextInput 
        placeholder='Location'
        style={styles.input}
+       value={location}
        onChangeText={setLocation}
       />
       <Text>
@@ -56,10 +85,11 @@ function Report() {
         placeholder='Description'
         multiline={true}
         style={styles.inputDescription}
+        value={desc}
         onChangeText={setDesc}
       />
       <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.submitButton} onPress={() => toggleModal((curr) => !curr)}>
+      <TouchableOpacity style={styles.submitButton} onPress={handleReport}>
         <Text style={styles.buttonText}>Submit report</Text>
       </TouchableOpacity>
       </View>
@@ -68,6 +98,36 @@ function Report() {
 }
 
 const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.8)'
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  closeButton: {
+    backgroundColor: colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 125,
+    height: 45,
+    borderRadius: 20,
+    marginTop: 20,
+  },
   notLoggedIn: {
     textAlign: 'center',
     fontSize: 15
