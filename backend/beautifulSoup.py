@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import pdfplumber
 from datetime import datetime
+from PIL import Image
+import pytesseract
 
 url = "https://police.uw.edu/60-day-log/attachment/01172025/"
 headers = {
@@ -37,19 +39,24 @@ else:
 
 raw_data = []
 with pdfplumber.open("latest_log.pdf") as pdf:
+    #Goes through each page in the PDF and extracts the tables
     for page in pdf.pages:
         tables = page.extract_tables()
         for table in tables:
             for i in range(3, len(table)):
+                #Printing for debugging
                 print(table[i])
+                #Switches index of the date, sometimes it can appear in the 0th spot, other times in the first spot
                 dateIndex = 0
                 if table[i][0]==None:
                     dateIndex = 1
                 if table[i] and table[i][dateIndex]!=None: 
                     month_part = table[i][dateIndex].strip()[:2]
+                    #Appends crimes that happened this month
                     if month_part.isdigit() and int(datetime.now().strftime("%m")) == int(month_part):
                         print('month matches')
                         raw_data.append(table[i])
+                    #Appends crimes that happened last month but within the month range
                     elif month_part.isdigit():
                         day_part = table[i][dateIndex][3:5]
                         if day_part.isdigit():
