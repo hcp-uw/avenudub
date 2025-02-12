@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Modal } from 'react-native'
 import UserContext from '@/components/user-context'
 import { useContext } from 'react'
+import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 
 function Report() {
   const { user } = useContext(UserContext);
@@ -37,6 +38,7 @@ function Report() {
     }
   }
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <View style={styles.container}>
       <BackButton/>
       <Modal
@@ -94,6 +96,7 @@ function Report() {
       </TouchableOpacity>
       </View>
     </View>
+    </TouchableWithoutFeedback>
   )
 }
 
