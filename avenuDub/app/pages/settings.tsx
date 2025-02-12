@@ -4,6 +4,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import UserContext from '@/components/user-context'
 import { useContext } from 'react'
 import colors from '@/assets/colors'
+import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 
 // add user and email props later
 function Settings() {
@@ -19,6 +20,7 @@ function Settings() {
 
   if (!user.loggedIn) {
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.loginContainer}>
         <BackButton/>
         <Text style={styles.p}>Username:</Text>
@@ -34,11 +36,13 @@ function Settings() {
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
       </View>
+      </TouchableWithoutFeedback>
     )
   } 
 
   else { 
     return (
+
     <View style={styles.container}>
       <BackButton/>
       <Text style={styles.header}>
