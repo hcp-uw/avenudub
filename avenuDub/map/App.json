@@ -1,0 +1,27 @@
+{
+    "expo": {
+      "name": "avenuDub",
+      "version": "1.0.0",
+      "sdkVersion": "52.0.32",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "android": {
+        "permissions": [
+          "ACCESS_FINE_LOCATION",
+          "ACCESS_COARSE_LOCATION"
+        ],
+        "package": "com.anonymous.avenuDub"
+      },
+      "plugins": [
+        [
+          "@rnmapbox/maps",
+          {
+            "RNMapboxMapsImpl": "mapbox",
+            "RNMapboxMapsDownloadToken": "pk.eyJ1IjoiYW5hbnlhdCIsImEiOiJjbTY0MDdncG4wdXZrMm5vcXNibHFtcXJmIn0.0t8Dqo3Jf8xoc5PmPSyHOA"
+          }
+        ]
+      ]
+    }
+  }
