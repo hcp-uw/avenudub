@@ -28,14 +28,46 @@ function Report() {
   const [desc, setDesc] = useState("");
   // determines if modal for when report is sent successfully/unsuccessfully is shown
   const [modalVisible, toggleModal] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
 
   const handleReport = () => {
-    if (title && location && desc) {
+    let errors = [];
+    if (!title) {
+      errors.push("title");
+    }
+    if (!location) {
+      errors.push("location");
+    }
+    if (!desc) {
+      errors.push("desc")
+    }
+    if (errors.length === 0) {
       toggleModal(!modalVisible);
       setTitle("");
       setLocation("");
       setDesc("");
+    } else {
+      setErrors(errors);
     }
+  }
+
+  const changeTitle = (newTitle: string) => {
+    if (errors.includes("title") && title) {
+      setErrors(element => element.filter(element => element !== "title"));
+    }
+    setTitle(newTitle);
+  }
+  const changeLocation = (newLoc: string) => {
+    if (errors.includes("location") && location) {
+      setErrors(element => element.filter(element => element !== "location"));
+    }
+    setLocation(newLoc);
+  }
+  const changeDesc = (newDesc: string) => {
+    if (errors.includes("desc") && desc) {
+      setErrors(element => element.filter(element => element !== "desc"));
+    }
+    setDesc(newDesc)
   }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -67,18 +99,18 @@ function Report() {
       </Text>
       <TextInput 
        placeholder='Title' 
-       style={styles.input}
+       style={[styles.input, errors.includes("title") ? styles.inputError : null]}
        value={title}
-       onChangeText={setTitle}
+       onChangeText={changeTitle}
       />
       <Text>
         Location
       </Text>
       <TextInput 
        placeholder='Location'
-       style={styles.input}
+       style={[styles.input, errors.includes("location") ? styles.inputError : null]}
        value={location}
-       onChangeText={setLocation}
+       onChangeText={changeLocation}
       />
       <Text>
         Description
@@ -86,9 +118,9 @@ function Report() {
       <TextInput
         placeholder='Description'
         multiline={true}
-        style={styles.inputDescription}
+        style={[styles.inputDescription, errors.includes("desc") ? styles.inputError : null]}
         value={desc}
-        onChangeText={setDesc}
+        onChangeText={changeDesc}
       />
       <View style={styles.buttonContainer}>
       <TouchableOpacity style={styles.submitButton} onPress={handleReport}>
@@ -153,6 +185,9 @@ const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     borderRadius: 5
+  },
+  inputError: {
+    borderColor: "red"
   },
   inputDescription: {
     height: 250,

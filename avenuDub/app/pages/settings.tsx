@@ -11,11 +11,35 @@ function Settings() {
   const { user, setUser } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<string[]>([]);
 
   const handleLogin = () => {
-    if (username && password) {
-      setUser({ username, email: username, loggedIn: true });
+    let errors = []
+    if (!username) {
+      errors.push("username")
     }
+    if (!password) {
+      errors.push("password");
+    }
+    if (errors.length == 0) {
+      setUser({ username, email: username, loggedIn: true });
+    } else {
+      setErrors(errors);
+    }
+  }
+
+  const handleUsername = (newUser: string) => {
+    if (errors.includes("username") && username) {
+      setErrors(element => element.filter(element => element !== "username"));
+    }
+    setUsername(newUser);
+  }
+
+  const handlePassword = (newPW: string) => {
+    if (errors.includes("password") && password) {
+      setErrors(element => element.filter(element => element !== "password"));
+    }
+    setPassword(newPW);
   }
 
   if (!user.loggedIn) {
@@ -24,13 +48,15 @@ function Settings() {
       <View style={styles.loginContainer}>
         <BackButton/>
         <Text style={styles.p}>Username:</Text>
-        <TextInput style={styles.input} 
-          onChangeText={setUsername} 
+        <TextInput style={[
+            styles.input, errors.includes("username") ? styles.input_error : null
+            ]} 
+          onChangeText={handleUsername} 
           value={username}/>
           <Text style={styles.p}>Password:</Text>
         <TextInput secureTextEntry={true} 
-          style={styles.input} 
-          onChangeText={setPassword} 
+          style={[styles.input, errors.includes("password") ? styles.input_error : null]} 
+          onChangeText={handlePassword} 
           value={password}/>
         <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
@@ -42,7 +68,6 @@ function Settings() {
 
   else { 
     return (
-
     <View style={styles.container}>
       <BackButton/>
       <Text style={styles.header}>
@@ -95,6 +120,9 @@ const styles = StyleSheet.create({
     height: 40,
     borderWidth: 1,
     borderRadius: 5
+  },
+  input_error: {
+    borderColor: 'red'
   },
   submitButton: {
     backgroundColor: colors.primary,
