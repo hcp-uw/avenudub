@@ -23,6 +23,8 @@ function Settings() {
     }
     if (errors.length == 0) {
       setUser({ username, email: username, loggedIn: true });
+      setUsername("");
+      setPassword("");
     } else {
       setErrors(errors);
     }
@@ -40,6 +42,10 @@ function Settings() {
       setErrors(element => element.filter(element => element !== "password"));
     }
     setPassword(newPW);
+  }
+
+  const handleLogout = () => {
+    setUser({ username, email: "", loggedIn: false})
   }
 
   if (!user.loggedIn) {
@@ -65,7 +71,6 @@ function Settings() {
       </TouchableWithoutFeedback>
     )
   } 
-
   else { 
     return (
     <View style={styles.container}>
@@ -78,12 +83,16 @@ function Settings() {
         Email: {user?.email} {"\n"}
         Password:
       </Text>
+      
       <View style={styles.separator} />
       <Text style={styles.p}>
         Favorite Locations: {"\n"}
         {/* Pass in an array here?? */}
         <Text>[Location]</Text>
       </Text>
+      <TouchableOpacity onPress={handleLogout}>
+        <Text style = {[styles.p, {color: 'red'}]}>Log out</Text>
+      </TouchableOpacity>
     </View>
     )
   }
