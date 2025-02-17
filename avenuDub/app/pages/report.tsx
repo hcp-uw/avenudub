@@ -52,19 +52,19 @@ function Report() {
   }
 
   const changeTitle = (newTitle: string) => {
-    if (errors.includes("title") && title) {
+    if (errors.includes("title") && newTitle) {
       setErrors(element => element.filter(element => element !== "title"));
     }
     setTitle(newTitle);
   }
   const changeLocation = (newLoc: string) => {
-    if (errors.includes("location") && location) {
+    if (errors.includes("location") && newLoc) {
       setErrors(element => element.filter(element => element !== "location"));
     }
     setLocation(newLoc);
   }
   const changeDesc = (newDesc: string) => {
-    if (errors.includes("desc") && desc) {
+    if (errors.includes("desc") && newDesc) {
       setErrors(element => element.filter(element => element !== "desc"));
     }
     setDesc(newDesc)
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   modalView: {
     margin: 20,
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderRadius: 10,
     padding: 35,
     alignItems: 'center',
     shadowColor: '#000',
@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 125,
     height: 45,
-    borderRadius: 20,
-    marginTop: 20,
+    borderRadius: 10,
+    marginTop: 30,
   },
   notLoggedIn: {
     textAlign: 'center',
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     width: 225,
     height: 60,
-    borderRadius: 20,
+    borderRadius: 5,
   },
   buttonText: {
     color: 'white',

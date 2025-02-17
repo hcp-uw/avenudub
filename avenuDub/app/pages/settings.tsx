@@ -31,14 +31,14 @@ function Settings() {
   }
 
   const handleUsername = (newUser: string) => {
-    if (errors.includes("username") && username) {
+    if (errors.includes("username") && newUser) {
       setErrors(element => element.filter(element => element !== "username"));
     }
     setUsername(newUser);
   }
 
   const handlePassword = (newPW: string) => {
-    if (errors.includes("password") && password) {
+    if (errors.includes("password") && newPW) {
       setErrors(element => element.filter(element => element !== "password"));
     }
     setPassword(newPW);
