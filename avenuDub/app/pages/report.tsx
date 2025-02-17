@@ -183,16 +183,18 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderWidth: 1,
-    borderRadius: 5
+    borderWidth: 0.5,
+    borderRadius: 2,
+    backgroundColor: '#E9ECF1'
   },
   inputError: {
     borderColor: "red"
   },
   inputDescription: {
     height: 250,
-    borderWidth: 1,
-    borderRadius: 5
+    borderWidth: 0.5,
+    borderRadius: 2,
+    backgroundColor: '#E9ECF1'
   },
   submitButton: {
     backgroundColor: colors.primary,

@@ -127,8 +127,9 @@ const styles = StyleSheet.create({
   input: {
     width: '80%',
     height: 40,
-    borderWidth: 1,
-    borderRadius: 5
+    borderWidth: 0.5,
+    borderRadius: 2,
+    backgroundColor: '#E9ECF1'
   },
   input_error: {
     borderColor: 'red'
@@ -139,9 +140,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 15,
     paddingHorizontal: 40,
-    width: 150,
+    width: 285,
     height: 55,
-    borderRadius: 20,
+    borderRadius: 5,
     marginTop: 30
   },
   buttonText: {
