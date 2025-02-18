@@ -62,7 +62,7 @@ function Settings() {
         />
         {errors.includes("username") && 
           <Text style ={{color: "red"}}>
-            Missing username
+            ⚠ Missing username
           </Text>}
           <Text style={styles.p}>Password:</Text>
         <TextInput secureTextEntry={true} 
@@ -71,7 +71,7 @@ function Settings() {
           value={password}/>
         {errors.includes("password") && 
           <Text style ={{color: "red"}}>
-            Missing password
+            ⚠ Missing password
           </Text>}
         <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>

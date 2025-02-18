@@ -1,7 +1,7 @@
 import colors from '@/assets/colors'
 import BackButton from '@/components/BackButton'
 import React, { useState } from 'react'
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Modal } from 'react-native'
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Modal, ScrollView } from 'react-native'
 import UserContext from '@/components/user-context'
 import { useContext } from 'react'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
@@ -73,6 +73,7 @@ function Report() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <View style={styles.container}>
       <BackButton/>
+      <ScrollView>
       <Modal
        animationType='none'
        transparent={true}
@@ -105,7 +106,7 @@ function Report() {
       />
       {errors.includes("title") &&
         <Text style={{color: "red"}}>
-        Please input a title
+        ⚠ Please input a title
         </Text>}
       <Text>
         Location
@@ -118,7 +119,7 @@ function Report() {
       />
       {errors.includes("location") &&
         <Text style={{color: "red"}}>
-        Please input a location
+        ⚠ Please input a location
         </Text>}
       <Text>
         Description
@@ -132,13 +133,14 @@ function Report() {
       />
       {errors.includes("desc") && 
         <Text style={{color: "red"}}>
-        Please input a description
+        ⚠ Please input a description
         </Text>}
       <View style={styles.buttonContainer}>
       <TouchableOpacity style={styles.submitButton} onPress={handleReport}>
         <Text style={styles.buttonText}>Submit report</Text>
       </TouchableOpacity>
       </View>
+      </ScrollView>
     </View>
     </TouchableWithoutFeedback>
   )
