@@ -103,6 +103,10 @@ function Report() {
        value={title}
        onChangeText={changeTitle}
       />
+      {errors.includes("title") &&
+        <Text style={{color: "red"}}>
+        Please input a title
+        </Text>}
       <Text>
         Location
       </Text>
@@ -112,6 +116,10 @@ function Report() {
        value={location}
        onChangeText={changeLocation}
       />
+      {errors.includes("location") &&
+        <Text style={{color: "red"}}>
+        Please input a location
+        </Text>}
       <Text>
         Description
       </Text>
@@ -122,6 +130,10 @@ function Report() {
         value={desc}
         onChangeText={changeDesc}
       />
+      {errors.includes("desc") && 
+        <Text style={{color: "red"}}>
+        Please input a description
+        </Text>}
       <View style={styles.buttonContainer}>
       <TouchableOpacity style={styles.submitButton} onPress={handleReport}>
         <Text style={styles.buttonText}>Submit report</Text>

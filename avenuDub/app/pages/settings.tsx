@@ -58,12 +58,21 @@ function Settings() {
             styles.input, errors.includes("username") ? styles.input_error : null
             ]} 
           onChangeText={handleUsername} 
-          value={username}/>
+          value={username}
+        />
+        {errors.includes("username") && 
+          <Text style ={{color: "red"}}>
+            Missing username
+          </Text>}
           <Text style={styles.p}>Password:</Text>
         <TextInput secureTextEntry={true} 
           style={[styles.input, errors.includes("password") ? styles.input_error : null]} 
           onChangeText={handlePassword} 
           value={password}/>
+        {errors.includes("password") && 
+          <Text style ={{color: "red"}}>
+            Missing password
+          </Text>}
         <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
