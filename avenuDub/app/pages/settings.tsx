@@ -76,6 +76,11 @@ function Settings() {
         <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
+        <TouchableOpacity>
+          <Text style={{color: colors.primary}}>
+            Admin Login 
+          </Text>
+        </TouchableOpacity>
       </View>
       </TouchableWithoutFeedback>
     )
