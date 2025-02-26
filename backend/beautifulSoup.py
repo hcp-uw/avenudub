@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import pdfplumber
 from datetime import datetime
-from PIL import Image
+from PIL import Image, ImageFilter, ImageOps
 import pytesseract
 
 url = "https://police.uw.edu/60-day-log/attachment/01172025/"
@@ -48,8 +48,15 @@ with pdfplumber.open("latest_log.pdf") as pdf:
         if not tables:
             print('this page is an image')
             image = page.to_image().original
-            text = pytesseract.image_to_string(image)
+            image = image.convert("L")
+            image = ImageOps.autocontrast(image)
+            image = image.filter(ImageFilter.SHARPEN)
+            image = image.resize((image.width * 2, image.height * 2), Image.LANCZOS)
+
+            custom_config = r'--oem 3 --psm 6'
+            text = pytesseract.image_to_string(image, config=custom_config)
             print("Extracted Text\n"+text)
+            image.save("debug_image.png")
         else:
             for table in tables:
                 for i in range(3, len(table)):
