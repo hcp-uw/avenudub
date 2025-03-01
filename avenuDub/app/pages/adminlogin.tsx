@@ -4,7 +4,7 @@ import UserContext from '@/components/user-context';
 import React, { useContext, useState } from 'react'
 import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 
-function register() {
+function adminlogin() {
   const { user, setUser } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -43,6 +43,9 @@ function register() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <View style={styles.loginContainer}>
+      <Text style={styles.header}>
+        Admin Login
+      </Text>
       <BackButton/>
       <Text style={styles.p}>Username:</Text>
       <TextInput style={[
@@ -65,7 +68,7 @@ function register() {
           ⚠ Missing password
         </Text>}
       <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Create Account</Text>
+        <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
       <TouchableOpacity>
         <Text style={{ color: 'blue', marginTop: 10 }}>Back to Login</Text>
@@ -76,6 +79,9 @@ function register() {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    fontSize: 25,
+  },
   p: {
     fontSize: 20,
     paddingBottom: 10,
@@ -114,4 +120,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default register;
+export default adminlogin;

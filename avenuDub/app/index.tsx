@@ -12,6 +12,8 @@ import Settings from "./pages/settings";
 import colors from "../assets/colors"
 import Report from "./pages/report";
 import Safety from "./pages/safety";
+import Register from "./pages/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import adminlogin from "./pages/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
 import { useState } from "react";
 
@@ -43,7 +45,7 @@ const HomeStack = createNativeStackNavigator();
       return (
         <HomeStack.Navigator>
           <HomeStack.Screen name="Home" component={HomeScreen} options={{ headerShown: false}}/>
-          <HomeStack.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
+          <HomeStack.Screen name="Settings" component={adminlogin} options={{ headerShown: false }} />
           <HomeStack.Screen name="Reports" component={Report} options={{ headerShown: false }}/>
         </HomeStack.Navigator>
       );

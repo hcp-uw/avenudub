@@ -5,6 +5,7 @@ import UserContext from '@/components/user-context'
 import { useContext } from 'react'
 import colors from '@/assets/colors'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 // add user and email props later
 function Settings() {
@@ -12,6 +13,8 @@ function Settings() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
+  // TODO: Figure out how to navigate lol
+  const navigation = useNavigation();
 
   const handleLogin = () => {
     let errors = []
@@ -77,8 +80,13 @@ function Settings() {
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={{color: colors.primary}}>
+          <Text style={styles.subscripts}>
             Admin Login 
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text style={styles.subscripts}>
+            Don't have an account? Sign up for one
           </Text>
         </TouchableOpacity>
       </View>
@@ -113,6 +121,11 @@ function Settings() {
 }
 
 const styles = StyleSheet.create({
+  subscripts : {
+    color: colors.primary,
+    textAlign: 'center',
+    paddingTop: 10
+  },
   header: {
     fontSize: 50
   },
