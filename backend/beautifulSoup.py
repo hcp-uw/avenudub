@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import pdfplumber
 from datetime import datetime
-from PIL import Image
+from PIL import Image, ImageFilter, ImageOps
 import pytesseract
 
 url = "https://police.uw.edu/60-day-log/attachment/01172025/"
@@ -38,34 +38,46 @@ else:
     print(f"Failed to load the main page. HTTP Status Code: {response.status_code}")
 
 raw_data = []
+page_num = 1
 with pdfplumber.open("latest_log.pdf") as pdf:
     #Goes through each page in the PDF and extracts the tables
     for page in pdf.pages:
+        print('page number ' + str(page_num))
+        page_num+=1
         tables = page.extract_tables()
-        for table in tables:
-            for i in range(3, len(table)):
-                #Printing for debugging
-                print(table[i])
-                #Switches index of the date, sometimes it can appear in the 0th spot, other times in the first spot
-                dateIndex = 0
-                if table[i][0]==None:
-                    dateIndex = 1
-                if table[i] and table[i][dateIndex]!=None: 
-                    month_part = table[i][dateIndex].strip()[:2]
-                    #Appends crimes that happened this month
-                    if month_part.isdigit() and int(datetime.now().strftime("%m")) == int(month_part):
-                        print('month matches')
-                        raw_data.append(table[i])
-                    #Appends crimes that happened last month but within the month range
-                    elif month_part.isdigit():
-                        day_part = table[i][dateIndex][3:5]
-                        if day_part.isdigit():
-                            day = int(day_part)
-                            if int(datetime.now().strftime("%d")) <= day and int(datetime.now().strftime("%m"))>=int(month_part):
-                                print('less than a month ago')
-                                raw_data.append(table[i])
-                            else:
-                                break
+        if not tables:
+            print('this page is an image')
+            image = page.to_image().original
+            image = image.convert("L")
+            image = ImageOps.autocontrast(image)
+            image = image.filter(ImageFilter.SHARPEN)
+            image = image.resize((image.width * 2, image.height * 2), Image.LANCZOS)
+
+            custom_config = r'--oem 3 --psm 6'
+            text = pytesseract.image_to_string(image, config=custom_config)
+            print("Extracted Text\n"+text)
+            image.save("debug_image.png")
+        else:
+            for table in tables:
+                for i in range(3, len(table)):
+                    #Switches index of the date, sometimes it can appear in the 0th spot, other times in the first spot
+                    dateIndex = 0
+                    if table[i][0]==None:
+                        dateIndex = 1
+                    if table[i] and table[i][dateIndex]!=None: 
+                        month_part = table[i][dateIndex].strip()[:2]
+                        #Appends crimes that happened this month
+                        if month_part.isdigit() and int(datetime.now().strftime("%m")) == int(month_part):
+                            raw_data.append(table[i])
+                        #Appends crimes that happened last month but within the month range
+                        elif month_part.isdigit():
+                            day_part = table[i][dateIndex][3:5]
+                            if day_part.isdigit():
+                                day = int(day_part)
+                                if int(datetime.now().strftime("%d")) <= day and int(datetime.now().strftime("%m"))>=int(month_part):
+                                    raw_data.append(table[i])
+                                else:
+                                    break
 
 
 
