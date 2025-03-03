@@ -1,4 +1,4 @@
-import {Text,Button,View, StyleSheet} from "react-native";
+import {Text,Button,View, StyleSheet,ImageBackground,SafeAreaView} from "react-native";
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import { NavigationContainer } 
          from '@react-navigation/native';
@@ -16,6 +16,7 @@ import Register from "./pages/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import adminlogin from "./pages/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
 import { useState } from "react";
+import IonIcon from '@reacticons/ionicons';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,8 +24,9 @@ export default function App(){
   const [user, setUser] = useState({ username: "", email: "", loggedIn: false });
   return(
     <UserContext.Provider value={{ user, setUser }}>
-      <Tab.Navigator 
+      <Tab.Navigator
         screenOptions={{
+          headerShown: false,
           tabBarStyle: {
             backgroundColor:'#5e30b3',
         },
@@ -43,7 +45,8 @@ const HomeStack = createNativeStackNavigator();
 
     function HomeStackScreen() {
       return (
-        <HomeStack.Navigator>
+        <HomeStack.Navigator
+        screenOptions={{ headerShown: false }}>
           <HomeStack.Screen name="Home" component={HomeScreen} options={{ headerShown: false}}/>
           <HomeStack.Screen name="Settings" component={adminlogin} options={{ headerShown: false }} />
           <HomeStack.Screen name="Reports" component={Report} options={{ headerShown: false }}/>
@@ -51,58 +54,67 @@ const HomeStack = createNativeStackNavigator();
       );
     }
 
-function SettingsScreen(){
-  return(
-    <View>
-      <Text>Settings! Lame but it exists</Text>
-    </View>
-  )
-}
-
-function ReportsScreen(){
-  return(
-    <View>
-      <Text>For now you will have to rely on word of mouth. Sorry</Text>
-    </View>
-  );
-}
-
 function HomeScreen(){
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   return(
+    <ImageBackground
+      source={require("../assets/images/seattle-2084690_1920.jpg")} // Local image
+      style={styles.background}
+      resizeMode="cover"
+    >
     <View style = {styles.container}>
-      <Button
-        title="Go to Settings"
+    <SafeAreaView style={styles.textBlock}>
+      <Text style = {styles.text}>Welcome Back! Let's discover something new.</Text>
+    </SafeAreaView>
+      <TouchableOpacity
+        //title="Go to Settings"
+        style = {styles.button} 
         onPress={() => navigation.navigate('Settings')}
-      />
-      <Button
-        title="Go to Reports"
+      >
+        <IonIcon name="settings-outline" color="white" size="large"/>
+      </TouchableOpacity>
+      <TouchableOpacity
+        //title="Go to Reports"
         onPress={() => navigation.navigate('Reports')}
-      />
+        style = {styles.button}
+      > 
+       <IonIcon name="checkmark-circle-outline" color="white" size="large"/>
+      </TouchableOpacity>
     </View>
+    </ImageBackground>
   )
 }
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row', // Align children horizontally
+    flexDirection: 'column', // Align children horizontally
     justifyContent: 'space-around', // Evenly space buttons 
     alignItems: 'center',
-    color: colors.primary
   },
+  button: {
+    //backgroundColor: "#5529e2",
+    backgroundColor: "white",
+    alignItems: 'center',
+    borderRadius: 55,
+    justifyContent: 'space-around',
+    flexDirection:'row',
+    padding: 15
+  },
+  background: {
+    flex: 1, // Takes full screen
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+  },
+  text:{
+    color:"black",
+    fontSize:20,
+    fontWeight:"bold",
+  },
+  textBlock:{
+    backgroundColor:"white",
+    padding: 50,
+    borderRadius: 55,
+  }
 });
-function BusinessScreen() {
-  return(
-    <View>
-      <Text>Welcome to Businesses!</Text>
-    </View>
-  );
-}
-
-function SafetyScreen() {
-  return(
-    <View>
-      <Text>Nothing yet. The world is currently a safe place.</Text>
-    </View>
-  );
-}
