@@ -13,6 +13,8 @@ itsdangerous==2.2.0
 Jinja2==3.1.5
 MarkupSafe==3.0.2
 mysqlclient==2.2.7
+numpy==2.2.3
+opencv-python==4.11.0.86
 packaging==24.2
 pdfminer.six==20231228
 pdfplumber==0.11.5
