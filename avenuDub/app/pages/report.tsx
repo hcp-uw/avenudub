@@ -184,7 +184,8 @@ const styles = StyleSheet.create({
   notLoggedInContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#f2e8dc',
   },
   header: {
     fontSize: 50,

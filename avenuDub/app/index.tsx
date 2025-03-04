@@ -9,14 +9,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TouchableOpacity } from 'react-native';
 import Business from "./pages/business";
 import Settings from "./pages/settings";
-import colors from "../assets/colors"
 import Report from "./pages/report";
 import Safety from "./pages/safety";
 import Register from "./pages/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
-import adminlogin from "./pages/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import Adminlogin from "./pages/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
 import { useState } from "react";
-import IonIcon from '@reacticons/ionicons';
+//import IonIcon from '@reacticons/ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 
@@ -48,7 +48,7 @@ const HomeStack = createNativeStackNavigator();
         <HomeStack.Navigator
         screenOptions={{ headerShown: false }}>
           <HomeStack.Screen name="Home" component={HomeScreen} options={{ headerShown: false}}/>
-          <HomeStack.Screen name="Settings" component={adminlogin} options={{ headerShown: false }} />
+          <HomeStack.Screen name="Settings" component={Adminlogin} options={{ headerShown: false }} />
           <HomeStack.Screen name="Reports" component={Report} options={{ headerShown: false }}/>
         </HomeStack.Navigator>
       );
@@ -58,38 +58,43 @@ function HomeScreen(){
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
   return(
-    <ImageBackground
+   /* <ImageBackground
       source={require("../assets/images/seattle-2084690_1920.jpg")} // Local image
       style={styles.background}
       resizeMode="cover"
     >
+      */
     <View style = {styles.container}>
     <SafeAreaView style={styles.textBlock}>
       <Text style = {styles.text}>Welcome Back! Let's discover something new.</Text>
     </SafeAreaView>
+      <View style = {styles.buttonContainer}>
       <TouchableOpacity
         //title="Go to Settings"
         style = {styles.button} 
         onPress={() => navigation.navigate('Settings')}
       >
-        <IonIcon name="settings-outline" color="white" size="large"/>
+        <Ionicons name="settings-outline" color="black" size={40}/>
       </TouchableOpacity>
       <TouchableOpacity
         //title="Go to Reports"
         onPress={() => navigation.navigate('Reports')}
         style = {styles.button}
       > 
-       <IonIcon name="checkmark-circle-outline" color="white" size="large"/>
+       <Ionicons name="checkmark-circle-outline" color="black" size={40}/>
       </TouchableOpacity>
+      </View>
     </View>
-    </ImageBackground>
+    //</ImageBackground>
   )
 }
 const styles = StyleSheet.create({
   container: {
+    backgroundColor:'#f2e8dc',
     flexDirection: 'column', // Align children horizontally
     justifyContent: 'space-around', // Evenly space buttons 
     alignItems: 'center',
+    flex:1,
   },
   button: {
     //backgroundColor: "#5529e2",
@@ -98,7 +103,12 @@ const styles = StyleSheet.create({
     borderRadius: 55,
     justifyContent: 'space-around',
     flexDirection:'row',
-    padding: 15
+    padding: 15,
+    margin: 10,
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
   },
   background: {
     flex: 1, // Takes full screen
@@ -109,12 +119,30 @@ const styles = StyleSheet.create({
   },
   text:{
     color:"black",
-    fontSize:20,
+    fontSize:30,
     fontWeight:"bold",
+    alignItems:"center",
+    flexWrap: "wrap",
+    padding: 10,
   },
   textBlock:{
     backgroundColor:"white",
-    padding: 50,
+    padding: 20,
     borderRadius: 55,
+    width: "50%",
+    height: "25%",
+    margin: 20,
+    //flexGrow:1,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+  },
+  buttonContainer:{
+    flexDirection: 'row',
+    margin: 10,
+    backgroundColor:'#f2e8dc',
   }
 });

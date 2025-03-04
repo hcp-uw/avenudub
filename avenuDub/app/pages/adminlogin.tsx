@@ -4,7 +4,7 @@ import UserContext from '@/components/user-context';
 import React, { useContext, useState } from 'react'
 import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 
-function adminlogin() {
+function Adminlogin() {
   const { user, setUser } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -120,4 +120,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default adminlogin;
+export default Adminlogin;

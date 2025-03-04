@@ -144,12 +144,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
     padding: 30,
     paddingTop: 50,
+    backgroundColor: '#f2e8dc',
   },
   loginContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    backgroundColor: '#f2e8dc',
   },
   input: {
     width: '80%',

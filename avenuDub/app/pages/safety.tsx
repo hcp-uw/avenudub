@@ -1,35 +1,71 @@
+import BackButton from '@/components/BackButton'
 import React from 'react'
-import { Text, View, StyleSheet, ScrollView } from 'react-native'
+import {Text,Button,View, StyleSheet,ImageBackground,SafeAreaView,ScrollView,FlatList,Image} from "react-native";
+import {ParamListBase, useNavigation} from '@react-navigation/native';
+import { NavigationContainer } 
+         from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+//import { Button } from '@react-navigation/elements';
+import { TouchableOpacity } from 'react-native';
+import Settings from "/Users/samanthaautrey/Documents/GitHub/avenudub/avenuDub/app/pages/settings";
+import Report from "/Users/samanthaautrey/Documents/GitHub/avenudub/avenuDub/app/pages/report";
+import Register from "/Users/samanthaautrey/Documents/GitHub/avenudub/avenuDub/app/pages/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import adminlogin from "/Users/samanthaautrey/Documents/GitHub/avenudub/avenuDub/app/pages/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import UserContext from "@/components/user-context";
+import { useState } from "react";
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+const crimes= [
+  { id: "1", name:"Attempted Robbery", description: "Armed Suspect attempted to hijack the dorm", 
+    location:"Oak Hall", address: "123 Main St"},
+  { id: "2", name: "Sexual Assault", description: "Attempted rape in front of the library", 
+    location: "Odegaard Library", address: "456 Elm St"},
+  { id: "3", name: "Shoplifting", description: "Female Suspect tried to steal an orange", 
+    location: "District Market - Alder", address: "789 Oak St"},
+  { id: "4", name: "Tresspassing", description: "Someone tried to get into a place they don't belong", 
+    location: "Elm Hall", address: "101 Pine St"},
+  { id: "5", name: "Bike Theft", description: "Someone was very determined to not walk home. Must have had sore legs after the gym.", 
+    location: "IMA", address: "a place"}
+];
 
 function Safety() {
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   return (
     <View style={styles.container}>
+      {/*Buttons on the side*/}
+      <View style={styles.floatingButton}>
+      <TouchableOpacity
+        //title="Go to Settings"
+        style = {styles.button} 
+        onPress={() => navigation.navigate('Settings')}
+      >
+        <Ionicons name="settings-outline" color="black" size={40}/>
+      </TouchableOpacity>
+      <TouchableOpacity
+        //title="Go to Reports"
+        onPress={() => navigation.navigate('Reports')}
+        style = {styles.button}
+      > 
+       <Ionicons name="checkmark-circle-outline" color="black" size={40}/>
+      </TouchableOpacity>
+      </View>
       <ScrollView>
-      <Text style={styles.header}>
-      Crime {"\n"}Catalog
-      </Text>
-      {/* Pass in an array for crime */}
-      {/* Figure out a way to space text out bc this is not gonna work when we actually implement 
-      crimes lol */}
-      {/* Placeholder text for now */}
-      <Text style={styles.crimeText}>[Crime]                                    [Distance]</Text>
-      <View style={styles.separator}/>
-      <Text style={styles.crimeText}>[Crime]                                    [Distance]</Text>
-      <View style={styles.separator}/>
-      <Text style={styles.crimeText}>[Crime]                                    [Distance]</Text>
-      <View style={styles.separator}/>
-      <Text style={styles.crimeText}>[Crime]                                    [Distance]</Text>
-      <View style={styles.separator}/>
-      <Text style={styles.crimeText}>[Crime]                                    [Distance]</Text>
-      <View style={styles.separator}/>
-      <Text style={styles.crimeText}>[Crime]                                    [Distance]</Text>
-      <View style={styles.separator}/>
-      <Text style={styles.crimeText}>[Crime]                                    [Distance]</Text>
-      <View style={styles.separator}/>
-      <Text style={styles.crimeText}>[Crime]                                    [Distance]</Text>
-      <View style={styles.separator}/>
-      <Text style={styles.crimeText}>[Crime]                                    [Distance]</Text>
-      <View style={styles.separator}/>
+      <FlatList
+        data = {crimes}
+        numColumns={2}
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <Ionicons name="alert-circle-outline" color="red" size={30}/>
+            <Text style={styles.crimeText}>{item.name}</Text>
+            <Text style={styles.crimeSubText}>{item.description}</Text>
+            <Text style={styles.crimeText}>{item.location}</Text>
+            <Text style={styles.crimeSubText}>{item.address}</Text>
+          </View>
+        )}
+        keyExtractor={(item) => item.id}
+      />
       </ScrollView>
     </View>
   )
@@ -46,12 +82,49 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    justifyContent: 'space-between',
     marginHorizontal: 0,
-    padding: 30,
+    padding: 50,
+    backgroundColor: '#f2e8dc',
   },
   crimeText: {
     paddingTop: 5,
     fontSize: 20
+  },
+  crimeSubText:{
+
+  },
+  card:{
+    backgroundColor: 'white',
+    flex: 1,
+    padding: 10,
+    alignItems: "center",
+    justifyContent: 'space-between',
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    margin: 15,
+  },
+  floatingButton:{
+    position: 'absolute',
+    zIndex: 10,
+    top: 100,
+    left: 20,
+    flexDirection:'column',
+  },
+  button:{
+    backgroundColor: "white",
+    alignItems: 'center',
+    borderRadius: 55,
+    justifyContent: 'space-around',
+    flexDirection:'row',
+    padding: 15,
+    margin: 10,
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
   },
 })
 export default Safety
