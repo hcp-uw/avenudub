@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     margin: 15,
+    borderRadius: 30,
   },
   floatingButton:{
     position: 'sticky',
