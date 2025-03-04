@@ -9,13 +9,14 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //import { Button } from '@react-navigation/elements';
 import { TouchableOpacity } from 'react-native';
-import Settings from "/Users/samanthaautrey/Documents/GitHub/avenudub/avenuDub/app/pages/settings";
-import Report from "/Users/samanthaautrey/Documents/GitHub/avenudub/avenuDub/app/pages/report";
-import Register from "/Users/samanthaautrey/Documents/GitHub/avenudub/avenuDub/app/pages/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
-import adminlogin from "/Users/samanthaautrey/Documents/GitHub/avenudub/avenuDub/app/pages/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import Settings from "./settings";
+import Report from "./report";
+import Register from "./register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import adminlogin from "./adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
 import { useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import SearchBarComponent from "./searchbar"
 
 const businesses = [
   { id: "1", name: "Business A", distance: "2 miles", address: "123 Main St", image: "https://via.placeholder.com/150" },
@@ -30,19 +31,24 @@ function Business() {
   return (
     <View style={styles.container}>
       {/*Buttons on the side*/}
-      <View style={styles.floatingButtons}>
-      <TouchableOpacity
-        style = {styles.button} 
-        onPress={() => navigation.navigate('Settings')}
-      >
-        <Ionicons name="settings-outline" color="black" size={40}/>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Reports')}
-        style = {styles.button}
-      > 
-       <Ionicons name="checkmark-circle-outline" color="black" size={40}/>
-      </TouchableOpacity>
+      <View style={styles.floatingButton}>
+        <TouchableOpacity
+          //title="Go to Settings"
+          style = {styles.button} 
+          onPress={() => navigation.navigate('Settings')}
+        >
+          <Ionicons name="settings-outline" color="white" size={40}/>
+        </TouchableOpacity>
+
+        <SearchBarComponent data={businesses}/>
+
+        <TouchableOpacity
+          //title="Go to Reports"
+          onPress={() => navigation.navigate('Report')}
+          style = {styles.button}
+        > 
+        <Ionicons name="checkmark-circle-outline" color="white" size={40}/>
+        </TouchableOpacity>
       </View>
       <ScrollView>
       <FlatList
@@ -74,7 +80,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    marginHorizontal: 0,
+    //marginHorizontal: 0,
     padding: 50,
     backgroundColor: '#f2e8dc',
   },
@@ -106,15 +112,21 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     margin: 15,
   },
-  floatingButtons:{
-    position: 'absolute',
-    zIndex: 10,
-    top: 100,
-    left: 20,
-    flexDirection:'column',
+  floatingButton:{
+    position: 'sticky',
+    paddingTop:0, 
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    paddingHorizontal: 20, 
+    backgroundColor:'transparent',
+    zIndex: 3,
+    top: 0,
+    //left: 100,
+    //right: 100,
   },
   button:{
-    backgroundColor: "white",
+    backgroundColor: "#5e30b3",
     alignItems: 'center',
     borderRadius: 55,
     justifyContent: 'space-around',
