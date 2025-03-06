@@ -40,7 +40,7 @@ function Safety() {
         <TouchableOpacity
           //title="Go to Settings"
           style = {styles.button} 
-          onPress={() => navigation.navigate('Settings')}
+          onPress={() => navigation.navigate('Home', {screen: 'Settings'})}
         >
           <Ionicons name="settings-outline" color="white" size={40}/>
         </TouchableOpacity>
@@ -49,7 +49,7 @@ function Safety() {
 
         <TouchableOpacity
           //title="Go to Reports"
-          onPress={() => navigation.navigate('Report')}
+          onPress={() => navigation.navigate('Home',{screen: 'Reports'})}
           style = {styles.button}
         > 
         <Ionicons name="checkmark-circle-outline" color="white" size={40}/>

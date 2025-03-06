@@ -16,14 +16,25 @@ import adminlogin from "./adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
 import { useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import SearchBarComponent from "./searchbar"
+import SearchBarComponent from "./searchbar";
+//import FadeImage from '@/components/FadeImage';
 
 const businesses = [
-  { id: "1", name: "Business A", distance: "2 miles", address: "123 Main St", image: "https://via.placeholder.com/150" },
-  { id: "2", name: "Business B", distance: "5 miles", address: "456 Elm St", image: "https://via.placeholder.com/150" },
-  { id: "3", name: "Business C", distance: "3 miles", address: "789 Oak St", image: "https://via.placeholder.com/150" },
-  { id: "4", name: "Business D", distance: "4 miles", address: "101 Pine St", image: "https://via.placeholder.com/150" },
-  { id: "5", name: "Business E", distance: "10 miles", address: "a place", image: "https://via.placeholder.com/150"}
+  { id: "1", name: "Business A", distance: "2 miles", address: "123 Main St", image: "https://as2.ftcdn.net/v2/jpg/01/32/39/21/1000_F_132392106_ZnNsHtzvnxRHxtYwjRTmJKT7CZfOjoN9.jpg",
+    foodType:"Asian-American", priceRange:"$",discounts:"N/A"
+  },
+  { id: "2", name: "Business B", distance: "5 miles", address: "456 Elm St", image: "https://via.placeholder.com/150",
+    foodType:"Italian", priceRange:"$$",discounts:"Nope."
+  },
+  { id: "3", name: "Business C", distance: "3 miles", address: "789 Oak St", image: "https://via.placeholder.com/150",
+    foodType:"Gross", priceRange:"$$$",discounts:"Not a chance."
+  },
+  { id: "4", name: "Business D", distance: "4 miles", address: "101 Pine St", image: "https://via.placeholder.com/150",
+    foodType:"Mexican", priceRange:"$$",discounts:"Yes."
+  },
+  { id: "5", name: "Business E", distance: "10 miles", address: "a place", image: "https://via.placeholder.com/150",
+    foodType:"Greek", priceRange:"$",discounts:"Nope."
+  }
 ];
 
 function Business() {
@@ -35,7 +46,7 @@ function Business() {
         <TouchableOpacity
           //title="Go to Settings"
           style = {styles.button} 
-          onPress={() => navigation.navigate('Settings')}
+          onPress={() => navigation.navigate('Home',{screen:'Settings'})}
         >
           <Ionicons name="settings-outline" color="white" size={40}/>
         </TouchableOpacity>
@@ -44,7 +55,7 @@ function Business() {
 
         <TouchableOpacity
           //title="Go to Reports"
-          onPress={() => navigation.navigate('Report')}
+          onPress={() => navigation.navigate('Home',{screen:'Reports'})}
           style = {styles.button}
         > 
         <Ionicons name="checkmark-circle-outline" color="white" size={40}/>
@@ -55,11 +66,13 @@ function Business() {
         data = {businesses}
         numColumns={2}
         renderItem={({ item }) => (
-          <View style={styles.card}>
+          <TouchableOpacity 
+          style={styles.card}
+          onPress={()=>navigation.navigate('BusinessesInfo',{business: item})}>
             <Image source={{ uri: item.image }} style={styles.image} />
             <Text style={styles.businessText}>{item.name} ({item.distance})</Text>
             <Text style={styles.businessSubText}>{item.address}</Text>
-          </View>
+          </TouchableOpacity>
         )}
         keyExtractor={(item) => item.id}
       />

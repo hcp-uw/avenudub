@@ -11,6 +11,7 @@ import Business from "./pages/business";
 import Settings from "./pages/settings";
 import Report from "./pages/report";
 import Safety from "./pages/safety";
+import BusinessInfoScreen from "./pages/businessinfo";
 import Register from "./pages/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import Adminlogin from "./pages/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
@@ -33,7 +34,7 @@ export default function App(){
       }} 
     >
         <Tab.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false }}/>
-        <Tab.Screen name="Businesses" component={Business} options={{ headerShown: false }}/>
+        <Tab.Screen name="Businesses" component={BusinessesStackScreen} options={{ headerShown: false }}/>
         <Tab.Screen name="Safety" component={Safety} options={{ headerShown: false }}/>
       </Tab.Navigator>
     </UserContext.Provider>
@@ -42,7 +43,7 @@ export default function App(){
 } 
 
 const HomeStack = createNativeStackNavigator();
-
+const BusinessesStack = createNativeStackNavigator();
     function HomeStackScreen() {
       return (
         <HomeStack.Navigator
@@ -52,6 +53,16 @@ const HomeStack = createNativeStackNavigator();
           <HomeStack.Screen name="Reports" component={Report} options={{ headerShown: false }}/>
         </HomeStack.Navigator>
       );
+    }
+    
+    function BusinessesStackScreen(){
+      return(
+        <BusinessesStack.Navigator
+        screenOptions={{headerShown:false}}>
+          <BusinessesStack.Screen name="Businesses" component={Business} options={{headerShown: false}}/>
+          <BusinessesStack.Screen name="BusinessesInfo" component={BusinessInfoScreen} options={{headerShown:false}}/>
+        </BusinessesStack.Navigator>
+      )
     }
 
 function HomeScreen(){
