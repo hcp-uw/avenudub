@@ -42,25 +42,29 @@ const BusinessesInfoScreen = () => {
         <View style = {styles.container}>
             <BackButton/>
             <ScrollView>
-            <Image source={{uri:image}} style={styles.image}/>
-            <Text style={styles.headers}>{name}</Text>
-            <Text style={styles.text}>{address}</Text>
-            <Text style={styles.text}>{foodType}</Text>
-            {priceRange === "$" && (
+            <View style={styles.imageContainer}>
+                 <Image source={{uri:image}} style={styles.image}/>
+                 <Text style={styles.headers}>{name}</Text>
+            </View>
+            <View style={styles.infoContainer}>
+                <Text style={styles.text}>{foodType}</Text>
+                {priceRange === "$" && (
                 <View style = {styles.priceRange}>
                    <Text style = {styles.priceText}>$</Text>
                 </View>
-            )}
-            {priceRange === "$$" && (
+                )}
+                {priceRange === "$$" && (
                 <View style = {styles.priceRange}>
                     <Text style = {styles.priceText}>$$</Text>
                 </View>
-            )}
+                )}
             {priceRange === "$$$" && (
                 <View style = {styles.priceRange}>
                     <Text style = {styles.priceText}>$$$</Text>
                 </View>
-            )}
+                )}
+                <Text style={styles.text}>{address}</Text>
+            </View>
             </ScrollView>
         </View>
     )
@@ -73,8 +77,9 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'space-between',
     //marginHorizontal: 0,
-      padding: 50,
+      padding: 30,
       alignItems: 'center',
+      margin: 50,
     },
     image:{
         width:400,
@@ -86,6 +91,24 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.4,
         shadowRadius: 3,
         alignItems: 'center',
+        margin: 20,
+    },
+    imageContainer:{
+        backgroundColor: 'white',
+        padding: 40,
+        borderRadius: 50,
+        margin: 20,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    infoContainer:{
+        backgroundColor: 'white',
+        padding: 40,
+        borderRadius: 50,
+        margin: 20,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     headers:{
         fontSize: 30,
