@@ -1,5 +1,5 @@
 import BackButton from '@/components/BackButton'
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Text,Button,View, StyleSheet,ImageBackground,SafeAreaView,ScrollView,FlatList,Image} from "react-native";
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import { NavigationContainer } 
@@ -18,20 +18,15 @@ import { useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons'; 
 import SearchBarComponent from "./searchbar" 
 
-const crimes= [
-  { id: "1", name:"Attempted Robbery", description: "Armed Suspect attempted to hijack the dorm", 
-    location:"Oak Hall", address: "123 Main St"},
-  { id: "2", name: "Sexual Assault", description: "Attempted rape in front of the library", 
-    location: "Odegaard Library", address: "456 Elm St"},
-  { id: "3", name: "Shoplifting", description: "Female Suspect tried to steal an orange", 
-    location: "District Market - Alder", address: "789 Oak St"},
-  { id: "4", name: "Tresspassing", description: "Someone tried to get into a place they don't belong", 
-    location: "Elm Hall", address: "101 Pine St"},
-  { id: "5", name: "Bike Theft", description: "Someone was very determined to not walk home. Must have had sore legs after the gym.", 
-    location: "IMA", address: "a place"}
-];
 
-function Safety() {
+const Safety: React.FC<{data: any[]}> = ({data}) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredInput, setFilteredInput] = useState(data);
+
+  useEffect(() => {
+    setFilteredInput(data);
+  }, [data]);
+
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   return (
     <View style={styles.container}>
@@ -45,7 +40,12 @@ function Safety() {
           <Ionicons name="settings-outline" color="white" size={40}/>
         </TouchableOpacity>
 
-        <SearchBarComponent data={crimes}/>
+        <SearchBarComponent 
+        data={filteredInput}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        setFilteredInput={setFilteredInput}
+        />
 
         <TouchableOpacity
           //title="Go to Reports"
@@ -57,7 +57,7 @@ function Safety() {
       </View>
       <ScrollView>
       <FlatList
-        data = {crimes}
+        data = {filteredInput}
         numColumns={2}
         renderItem={({ item }) => (
           <View style={styles.card}>

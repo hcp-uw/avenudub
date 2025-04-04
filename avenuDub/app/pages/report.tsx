@@ -189,12 +189,14 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 50,
+    textAlign: 'center',
   },
   container: {
     flex: 1,
     marginHorizontal: 0,
     padding: 30,
-    paddingTop: 50
+    paddingTop: 50,
+    backgroundColor: '#f2e8dc',
   },
   input: {
     height: 40,

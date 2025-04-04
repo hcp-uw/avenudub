@@ -21,6 +21,37 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 
+const businesses = [
+  { id: "1", name: "Business A", distance: "2 miles", address: "123 Main St", image: "https://as2.ftcdn.net/v2/jpg/01/32/39/21/1000_F_132392106_ZnNsHtzvnxRHxtYwjRTmJKT7CZfOjoN9.jpg",
+    foodType:"Asian-American", priceRange:"$",discounts:["nope", "still nope"]
+  },
+  { id: "2", name: "Business B", distance: "5 miles", address: "456 Elm St", image: "https://via.placeholder.com/150",
+    foodType:"Italian", priceRange:"$$",discounts: ["nope", "still nope"]
+  },
+  { id: "3", name: "Business C", distance: "3 miles", address: "789 Oak St", image: "https://via.placeholder.com/150",
+    foodType:"Gross", priceRange:"$$$",discounts: ["N/A", "N/A"]
+  },
+  { id: "4", name: "Business D", distance: "4 miles", address: "101 Pine St", image: "https://via.placeholder.com/150",
+    foodType:"Mexican", priceRange:"$$",discounts: ["Maybe, if you ask nicely", "Nope"]
+  },
+  { id: "5", name: "Business E", distance: "10 miles", address: "a place", image: "https://via.placeholder.com/150",
+    foodType:"Greek", priceRange:"$",discounts:["N/A", "N/A"]
+  }
+];
+
+const crimes= [
+  { id: "1", name:"Attempted Robbery", description: "Armed Suspect attempted to hijack the dorm", 
+    location:"Oak Hall", address: "123 Main St"},
+  { id: "2", name: "Sexual Assault", description: "Attempted rape in front of the library", 
+    location: "Odegaard Library", address: "456 Elm St"},
+  { id: "3", name: "Shoplifting", description: "Female Suspect tried to steal an orange", 
+    location: "District Market - Alder", address: "789 Oak St"},
+  { id: "4", name: "Tresspassing", description: "Someone tried to get into a place they don't belong", 
+    location: "Elm Hall", address: "101 Pine St"},
+  { id: "5", name: "Bike Theft", description: "Someone was very determined to not walk home. Must have had sore legs after the gym.", 
+    location: "IMA", address: "a place"}
+];
+
 export default function App(){
   const [user, setUser] = useState({ username: "", email: "", loggedIn: false });
   return(
@@ -35,7 +66,10 @@ export default function App(){
     >
         <Tab.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false }}/>
         <Tab.Screen name="Businesses" component={BusinessesStackScreen} options={{ headerShown: false }}/>
-        <Tab.Screen name="Safety" component={Safety} options={{ headerShown: false }}/>
+        <Tab.Screen 
+        name="Safety" 
+        component={() => <Safety data={crimes} />} 
+        options={{ headerShown: false }}/>
       </Tab.Navigator>
     </UserContext.Provider>
   );
@@ -59,7 +93,11 @@ const BusinessesStack = createNativeStackNavigator();
       return(
         <BusinessesStack.Navigator
         screenOptions={{headerShown:false}}>
-          <BusinessesStack.Screen name="Businesses" component={Business} options={{headerShown: false}}/>
+          <BusinessesStack.Screen 
+            name="Businesses" 
+            component={() => <Business data={businesses} />} 
+            options={{headerShown: false}}
+          />
           <BusinessesStack.Screen name="BusinessesInfo" component={BusinessInfoScreen} options={{headerShown:false}}/>
         </BusinessesStack.Navigator>
       )

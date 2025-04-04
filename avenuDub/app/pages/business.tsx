@@ -1,5 +1,5 @@
 import BackButton from '@/components/BackButton'
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Text,Button,View, StyleSheet,ImageBackground,SafeAreaView,ScrollView,FlatList,Image} from "react-native";
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import { NavigationContainer } 
@@ -19,25 +19,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBarComponent from "./searchbar";
 //import FadeImage from '@/components/FadeImage';
 
-const businesses = [
-  { id: "1", name: "Business A", distance: "2 miles", address: "123 Main St", image: "https://as2.ftcdn.net/v2/jpg/01/32/39/21/1000_F_132392106_ZnNsHtzvnxRHxtYwjRTmJKT7CZfOjoN9.jpg",
-    foodType:"Asian-American", priceRange:"$",discounts:"N/A"
-  },
-  { id: "2", name: "Business B", distance: "5 miles", address: "456 Elm St", image: "https://via.placeholder.com/150",
-    foodType:"Italian", priceRange:"$$",discounts:"Nope."
-  },
-  { id: "3", name: "Business C", distance: "3 miles", address: "789 Oak St", image: "https://via.placeholder.com/150",
-    foodType:"Gross", priceRange:"$$$",discounts:"Not a chance."
-  },
-  { id: "4", name: "Business D", distance: "4 miles", address: "101 Pine St", image: "https://via.placeholder.com/150",
-    foodType:"Mexican", priceRange:"$$",discounts:"Yes."
-  },
-  { id: "5", name: "Business E", distance: "10 miles", address: "a place", image: "https://via.placeholder.com/150",
-    foodType:"Greek", priceRange:"$",discounts:"Nope."
-  }
-];
+const Business: React.FC<{data: any[] }> = ({data}) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredInput, setFilteredInput] = useState(data);
 
-function Business() {
+  useEffect(() => {
+    setFilteredInput(data);
+  },[data]);
+
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   return (
     <View style={styles.container}>
@@ -51,7 +40,12 @@ function Business() {
           <Ionicons name="settings-outline" color="white" size={40}/>
         </TouchableOpacity>
 
-        <SearchBarComponent data={businesses}/>
+        <SearchBarComponent 
+        data={data}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        setFilteredInput={setFilteredInput}
+        />
 
         <TouchableOpacity
           //title="Go to Reports"
@@ -63,7 +57,7 @@ function Business() {
       </View>
       <ScrollView>
       <FlatList
-        data = {businesses}
+        data = {filteredInput}
         numColumns={2}
         renderItem={({ item }) => (
           <TouchableOpacity 

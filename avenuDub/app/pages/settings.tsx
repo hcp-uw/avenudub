@@ -127,7 +127,8 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   header: {
-    fontSize: 50
+    fontSize: 50,
+    textAlign: 'center',
   },
   p: {
     fontSize: 20,

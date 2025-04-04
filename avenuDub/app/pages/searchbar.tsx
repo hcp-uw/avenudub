@@ -18,14 +18,19 @@ right now it just accepts any type array, which is not great practice but I just
 for now.
 */
 
-const SearchBarComponent: React.FC<{ data: any[] }>= ({data}) =>{ 
-    const [searchQuery, setSearchQuery] = useState('')
+const SearchBarComponent: React.FC<{ 
+    data: any[] 
+    setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+    setFilteredInput: React.Dispatch<React.SetStateAction<any[]>>;
+    searchQuery: string;
+}>= ({data, setSearchQuery, setFilteredInput, searchQuery}) =>{ 
+    /*const [searchQuery, setSearchQuery] = useState('')
     const [filteredInput, setFilteredInput] = useState(data)
 
     useEffect(() => {
         setFilteredInput(data);
     },[data]);
-
+*/
     const handleSearch = (text: string) => {
         setSearchQuery(text);
         const filtered = data.filter((item: { name: string; }) => item.name.toLowerCase().includes(text.toLowerCase())
@@ -41,13 +46,7 @@ const SearchBarComponent: React.FC<{ data: any[] }>= ({data}) =>{
                 onChangeText = {handleSearch}
                 value = {searchQuery}
             />
-            {searchQuery !== '' && (
-                <FlatList
-                data = {filteredInput}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (<Text>{item.name}</Text>)}
-            />
-            )}
+            
         </View>
     )
 
