@@ -1,4 +1,4 @@
-import {Text,Button,View, StyleSheet,ImageBackground,SafeAreaView} from "react-native";
+import {Text,Button,View, StyleSheet,ImageBackground,SafeAreaView, ScrollView} from "react-native";
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import { NavigationContainer } 
          from '@react-navigation/native';
@@ -15,45 +15,48 @@ import BusinessInfoScreen from "./pages/businessinfo";
 import Register from "./pages/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import Adminlogin from "./pages/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 //import IonIcon from '@reacticons/ionicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MapView, { Marker } from "react-native-maps";
+import { geocodeAddress } from "./pages/maps"; // Import the geocodeAddress function
 
 const Tab = createBottomTabNavigator();
 
 const businesses = [
-  { id: "1", name: "Business A", distance: "2 miles", address: "123 Main St", image: "https://as2.ftcdn.net/v2/jpg/01/32/39/21/1000_F_132392106_ZnNsHtzvnxRHxtYwjRTmJKT7CZfOjoN9.jpg",
-    foodType:"Asian-American", priceRange:"$",discounts:["nope", "still nope"]
+  { id: "1", name: "Business A", distance: "2 miles", address: "2321 West Bridge Ave", image: "https://as2.ftcdn.net/v2/jpg/01/32/39/21/1000_F_132392106_ZnNsHtzvnxRHxtYwjRTmJKT7CZfOjoN9.jpg",
+    foodType:"Asian-American", priceRange:"$",discounts:["nope", "still nope"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"] //Starts on Monday
   },
   { id: "2", name: "Business B", distance: "5 miles", address: "456 Elm St", image: "https://via.placeholder.com/150",
-    foodType:"Italian", priceRange:"$$",discounts: ["nope", "still nope"]
+    foodType:"Italian", priceRange:"$$",discounts: ["nope", "still nope"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"]
   },
   { id: "3", name: "Business C", distance: "3 miles", address: "789 Oak St", image: "https://via.placeholder.com/150",
-    foodType:"Gross", priceRange:"$$$",discounts: ["N/A", "N/A"]
+    foodType:"Gross", priceRange:"$$$",discounts: ["N/A", "N/A"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"]
   },
   { id: "4", name: "Business D", distance: "4 miles", address: "101 Pine St", image: "https://via.placeholder.com/150",
-    foodType:"Mexican", priceRange:"$$",discounts: ["Maybe, if you ask nicely", "Nope"]
+    foodType:"Mexican", priceRange:"$$",discounts: ["Maybe, if you ask nicely", "Nope"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"]
   },
   { id: "5", name: "Business E", distance: "10 miles", address: "a place", image: "https://via.placeholder.com/150",
-    foodType:"Greek", priceRange:"$",discounts:["N/A", "N/A"]
+    foodType:"Greek", priceRange:"$",discounts:["N/A", "N/A"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"]
   }
 ];
 
 const crimes= [
   { id: "1", name:"Attempted Robbery", description: "Armed Suspect attempted to hijack the dorm", 
-    location:"Oak Hall", address: "123 Main St"},
+    location:"Oak Hall", address: "2321 West Bridge Ave"},
   { id: "2", name: "Sexual Assault", description: "Attempted rape in front of the library", 
-    location: "Odegaard Library", address: "456 Elm St"},
+    location: "Odegaard Library", address: "1921 West 10th Ave"},
   { id: "3", name: "Shoplifting", description: "Female Suspect tried to steal an orange", 
-    location: "District Market - Alder", address: "789 Oak St"},
+    location: "District Market - Alder", address: "808 W Main Ave"},
   { id: "4", name: "Tresspassing", description: "Someone tried to get into a place they don't belong", 
-    location: "Elm Hall", address: "101 Pine St"},
+    location: "Elm Hall", address: "502 S Pittsburg St"},
   { id: "5", name: "Bike Theft", description: "Someone was very determined to not walk home. Must have had sore legs after the gym.", 
-    location: "IMA", address: "a place"}
+    location: "IMA", address: "1234 West 10th Ave"},
 ];
 
 export default function App(){
   const [user, setUser] = useState({ username: "", email: "", loggedIn: false });
+  
   return(
     <UserContext.Provider value={{ user, setUser }}>
       <Tab.Navigator
@@ -106,6 +109,18 @@ const BusinessesStack = createNativeStackNavigator();
 function HomeScreen(){
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
+  const [coords, setCoords] = useState<{latitude: number; longitude: number }[]>([]);
+  
+    useEffect(() => {
+      const fetchCoordinates = async () => {
+        const locations = await Promise.all(crimes.map((crime: {address: string}) => geocodeAddress(crime.address)));
+        const validLocations = locations.filter((loc): loc is { latitude: number; longitude: number } => loc !== null);
+        console.log(validLocations);
+    setCoords(validLocations);
+      };
+      fetchCoordinates();
+    }, [crimes]);
+
   return(
    /* <ImageBackground
       source={require("../assets/images/seattle-2084690_1920.jpg")} // Local image
@@ -115,12 +130,36 @@ function HomeScreen(){
       */
     <View style = {styles.container}>
     <SafeAreaView style={styles.textBlock}>
-      <Text style = {styles.text}>Welcome Back! Let's discover something new.</Text>
+      <Text style = {styles.text}>Welcome Back!</Text>
     </SafeAreaView>
+    <View style={styles.mapContainer}>
+        <Text style={styles.subtext}>Here's what you've missed:</Text>
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: coords[0]?.latitude || 47.6609243,
+                longitude: coords[0]?.longitude || -122.3084,
+                latitudeDelta: 0.02,
+                longitudeDelta: 0.02,
+              }}
+              >
+                {coords.map((coord, index) => (
+                  console.log(coord),
+                  <Marker
+                  key={index}
+                  //coordinate={{latitude: coord.latitude, longitude: coord.longitude}}
+                  coordinate={coord}
+                  title={`Crime ${index + 1}`}
+                  description={`Description of crime ${index + 1}`}
+                  />
+                ))
+              }
+            </MapView>
+        </View>
       <View style = {styles.buttonContainer}>
       <TouchableOpacity
         //title="Go to Settings"
-        style = {styles.button} 
+        style = {styles.settingsbutton} 
         onPress={() => navigation.navigate('Settings')}
       >
         <Ionicons name="settings-outline" color="black" size={40}/>
@@ -128,7 +167,7 @@ function HomeScreen(){
       <TouchableOpacity
         //title="Go to Reports"
         onPress={() => navigation.navigate('Reports')}
-        style = {styles.button}
+        style = {styles.reportsbutton}
       > 
        <Ionicons name="checkmark-circle-outline" color="black" size={40}/>
       </TouchableOpacity>
@@ -142,10 +181,12 @@ const styles = StyleSheet.create({
     backgroundColor:'#f2e8dc',
     flexDirection: 'column', // Align children horizontally
     justifyContent: 'space-around', // Evenly space buttons 
+    textAlign: 'center',
+    //padding: 
     alignItems: 'center',
     flex:1,
   },
-  button: {
+ /* button: {
     //backgroundColor: "#5529e2",
     backgroundColor: "white",
     alignItems: 'center',
@@ -158,6 +199,35 @@ const styles = StyleSheet.create({
     shadowOffset: {width: -2, height: 4},
     shadowOpacity: 0.4,
     shadowRadius: 3,
+  },
+  */
+  settingsbutton:{
+    backgroundColor: "white",
+    alignItems: 'center',
+    borderRadius: 55,
+    justifyContent: 'space-around',
+    flexDirection:'row',
+    padding: 15,
+    margin: 10,
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    zIndex: 4,
+  },
+  reportsbutton:{
+    backgroundColor: "white",
+    alignItems: 'center',
+    borderRadius: 55,
+    justifyContent: 'space-around',
+    flexDirection:'row',
+    padding: 15,
+    margin: 10,
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    zIndex: 4,
   },
   background: {
     flex: 1, // Takes full screen
@@ -176,10 +246,10 @@ const styles = StyleSheet.create({
   },
   textBlock:{
     backgroundColor:"white",
-    padding: 20,
+    padding: 10,
     borderRadius: 55,
-    width: "50%",
-    height: "25%",
+    width: "75%",
+    height: "15%",
     margin: 20,
     //flexGrow:1,
     alignItems: "center",
@@ -193,5 +263,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     margin: 10,
     backgroundColor:'#f2e8dc',
-  }
+    zIndex: 4,
+    justifyContent: 'space-between',
+  },
+  subtext:{
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
+    marginTop: 10,
+},
+mapContainer:{
+  width: "100%",
+  height: "60%",
+  borderRadius: 50,
+  margin: 20,
+  backgroundColor: "white",
+
+},
+map:{
+ flex:1,
+}
 });

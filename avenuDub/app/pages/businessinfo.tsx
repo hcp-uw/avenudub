@@ -1,6 +1,6 @@
 import BackButton from '@/components/BackButton'
-import React from 'react'
-import {Text,Button,View, StyleSheet,ImageBackground,SafeAreaView,ScrollView,FlatList,Image,ImageSourcePropType} from "react-native";
+import React, { useEffect } from 'react'
+import {Text,Button,View, StyleSheet,ImageBackground,SafeAreaView,ScrollView,FlatList,Image,ImageSourcePropType, Platform, Alert} from "react-native";
 import {ParamListBase, RouteProp, useNavigation} from '@react-navigation/native';
 import { NavigationContainer } 
          from '@react-navigation/native';
@@ -8,7 +8,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //import { Button } from '@react-navigation/elements';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Linking} from 'react-native';
 import Settings from "./settings";
 import Report from "./report";
 import Register from "./register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
@@ -19,6 +19,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBarComponent from "./searchbar"
 //import FadeImage from '@/components/FadeImage';
 import { useRoute } from '@react-navigation/native';
+import MapView, { Marker } from 'react-native-maps';
+//           headerShown: false,
+import RatingsComponent from "@/components/ratings";
 
 type BusinessInfoParams = {
    business:{
@@ -30,14 +33,77 @@ type BusinessInfoParams = {
     foodType: string;
     priceRange: string;
     discounts: [];
+    hours: [string, string, string, string, string, string, string];
    }
 };
+
+const GOOGLE_MAPS_API_KEY = 'AIzaSyCRkHB-8zevwzYaMhuX1VoJtaa0NZTa1PA'; // Replace with your actual API key
+export const geocodeAddress = async (address: string) => {
+    try {
+      const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GOOGLE_MAPS_API_KEY}`;
+  
+      const response = await fetch(url);
+      const data = await response.json();
+  
+      if (data.status === 'OK') {
+        const { lat, lng } = data.results[0].geometry.location;
+        return { latitude: lat, longitude: lng };
+      } else {
+        console.warn('Geocoding failed:', data.status);
+        return null;
+      }
+    } catch (error) {
+      console.error('Error during geocoding:', error);
+      return null;
+    }
+  };
+
+  const openInMaps = async (latitude: number, longitude: number, label: string) => {
+    const nativeURL = Platform.select({
+      ios: `http://maps.apple.com/?ll=${latitude},${longitude}&q=${encodeURIComponent(label)}`,
+      android: `geo:${latitude},${longitude}?q=${encodeURIComponent(label)}`,
+    });
+  
+    const fallbackUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}&query_place_id=${encodeURIComponent(label)}`;
+
+    try{
+        if(nativeURL){
+            const supported = await Linking.canOpenURL(nativeURL);
+            if(supported){  
+               await Linking.openURL(nativeURL);
+               return;
+        }
+        const supportedFallback = await Linking.canOpenURL(fallbackUrl);
+        if (supportedFallback) {
+      await Linking.openURL(fallbackUrl);
+    } else {
+      Alert.alert("Unable to open map", "No map application or browser found.");
+    }
+  } 
+    } catch (error) {
+        console.error('Error opening maps:', error);
+        Alert.alert("Error", "Something went wrong while opening the map.");
+      }
+  };
 
 const BusinessesInfoScreen = () => {
     const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
     const route = useRoute<RouteProp<{ BusinessesInfo: BusinessInfoParams }, 'BusinessesInfo'>>();
     const {business} = route.params;
     const {id, name, distance, address, image, foodType, priceRange, discounts} = business;
+    
+    const [coords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
+
+  useEffect(() => {
+    const fetchCoordinates = async () => {
+      const location = await geocodeAddress(business.address);
+      if (location) {
+        setCoords({ latitude: location.latitude, longitude: location.longitude });
+      }
+    };
+
+    fetchCoordinates();
+  }, [business.address]);
     return(
         <>
         <View style={styles.back}>
@@ -74,10 +140,15 @@ const BusinessesInfoScreen = () => {
                         )}
                     </View>
                     <View style={styles.addresses}>
-                        <Text style={styles.text}>{address}</Text>
-                        <TouchableOpacity style={styles.addressButton}>
-                            <Text style={styles.addressText}>Take me there!</Text>
+                        <Text style={styles.address}>{address}</Text>
+                        {coords && (
+                        <TouchableOpacity style={styles.addressButton} 
+                        onPress={() => openInMaps(coords.latitude, coords.longitude, business.name)}>
+                            <Text style={styles.addressText}>
+                                Take me there!
+                            </Text>
                         </TouchableOpacity>
+                        )}
                         <Text style={styles.subtext}>
                             Discounts Available:
                         </Text>
@@ -88,11 +159,45 @@ const BusinessesInfoScreen = () => {
                                   <Text>{item}</Text>
                                 )}
                                 keyExtractor={(item) => item}
-                              />
+                        />
                     </View>
+                    <View style={styles.hoursContainer}>
+                        <Text style={styles.headers}>Hours:</Text>
+                        <FlatList
+                            data = {business.hours}
+                            numColumns={1}
+                            renderItem={({item}) => (
+                                <Text style={styles.text}>{item}</Text>
+                            )}
+                            keyExtractor={(item) => item}
+                        />
+                    </View>
+                    <View>
+                        <RatingsComponent/>
+                    </View>
+                    {coords && (
+                        <View style={styles.mapContainer}>
+                            <Text style={styles.subtext}>Location on Map:</Text>
+                            <MapView
+                                style={styles.map}
+                                initialRegion={{
+                                latitude: coords?.latitude || 0,
+                                longitude: coords?.longitude || 0,
+                                latitudeDelta: 0.02,
+                                longitudeDelta: 0.02,
+                                }}
+                            >
+                            {coords && (
+                                <Marker coordinate={coords} title={business.name} description={business.address} />
+                            )}
+                            </MapView>
+                            </View>)}
                 </ScrollView>
-            </View></>
+            </View>
+        
+        </>
     )
+
 
 }
 
@@ -170,10 +275,15 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         margin: 20,
         flexDirection:'column',
-        justifyContent: 'center',
         textAlign:'center',
         alignContent:'center',
+        alignItems: 'center',
 
+    },
+    address:{
+        fontSize: 25,
+        fontWeight: 'bold',
+        alignItems: 'center',
     },
     addressButton:{
         backgroundColor:"#5e30b3",
@@ -190,7 +300,37 @@ const styles = StyleSheet.create({
     subtext:{
         fontSize: 20,
         fontWeight: 'bold',
-    }
+        textAlign: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 10,
+        marginTop: 10,
+    },
+    mapContainer: {
+        height: 300,
+        width: '100%',
+        marginTop: 20,
+        borderRadius: 50,
+        overflow: 'hidden',
+        backgroundColor: 'white',
+        padding: 10,
+      },
+      
+      map: {
+        flex: 1,
+      },
+      hoursContainer:{
+        backgroundColor:'white',
+        padding: 40,
+        borderRadius: 50,
+        margin: 20,
+        flexDirection:'column',
+        textAlign:'center',
+        alignContent:'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 20,
+      }
 
 }
 )
