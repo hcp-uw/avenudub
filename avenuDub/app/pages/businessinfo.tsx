@@ -22,6 +22,7 @@ import { useRoute } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
 //           headerShown: false,
 import RatingsComponent from "@/components/ratings";
+import { geocodeAddress } from './maps'; // Import the geocodeAddress function
 
 type BusinessInfoParams = {
    business:{
@@ -38,25 +39,6 @@ type BusinessInfoParams = {
 };
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyCRkHB-8zevwzYaMhuX1VoJtaa0NZTa1PA'; // Replace with your actual API key
-export const geocodeAddress = async (address: string) => {
-    try {
-      const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GOOGLE_MAPS_API_KEY}`;
-  
-      const response = await fetch(url);
-      const data = await response.json();
-  
-      if (data.status === 'OK') {
-        const { lat, lng } = data.results[0].geometry.location;
-        return { latitude: lat, longitude: lng };
-      } else {
-        console.warn('Geocoding failed:', data.status);
-        return null;
-      }
-    } catch (error) {
-      console.error('Error during geocoding:', error);
-      return null;
-    }
-  };
 
   const openInMaps = async (latitude: number, longitude: number, label: string) => {
     const nativeURL = Platform.select({
