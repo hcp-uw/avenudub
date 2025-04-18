@@ -147,32 +147,20 @@ def tblInsert(table, values = []):
 def tblGet(table, columns = ["*"], values = {"column":"value"}):
     try:
         dbConnect()
-        print(table, columns, values)
         params = []
         cmd = "SELECT "
-
-        # for i in columns:
-        #     cmd += "%s, "
-            # params.append(i)
 
         for i in columns:
             cmd += i + ", "
         cmd = cmd[:-2] + " FROM " + table
         if(len(values) != 0):
             cmd += " WHERE "
-
-            # for i in values.keys():
-            #     cmd += "%s = %s AND"
-            #     params.append(i)
-            #     params.append(values.get(i))
-
             for i in values.keys():
-                cmd += i + " = %s AND"
-                params.append(values.get(i))
-
-            cmd = cmd[:-3]
-            print(cmd)
-
+                if(len(str(values.get(i))) != 0):
+                    cmd += i + " = %s AND "
+                    params.append(values.get(i))
+            cmd = cmd[:-5] + ";"
+            # print(cmd)
         cursor.execute(cmd, params)
         # print(cursor._executed)
     except MySQLdb.Error as err:
@@ -181,6 +169,24 @@ def tblGet(table, columns = ["*"], values = {"column":"value"}):
         print("Data successfully accessed!")
         return cursor.fetchone() #returns a touple
 
+# changes/updates a specified value in a table (search by ID)
+def tblUpdate(table, ID = ["column", "value"], values = {"column":"value"}):
+    try:
+        dbConnect()
+        cmd = "UPDATE " + table + " SET "
+        for i in values.keys():
+            # This parameterization DOES work!
+            cmd += i + " = %s, "
+        cmd = cmd[:len(cmd)-2]
+        cmd += "WHERE " + ID[0]  + " = " + str(ID[1]) + ";"
+        valsToList = list(values.values())
+        cursor.execute(cmd, valsToList)
+        # print(cursor._executed)
+        cursor.execute("COMMIT")
+    except MySQLdb.Error as err:
+        print(err)
+    else:
+        print("Entry successfully updated!")
 
 # closes the connection
 def close():

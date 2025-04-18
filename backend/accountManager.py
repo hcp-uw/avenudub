@@ -4,6 +4,9 @@ import passmanage
 def createAcc(username, passwd, specialID = 0):
     if not username or not passwd:
         raise Exception()
+    
+    #TODO: password validation - make sure its a good password!
+
     login = [username] + passmanage.encrypt(passwd) + [specialID] #if 0, ID will be autoincremented
     sql.tblInsert("gen_user", login)
 
@@ -12,9 +15,33 @@ def logIn(username, passwd):
         raise Exception("Please enter both your username and your password.")
     print(passmanage.passcheck(username, passwd))
     #not done
+    
+#api-ify this part and return true to frontend, they have a "isLoggedIn" status var
 
-# sql.connect("avenudub", "JoeyScaresMe!")
-# createAcc("test", "thisIsMyv3ryC00LPassWord!!!")
-# logIn(None,None)
-# logIn("test", "thisIsMyv3ryC00LPassWord!!!")
 
+#implement forgot password
+def forgotPw(username = "", email = ""):
+    userdata = sql.tblGet(table="gen_user", columns=["username", "email"], values={"username":username, "email":email})
+    if(not userdata):
+       #no such account found!
+       print("no such account found")
+       return
+    print("we have sent an email to " + userdata[1] + " with instructions to reset your password")
+    #TODO: get a deep url and send it to the user's email so they can click it and it takes them to the password changing page
+    print(userdata)
+
+def changePw(id = "", pw=None):
+    pwSalt, pwHash = passmanage.encrypt(pw)
+    if((not pw) or passmanage.passcheck(ID=id, passwd=pw)): 
+        #TODO: implement the passmanage.py isValidPass(pw) and pass here instead
+        #no password provided aw hell naw
+        print("Please enter a valid password.")
+    else:
+        sql.tblUpdate(table="gen_user", ID=["userID", id], values={"salt": pwSalt, "pwhash": pwHash})
+    
+def userInfoToID(username = "", email = ""):
+    return sql.tblGet(table="gen_user", columns=["userID"], values={"username":username, "email":email})[0]
+
+sql.connect("avenudub", "JoeyScaresMe!")
+# forgotPw(username="joonho")
+changePw(userInfoToID("joonho"), "newAndNovelPw")
