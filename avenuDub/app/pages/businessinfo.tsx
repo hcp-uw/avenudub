@@ -38,7 +38,7 @@ type BusinessInfoParams = {
    }
 };
 
-const GOOGLE_MAPS_API_KEY = 'AIzaSyCRkHB-8zevwzYaMhuX1VoJtaa0NZTa1PA'; // Replace with your actual API key
+
 
   const openInMaps = async (latitude: number, longitude: number, label: string) => {
     const nativeURL = Platform.select({
