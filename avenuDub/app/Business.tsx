@@ -8,8 +8,8 @@ const Stack = createNativeStackNavigator()
 function Business() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name = "business home" component={business_page}/>
-      <Stack.Screen name = "BusinessesInfo" component={BusinessesInfoScreen} />
+      <Stack.Screen name = "business home" component={business_page} options={{headerShown: false}}/>
+      <Stack.Screen name = "BusinessesInfo" component={BusinessesInfoScreen} options={{headerShown: false}}/>
     </Stack.Navigator>
   )
 }

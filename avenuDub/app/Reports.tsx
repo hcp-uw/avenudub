@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator()
 function Reports() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name = "Safety" component={Safety}/>
+      <Stack.Screen name = "Safety" component={Safety} options={{headerShown: false}}/>
     </Stack.Navigator>
   )
 }
