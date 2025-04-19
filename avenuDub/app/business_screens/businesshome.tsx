@@ -37,14 +37,14 @@ const data = [
   }
 ];
 
-function Business(props: { navigation: { navigate: (screen: string, params: { business: typeof data[0] }) => void; }; }) {
+function Business() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredInput, setFilteredInput] = useState(data);
 
   useEffect(() => {
     setFilteredInput(data);
   },[data]);
-
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   return (
     <View style={styles.container}>
       {/*Buttons on the side*/}
@@ -52,7 +52,7 @@ function Business(props: { navigation: { navigate: (screen: string, params: { bu
         <TouchableOpacity
           //title="Go to Settings"
           style = {styles.button} 
-          onPress={() => props.navigation.navigate('Home', { screen: 'Settings' })}
+          onPress={() => navigation.navigate('Home', { screen: 'Settings' })}
         >
           <Ionicons name="settings-outline" color="white" size={40}/>
         </TouchableOpacity>
@@ -66,7 +66,7 @@ function Business(props: { navigation: { navigate: (screen: string, params: { bu
 
         <TouchableOpacity
           //title="Go to Reports"
-          onPress={() => props.navigation.navigate('Home',{screen:'Reports'})}
+          onPress={() => navigation.navigate('Home',{screen:'Reports'})}
           style = {styles.button}
         > 
         <Ionicons name="checkmark-circle-outline" color="white" size={40}/>
@@ -78,7 +78,7 @@ function Business(props: { navigation: { navigate: (screen: string, params: { bu
         renderItem={({ item }) => (
           <TouchableOpacity 
           style={styles.card}
-          onPress={()=> props.navigation.navigate('BusinessesInfo', {business: item})}>
+          onPress={()=> navigation.navigate('BusinessesInfo', {business: item})}>
             <Image source={{ uri: item.image }} style={styles.image} />
             <Text style={styles.businessText}>{item.name} ({item.distance})</Text>
             <Text style={styles.businessSubText}>{item.address}</Text>
