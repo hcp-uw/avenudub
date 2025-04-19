@@ -12,7 +12,7 @@ import Settings from "../app/tabs/home_screens/settings";
 import Report from "../app/tabs/home_screens/report";
 import Safety from "../app/tabs/reports_screens/safety";
 import BusinessInfoScreen from "./pages/businessinfo";
-import Register from "./pages/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import Register from "../app/tabs/home_screens/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import Adminlogin from "../app/tabs/home_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
 import { useState } from "react";

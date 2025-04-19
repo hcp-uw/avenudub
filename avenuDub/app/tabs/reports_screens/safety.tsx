@@ -11,12 +11,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TouchableOpacity } from 'react-native';
 //import Settings from "/Users/samanthaautrey/Documents/GitHub/avenudub/avenuDub/app/pages/settings";
 import Report from "../home_screens/report";
-import Register from "../../../archive/pages/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import Register from "../home_screens/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import adminlogin from "../home_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
 import { useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons'; 
-import SearchBarComponent from "../../../archive/pages/searchbar" 
+import SearchBarComponent from "../../../components/searchbar" 
 
 const data= [
   { id: "1", name:"Attempted Robbery", description: "Armed Suspect attempted to hijack the dorm", 

@@ -11,12 +11,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TouchableOpacity } from 'react-native';
 import Settings from "../home_screens/settings";
 import Report from "../home_screens/report";
-import Register from "../../../archive/pages/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import Register from "../home_screens/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import adminlogin from "../home_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
 import { useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import SearchBarComponent from "../../../archive/pages/searchbar";
+import SearchBarComponent from "../../../components/searchbar";
 //import FadeImage from '@/components/FadeImage';
 
 const data = [
@@ -37,7 +37,7 @@ const data = [
   }
 ];
 
-const Business: React.FC = () => {
+function Business(props: { navigation: { navigate: (screen: string, params: { business: typeof data[0] }) => void; }; }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredInput, setFilteredInput] = useState(data);
 
@@ -45,7 +45,6 @@ const Business: React.FC = () => {
     setFilteredInput(data);
   },[data]);
 
-  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   return (
     <View style={styles.container}>
       {/*Buttons on the side*/}
@@ -53,7 +52,7 @@ const Business: React.FC = () => {
         <TouchableOpacity
           //title="Go to Settings"
           style = {styles.button} 
-          onPress={() => navigation.navigate('Home',{screen:'Settings'})}
+          onPress={() => props.navigation.navigate('Home', { screen: 'Settings' })}
         >
           <Ionicons name="settings-outline" color="white" size={40}/>
         </TouchableOpacity>
@@ -67,7 +66,7 @@ const Business: React.FC = () => {
 
         <TouchableOpacity
           //title="Go to Reports"
-          onPress={() => navigation.navigate('Home',{screen:'Reports'})}
+          onPress={() => props.navigation.navigate('Home',{screen:'Reports'})}
           style = {styles.button}
         > 
         <Ionicons name="checkmark-circle-outline" color="white" size={40}/>
@@ -79,7 +78,7 @@ const Business: React.FC = () => {
         renderItem={({ item }) => (
           <TouchableOpacity 
           style={styles.card}
-          onPress={()=>navigation.navigate('BusinessesInfo',{business: item})}>
+          onPress={()=> props.navigation.navigate('BusinessesInfo', {business: item})}>
             <Image source={{ uri: item.image }} style={styles.image} />
             <Text style={styles.businessText}>{item.name} ({item.distance})</Text>
             <Text style={styles.businessSubText}>{item.address}</Text>

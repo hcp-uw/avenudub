@@ -9,7 +9,7 @@ function Business() {
   return (
     <Stack.Navigator>
       <Stack.Screen name = "business home" component={business_page}/>
-      <Stack.Screen name = "business info" component={BusinessesInfoScreen} />
+      <Stack.Screen name = "BusinessesInfo" component={BusinessesInfoScreen} />
     </Stack.Navigator>
   )
 }

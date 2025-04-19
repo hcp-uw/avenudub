@@ -9,14 +9,14 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //import { Button } from '@react-navigation/elements';
 import { TouchableOpacity } from 'react-native';
-import Settings from "../../app/tabs/home_screens/settings";
-import Report from "../../app/tabs/home_screens/report";
-import Register from "./register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
-import adminlogin from "../../app/tabs/home_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
+// import Settings from "../../app/tabs/home_screens/settings";
+// import Report from "../../app/tabs/home_screens/report";
+// import Register from "./register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
+// import adminlogin from "../../app/tabs/home_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
 import { useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import SearchBarComponent from "./searchbar"
+import SearchBarComponent from '@/components/searchbar';
 //import FadeImage from '@/components/FadeImage';
 import { useRoute } from '@react-navigation/native';
 
@@ -34,7 +34,7 @@ type BusinessInfoParams = {
 };
 
 const BusinessesInfoScreen = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+    // const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
     const route = useRoute<RouteProp<{ BusinessesInfo: BusinessInfoParams }, 'BusinessesInfo'>>();
     const {business} = route.params;
     const {id, name, distance, address, image, foodType, priceRange, discounts} = business;
@@ -85,10 +85,10 @@ const BusinessesInfoScreen = () => {
                                 data = {discounts}
                                 numColumns={1}
                                 renderItem={({ item }) => (
-                                  <Text>{item}</Text>
+                                    <Text>{item}</Text>
                                 )}
                                 keyExtractor={(item) => item}
-                              />
+                                />
                     </View>
                 </ScrollView>
             </View></>

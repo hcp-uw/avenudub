@@ -8,7 +8,7 @@ import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 // add user and email props later
-function Settings() {
+function Settings(props: { navigation: { navigate: (arg0: string) => void; }; }) {
   const { user, setUser } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -79,12 +79,12 @@ function Settings() {
         <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => props.navigation.navigate("Admin Login")}>
           <Text style={styles.subscripts}>
             Admin Login 
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => props.navigation.navigate("Register")}>
           <Text style={styles.subscripts}>
             Don't have an account? Sign up for one
           </Text>

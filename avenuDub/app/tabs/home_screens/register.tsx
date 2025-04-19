@@ -1,6 +1,7 @@
 import colors from '@/assets/colors';
 import BackButton from '@/components/BackButton';
 import UserContext from '@/components/user-context';
+import { useNavigation } from 'expo-router';
 import React, { useContext, useState } from 'react'
 import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 
@@ -9,6 +10,7 @@ function register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
+  const navigation = useNavigation();
 
   const handleLogin = () => {
     let errors = []
@@ -67,7 +69,7 @@ function register() {
       <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
         <Text style={styles.buttonText}>Create Account</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
         <Text style={{ color: 'blue', marginTop: 10 }}>Back to Login</Text>
       </TouchableOpacity>
     </View>
