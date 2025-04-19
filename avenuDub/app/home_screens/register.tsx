@@ -5,7 +5,7 @@ import { useNavigation } from 'expo-router';
 import React, { useContext, useState } from 'react'
 import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 
-function register() {
+function Register() {
   const { user, setUser } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -116,4 +116,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default register;
+export default Register;
