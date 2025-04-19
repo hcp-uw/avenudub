@@ -9,23 +9,35 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //import { Button } from '@react-navigation/elements';
 import { TouchableOpacity } from 'react-native';
-import Settings from "./settings";
-import Report from "./report";
-import Register from "./register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
-import adminlogin from "./adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
+//import Settings from "/Users/samanthaautrey/Documents/GitHub/avenudub/avenuDub/app/pages/settings";
+import Report from "../home_screens/report";
+import Register from "../../../archive/pages/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import adminlogin from "../home_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
 import { useState } from "react";
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import SearchBarComponent from "./searchbar";
-//import FadeImage from '@/components/FadeImage';
+import Ionicons from 'react-native-vector-icons/Ionicons'; 
+import SearchBarComponent from "../../../archive/pages/searchbar" 
 
-const Business: React.FC<{data: any[] }> = ({data}) => {
+const data= [
+  { id: "1", name:"Attempted Robbery", description: "Armed Suspect attempted to hijack the dorm", 
+    location:"Oak Hall", address: "123 Main St"},
+  { id: "2", name: "Sexual Assault", description: "Attempted rape in front of the library", 
+    location: "Odegaard Library", address: "456 Elm St"},
+  { id: "3", name: "Shoplifting", description: "Female Suspect tried to steal an orange", 
+    location: "District Market - Alder", address: "789 Oak St"},
+  { id: "4", name: "Tresspassing", description: "Someone tried to get into a place they don't belong", 
+    location: "Elm Hall", address: "101 Pine St"},
+  { id: "5", name: "Bike Theft", description: "Someone was very determined to not walk home. Must have had sore legs after the gym.", 
+    location: "IMA", address: "a place"}
+];
+
+const Safety: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredInput, setFilteredInput] = useState(data);
 
   useEffect(() => {
     setFilteredInput(data);
-  },[data]);
+  }, [data]);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   return (
@@ -35,13 +47,13 @@ const Business: React.FC<{data: any[] }> = ({data}) => {
         <TouchableOpacity
           //title="Go to Settings"
           style = {styles.button} 
-          onPress={() => navigation.navigate('Home',{screen:'Settings'})}
+          onPress={() => navigation.navigate('Home', {screen: 'Settings'})}
         >
           <Ionicons name="settings-outline" color="white" size={40}/>
         </TouchableOpacity>
 
         <SearchBarComponent 
-        data={data}
+        data={filteredInput}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         setFilteredInput={setFilteredInput}
@@ -49,7 +61,7 @@ const Business: React.FC<{data: any[] }> = ({data}) => {
 
         <TouchableOpacity
           //title="Go to Reports"
-          onPress={() => navigation.navigate('Home',{screen:'Reports'})}
+          onPress={() => navigation.navigate('Home',{screen: 'Reports'})}
           style = {styles.button}
         > 
         <Ionicons name="checkmark-circle-outline" color="white" size={40}/>
@@ -60,21 +72,21 @@ const Business: React.FC<{data: any[] }> = ({data}) => {
         data = {filteredInput}
         numColumns={2}
         renderItem={({ item }) => (
-          <TouchableOpacity 
-          style={styles.card}
-          onPress={()=>navigation.navigate('BusinessesInfo',{business: item})}>
-            <Image source={{ uri: item.image }} style={styles.image} />
-            <Text style={styles.businessText}>{item.name} ({item.distance})</Text>
-            <Text style={styles.businessSubText}>{item.address}</Text>
-          </TouchableOpacity>
+          <View style={styles.card}>
+            <Ionicons name="alert-circle-outline" color="red" size={30}/>
+            <Text style={styles.crimeText}>{item.name}</Text>
+            <Text style={styles.crimeSubText}>{item.description}</Text>
+            <Text style={styles.crimeText}>{item.location}</Text>
+            <Text style={styles.crimeSubText}>{item.address}</Text>
+          </View>
         )}
         keyExtractor={(item) => item.id}
       />
-      
       </ScrollView>
     </View>
   )
 }
+
 const styles = StyleSheet.create({
   header: {
     fontSize: 50,
@@ -91,21 +103,12 @@ const styles = StyleSheet.create({
     padding: 50,
     backgroundColor: '#f2e8dc',
   },
-  businessText: {
+  crimeText: {
     paddingTop: 5,
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 20
   },
-  businessSubText: {
-    paddingTop: 5,
-    fontSize:15,
-    fontWeight: "bold",
-  },
-  image:{
-    width: 100,
-    height: 100,
-    borderRadius: 10,
-    marginBottom: 10,
+  crimeSubText:{
+
   },
   card:{
     backgroundColor: 'white',
@@ -132,6 +135,9 @@ const styles = StyleSheet.create({
     top: 0,
     //left: 100,
     //right: 100,
+    
+    //left: 450,
+    //flexDirection:'row',
   },
   button:{
     backgroundColor: "#5e30b3",
@@ -145,9 +151,6 @@ const styles = StyleSheet.create({
     shadowOffset: {width: -2, height: 4},
     shadowOpacity: 0.4,
     shadowRadius: 3,
-
-
-  }
+  },
 })
-
-export default Business
+export default Safety

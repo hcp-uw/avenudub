@@ -9,23 +9,41 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //import { Button } from '@react-navigation/elements';
 import { TouchableOpacity } from 'react-native';
-//import Settings from "/Users/samanthaautrey/Documents/GitHub/avenudub/avenuDub/app/pages/settings";
-import Report from "./report";
-import Register from "./register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
-import adminlogin from "./adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import Settings from "../home_screens/settings";
+import Report from "../home_screens/report";
+import Register from "../../../archive/pages/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import adminlogin from "../home_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
 import { useState } from "react";
-import Ionicons from 'react-native-vector-icons/Ionicons'; 
-import SearchBarComponent from "./searchbar" 
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import SearchBarComponent from "../../../archive/pages/searchbar";
+//import FadeImage from '@/components/FadeImage';
 
+const data = [
+  { id: "1", name: "Business A", distance: "2 miles", address: "123 Main St", image: "https://as2.ftcdn.net/v2/jpg/01/32/39/21/1000_F_132392106_ZnNsHtzvnxRHxtYwjRTmJKT7CZfOjoN9.jpg",
+    foodType:"Asian-American", priceRange:"$",discounts:["nope", "still nope"]
+  },
+  { id: "2", name: "Business B", distance: "5 miles", address: "456 Elm St", image: "https://via.placeholder.com/150",
+    foodType:"Italian", priceRange:"$$",discounts: ["nope", "still nope"]
+  },
+  { id: "3", name: "Business C", distance: "3 miles", address: "789 Oak St", image: "https://via.placeholder.com/150",
+    foodType:"Gross", priceRange:"$$$",discounts: ["N/A", "N/A"]
+  },
+  { id: "4", name: "Business D", distance: "4 miles", address: "101 Pine St", image: "https://via.placeholder.com/150",
+    foodType:"Mexican", priceRange:"$$",discounts: ["Maybe, if you ask nicely", "Nope"]
+  },
+  { id: "5", name: "Business E", distance: "10 miles", address: "a place", image: "https://via.placeholder.com/150",
+    foodType:"Greek", priceRange:"$",discounts:["N/A", "N/A"]
+  }
+];
 
-const Safety: React.FC<{data: any[]}> = ({data}) => {
+const Business: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredInput, setFilteredInput] = useState(data);
 
   useEffect(() => {
     setFilteredInput(data);
-  }, [data]);
+  },[data]);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   return (
@@ -35,13 +53,13 @@ const Safety: React.FC<{data: any[]}> = ({data}) => {
         <TouchableOpacity
           //title="Go to Settings"
           style = {styles.button} 
-          onPress={() => navigation.navigate('Home', {screen: 'Settings'})}
+          onPress={() => navigation.navigate('Home',{screen:'Settings'})}
         >
           <Ionicons name="settings-outline" color="white" size={40}/>
         </TouchableOpacity>
 
         <SearchBarComponent 
-        data={filteredInput}
+        data={data}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         setFilteredInput={setFilteredInput}
@@ -49,7 +67,7 @@ const Safety: React.FC<{data: any[]}> = ({data}) => {
 
         <TouchableOpacity
           //title="Go to Reports"
-          onPress={() => navigation.navigate('Home',{screen: 'Reports'})}
+          onPress={() => navigation.navigate('Home',{screen:'Reports'})}
           style = {styles.button}
         > 
         <Ionicons name="checkmark-circle-outline" color="white" size={40}/>
@@ -60,21 +78,21 @@ const Safety: React.FC<{data: any[]}> = ({data}) => {
         data = {filteredInput}
         numColumns={2}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Ionicons name="alert-circle-outline" color="red" size={30}/>
-            <Text style={styles.crimeText}>{item.name}</Text>
-            <Text style={styles.crimeSubText}>{item.description}</Text>
-            <Text style={styles.crimeText}>{item.location}</Text>
-            <Text style={styles.crimeSubText}>{item.address}</Text>
-          </View>
+          <TouchableOpacity 
+          style={styles.card}
+          onPress={()=>navigation.navigate('BusinessesInfo',{business: item})}>
+            <Image source={{ uri: item.image }} style={styles.image} />
+            <Text style={styles.businessText}>{item.name} ({item.distance})</Text>
+            <Text style={styles.businessSubText}>{item.address}</Text>
+          </TouchableOpacity>
         )}
         keyExtractor={(item) => item.id}
       />
+      
       </ScrollView>
     </View>
   )
 }
-
 const styles = StyleSheet.create({
   header: {
     fontSize: 50,
@@ -91,12 +109,21 @@ const styles = StyleSheet.create({
     padding: 50,
     backgroundColor: '#f2e8dc',
   },
-  crimeText: {
+  businessText: {
     paddingTop: 5,
-    fontSize: 20
+    fontSize: 20,
+    fontWeight: "bold",
   },
-  crimeSubText:{
-
+  businessSubText: {
+    paddingTop: 5,
+    fontSize:15,
+    fontWeight: "bold",
+  },
+  image:{
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+    marginBottom: 10,
   },
   card:{
     backgroundColor: 'white',
@@ -123,9 +150,6 @@ const styles = StyleSheet.create({
     top: 0,
     //left: 100,
     //right: 100,
-    
-    //left: 450,
-    //flexDirection:'row',
   },
   button:{
     backgroundColor: "#5e30b3",
@@ -139,6 +163,9 @@ const styles = StyleSheet.create({
     shadowOffset: {width: -2, height: 4},
     shadowOpacity: 0.4,
     shadowRadius: 3,
-  },
+
+
+  }
 })
-export default Safety
+
+export default Business
