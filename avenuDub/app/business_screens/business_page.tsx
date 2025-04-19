@@ -16,7 +16,7 @@ import adminlogin from "../home_screens/adminlogin"; // REMOVE WHEN NAVIGATION I
 import UserContext from "@/components/user-context";
 import { useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import SearchBarComponent from "../../../components/searchbar";
+import SearchBarComponent from "../../components/searchbar";
 //import FadeImage from '@/components/FadeImage';
 
 const data = [

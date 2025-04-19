@@ -2,9 +2,9 @@ import React from 'react';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import Home from './tabs/Home';
-import Business from './tabs/Business';
-import Reports from './tabs/Reports';
+import Home from './Home';
+import Business from './Business';
+import Reports from './Reports';
 
 const Tab = createBottomTabNavigator();
 

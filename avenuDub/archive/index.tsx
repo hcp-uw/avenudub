@@ -7,13 +7,13 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //import { Button } from '@react-navigation/elements';
 import { TouchableOpacity } from 'react-native';
-import Business from "../app/tabs/business_screens/business_page";
-import Settings from "../app/tabs/home_screens/settings";
-import Report from "../app/tabs/home_screens/report";
+import Business from "../app/business_screens/business_page";
+import Settings from "../app/home_screens/settings";
+import Report from "../app/home_screens/report";
 import Safety from "../app/tabs/reports_screens/safety";
 import BusinessInfoScreen from "./pages/businessinfo";
-import Register from "../app/tabs/home_screens/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
-import Adminlogin from "../app/tabs/home_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import Register from "../app/home_screens/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import Adminlogin from "../app/home_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
 import { useState } from "react";
 //import IonIcon from '@reacticons/ionicons';
