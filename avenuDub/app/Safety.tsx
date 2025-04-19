@@ -2,14 +2,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import { View, Text } from 'react-native'
 
-import Safety from './reports_screens/safety'
+import SafetyHome from './reports_screens/safetyhome'
 
 const Stack = createNativeStackNavigator()
 
 function Reports() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name = "Safety" component={Safety} options={{headerShown: false}}/>
+      <Stack.Screen name = "Home" component={SafetyHome} options={{headerShown: false}}/>
     </Stack.Navigator>
   )
 }

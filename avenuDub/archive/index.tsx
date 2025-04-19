@@ -7,7 +7,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //import { Button } from '@react-navigation/elements';
 import { TouchableOpacity } from 'react-native';
-import Business from "../app/business_screens/business_page";
+import Business from "../app/business_screens/businesshome";
 import Settings from "../app/home_screens/settings";
 import Report from "../app/home_screens/report";
 import Safety from "../app/tabs/reports_screens/safety";

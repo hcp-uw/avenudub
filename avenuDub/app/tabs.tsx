@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import Home from './Home';
 import Business from './Business';
-import Reports from './Reports';
+import Safety from './Safety';
 import UserContext from '@/components/user-context';
 
 const Tab = createBottomTabNavigator();
@@ -16,7 +16,7 @@ function Tabs() {
       <Tab.Navigator >
         <Tab.Screen name="Home" component={Home} options={{headerShown: false}}/>
         <Tab.Screen name="Businesses" component={Business} options={{headerShown: false}}/>
-        <Tab.Screen name = "Crimes" component={Reports} options={{headerShown: false}}/>
+        <Tab.Screen name = "Safety" component={Safety} options={{headerShown: false}}/>
       </Tab.Navigator>
     </UserContext.Provider>
   );
