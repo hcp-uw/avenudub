@@ -43,20 +43,20 @@ const businesses = [
 
 const crimes= [
   { id: "1", name:"Attempted Robbery", description: "Armed Suspect attempted to hijack the dorm", 
-    location:"Oak Hall", address: "2321 West Bridge Ave"},
+    location:"Oak Hall", address: "4295 Little Canoe Channel NE, Seattle, WA 98195"},
   { id: "2", name: "Sexual Assault", description: "Attempted rape in front of the library", 
-    location: "Odegaard Library", address: "1921 West 10th Ave"},
+    location: "Odegaard Library", address: "4060 George Washington Lane Northeast, Seattle, WA 98195"},
   { id: "3", name: "Shoplifting", description: "Female Suspect tried to steal an orange", 
-    location: "District Market - Alder", address: "808 W Main Ave"},
+    location: "District Market - Alder", address: "University of Washington, Alder Hall, 1315 NE Campus Pkwy, Seattle, WA 98105"},
   { id: "4", name: "Tresspassing", description: "Someone tried to get into a place they don't belong", 
-    location: "Elm Hall", address: "502 S Pittsburg St"},
+    location: "Elm Hall", address: "1218 NE Campus Pkwy, Seattle, WA 98195"},
   { id: "5", name: "Bike Theft", description: "Someone was very determined to not walk home. Must have had sore legs after the gym.", 
-    location: "IMA", address: "1234 West 10th Ave"},
+    location: "IMA", address: "3924 Montlake Blvd NE, Seattle, WA 98195"},
 ];
 
 export default function App(){
   const [user, setUser] = useState({ username: "", email: "", loggedIn: false });
-  
+
   return(
     <UserContext.Provider value={{ user, setUser }}>
       <Tab.Navigator
@@ -108,15 +108,14 @@ const BusinessesStack = createNativeStackNavigator();
 
 function HomeScreen(){
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-
   const [coords, setCoords] = useState<{latitude: number; longitude: number }[]>([]);
-  
+
     useEffect(() => {
       const fetchCoordinates = async () => {
         const locations = await Promise.all(crimes.map((crime: {address: string}) => geocodeAddress(crime.address)));
         const validLocations = locations.filter((loc): loc is { latitude: number; longitude: number } => loc !== null);
         console.log(validLocations);
-    setCoords(validLocations);
+     setCoords(validLocations);
       };
       fetchCoordinates();
     }, [crimes]);
@@ -137,10 +136,10 @@ function HomeScreen(){
             <MapView
               style={styles.map}
               initialRegion={{
-                latitude: coords[0]?.latitude || 47.6609243,
-                longitude: coords[0]?.longitude || -122.3084,
-                latitudeDelta: 0.02,
-                longitudeDelta: 0.02,
+                latitude: coords[0]?.latitude | 47.6564842,
+                longitude: coords[0]?.longitude | -122.3129439,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1,
               }}
               >
                 {coords.map((coord, index) => (
@@ -276,8 +275,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
 },
 mapContainer:{
-  width: "100%",
-  height: "60%",
+  width: "95%",
+  height: "50%",
   borderRadius: 50,
   margin: 20,
   backgroundColor: "white",

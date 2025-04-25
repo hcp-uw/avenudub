@@ -24,7 +24,7 @@ import MapView, { Marker } from 'react-native-maps';
 import RatingsComponent from "@/components/ratings";
 
 
-
+const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY'; // Replace with your actual API key
 
 export const geocodeAddress = async (address: string) => {
     console.log(address);

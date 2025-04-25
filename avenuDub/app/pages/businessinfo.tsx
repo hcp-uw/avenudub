@@ -134,25 +134,15 @@ const BusinessesInfoScreen = () => {
                         <Text style={styles.subtext}>
                             Discounts Available:
                         </Text>
-                        <FlatList
-                                data = {discounts}
-                                numColumns={1}
-                                renderItem={({ item }) => (
-                                  <Text>{item}</Text>
-                                )}
-                                keyExtractor={(item) => item}
-                        />
+                        {discounts.map((item) => (
+                            <Text key={item}>{item}</Text>
+                    ))}
                     </View>
                     <View style={styles.hoursContainer}>
                         <Text style={styles.headers}>Hours:</Text>
-                        <FlatList
-                            data = {business.hours}
-                            numColumns={1}
-                            renderItem={({item}) => (
-                                <Text style={styles.text}>{item}</Text>
-                            )}
-                            keyExtractor={(item) => item}
-                        />
+                        {business.hours.map((item) => (
+                            <Text key={item} style={styles.text}>{item}</Text>
+                    ))}
                     </View>
                     <View>
                         <RatingsComponent/>

@@ -55,7 +55,7 @@ const Safety: React.FC<{data: any[]}> = ({data}) => {
         <Ionicons name="checkmark-circle-outline" color="white" size={40}/>
         </TouchableOpacity>
       </View>
-      <ScrollView>
+
       <FlatList
         data = {filteredInput}
         numColumns={2}
@@ -70,7 +70,6 @@ const Safety: React.FC<{data: any[]}> = ({data}) => {
         )}
         keyExtractor={(item) => item.id}
       />
-      </ScrollView>
     </View>
   )
 }

@@ -55,7 +55,7 @@ const Business: React.FC<{data: any[] }> = ({data}) => {
         <Ionicons name="checkmark-circle-outline" color="white" size={40}/>
         </TouchableOpacity>
       </View>
-      <ScrollView>
+      
       <FlatList
         data = {filteredInput}
         numColumns={2}
@@ -71,7 +71,6 @@ const Business: React.FC<{data: any[] }> = ({data}) => {
         keyExtractor={(item) => item.id}
       />
       
-      </ScrollView>
     </View>
   )
 }
