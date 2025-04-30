@@ -1,0 +1,1 @@
+# building hours will be a 7 element array -> mon tues wed thur fri sat sun

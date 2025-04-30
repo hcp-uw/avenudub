@@ -14,6 +14,7 @@ def logIn(username, passwd):
     if not username or not passwd:
         raise Exception("Please enter both your username and your password.")
     print(passmanage.passcheck(username, passwd))
+    return "success! " + username + passwd
     #not done
     
 #api-ify this part and return true to frontend, they have a "isLoggedIn" status var
@@ -27,7 +28,7 @@ def forgotPw(username = "", email = ""):
        print("no such account found")
        return
     print("we have sent an email to " + userdata[1] + " with instructions to reset your password")
-    #TODO: get a deep url and send it to the user's email so they can click it and it takes them to the password changing page
+    #TODO: email the user a verification code!!
     print(userdata)
 
 def changePw(id = "", pw=None):
