@@ -23,6 +23,7 @@ import { geocodeAddress } from '@/components/maps'; // Import the geocodeAddress
 import {Marker} from 'react-native-maps';
 import MapView from 'react-native-maps';
 import RatingsComponent from '@/components/RatingsComponent';
+import Favorite from '@/components/Favorite';
 
 type BusinessInfoParams = {
    business:{
@@ -95,6 +96,10 @@ const BusinessesInfoScreen = () => {
                     <View style={styles.imageContainer}>
                         <Image source={{ uri: image }} style={styles.image} />
                         <Text style={styles.headers}>{name}</Text>
+                        <View style={styles.favoriteContainer}>
+                            <Text style={styles.subtext}>Favorite:</Text>
+                            <Favorite/>
+                        </View>
                     </View>
                     <View style={styles.infoContainer}>
                         <View style={styles.categoryContainer}>
@@ -301,8 +306,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 20,
+      },
+      favoriteContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
       }
-
 }
 )
 

@@ -56,7 +56,7 @@ export default function HomeScreen(props: { navigation: { navigate: (arg0: strin
       */
     <View style = {styles.container}>
     <SafeAreaView style={styles.textBlock}>
-      <Text style = {styles.text}>Welcome Back! Let's discover something new.</Text>
+      <Text style = {styles.text}>Welcome Back!</Text>
     </SafeAreaView>
     <View style={styles.mapContainer}>
         <Text style={styles.subtext}>Here's what you've missed:</Text>
@@ -108,6 +108,8 @@ const styles = StyleSheet.create({
     backgroundColor:'#f2e8dc',
     flexDirection: 'column', // Align children horizontally
     justifyContent: 'space-around', // Evenly space buttons 
+    textAlign: 'center',
+    //padding: 
     alignItems: 'center',
     flex:1,
   },
@@ -142,10 +144,10 @@ const styles = StyleSheet.create({
   },
   textBlock:{
     backgroundColor:"white",
-    padding: 20,
+    padding: 10,
     borderRadius: 55,
-    width: "50%",
-    height: "25%",
+    width: "75%",
+    height: "15%",
     margin: 20,
     //flexGrow:1,
     alignItems: "center",
