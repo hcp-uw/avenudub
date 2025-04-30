@@ -13,7 +13,13 @@ function Tabs() {
   const [user, setUser] = useState({ username: "", email: "", loggedIn: false });
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <Tab.Navigator >
+      <Tab.Navigator 
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor:'#5e30b3',
+      },
+    }} >
         <Tab.Screen name="Home" component={Home} options={{headerShown: false}}/>
         <Tab.Screen name="Businesses" component={Business} options={{headerShown: false}}/>
         <Tab.Screen name = "Safety" component={Safety} options={{headerShown: false}}/>
