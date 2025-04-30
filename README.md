@@ -15,11 +15,11 @@ avenuDub is an app to familiarize UW students with the Ave and businesses surrou
 2. Open your IDE Terminal
 3. Run the following commands in your terminal to set up the environment.
 
-'''
+```
 cd avenuDub/app 
 npm install 
 npm start
-...
+```
 
 Now, click on "http://localhost:8081". This will open the application locally on your machine. 
 
