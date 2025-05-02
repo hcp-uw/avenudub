@@ -1,3 +1,4 @@
+import React from "react";
 import {Text,Button,View, StyleSheet,ImageBackground,SafeAreaView, ScrollView} from "react-native";
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import { NavigationContainer } 
