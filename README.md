@@ -2,7 +2,6 @@
 
 ## About Us
 avenuDub is an app to familiarize UW students with the Ave and businesses surrounding campus. It includes a catalog of local businesses, including student discounts available nearby. It also includes safety information important for students to be aware of while on the Ave.
-[can expand on our backgrounds + why we decided to create it specifically]
 
 ## The Team
 - **Front-end Developers:** Samantha Autrey, Megan Yam, Ananya Tripathi
@@ -24,7 +23,8 @@ npm start
 Now, click on "http://localhost:8081". This will open the application locally on your machine. 
 
 ## File Structure 
-[todo]
+- Front-End Files are stored under the folder "avenuDub". This folder contains all components necessary to run the front end. The front-end itself is under avenuDub/app. 
+- Back-End Files are under the "backend" folder. 
 
 ## Other information 
 Club Contact Information: huskycodingproject@gmail.com
