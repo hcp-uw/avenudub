@@ -6,8 +6,8 @@ avenuDub is an app to familiarize UW students with the Ave and businesses surrou
 ## The Team
 - **Front-end Developers:** Samantha Autrey, Megan Yam, Ananya Tripathi
 - **Back-end Developers:** Nimai Belur, Joonho Choi
-- **Team Lead:** Samantha Autrey
-- **Project Manager:** Ananya Tripathi
+- **Project Manager:** Samantha Autrey
+- **Team Manager:** Ananya Tripathi
 
 ## How to run our project?
 1. Close and open this repository in an IDE (we used VS Code).
