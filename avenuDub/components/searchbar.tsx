@@ -12,6 +12,7 @@ import { SetStateAction, useState, useEffect} from "react";
 //import IonIcon from '@reacticons/ionicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBar from 'react-native-search-bar'
+import React from "react";
 
 /* Later we will want to fix this so that it actually enforces the structure of the array,
 right now it just accepts any type array, which is not great practice but I just wanted it to work 

@@ -11,6 +11,7 @@ import UserContext from "@/components/user-context";
 import { useState } from "react";
 //import IonIcon from '@reacticons/ionicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import React from "react";
 
 const RatingsComponent: React.FC<{
 }> = () => {

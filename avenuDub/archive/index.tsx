@@ -1,3 +1,4 @@
+import React from "react";
 import {Text,Button,View, StyleSheet,ImageBackground,SafeAreaView} from "react-native";
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import { NavigationContainer } 
@@ -10,8 +11,9 @@ import { TouchableOpacity } from 'react-native';
 import Business from "../app/business_screens/businesshome";
 import Settings from "../app/home_screens/settings";
 import Report from "../app/home_screens/report";
-import Safety from "../app/tabs/reports_screens/safety";
-import BusinessInfoScreen from "./pages/businessinfo";
+import Safety from "../app/reports_screens/safetyhome";
+// "../app/reports_screens/Safety";
+import BusinessInfoScreen from "../app/business_screens/businessinfo";
 import Register from "../app/home_screens/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import Adminlogin from "../app/home_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
@@ -68,7 +70,7 @@ export default function App(){
         <Tab.Screen name="Businesses" component={BusinessesStackScreen} options={{ headerShown: false }}/>
         <Tab.Screen 
         name="Safety" 
-        component={() => <Safety data={crimes} />} 
+        component={() => <Safety /*data={crimes}*/ />} 
         options={{ headerShown: false }}/>
       </Tab.Navigator>
     </UserContext.Provider>
@@ -95,7 +97,7 @@ const BusinessesStack = createNativeStackNavigator();
         screenOptions={{headerShown:false}}>
           <BusinessesStack.Screen 
             name="Businesses" 
-            component={() => <Business data={businesses} />} 
+            component={() => <Business /*data={businesses}*/ />} 
             options={{headerShown: false}}
           />
           <BusinessesStack.Screen name="BusinessesInfo" component={BusinessInfoScreen} options={{headerShown:false}}/>

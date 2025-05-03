@@ -4,6 +4,7 @@ import {Marker} from 'react-native-maps';
 import MapView from 'react-native-maps';
 import { useState, useEffect } from "react";
 import { geocodeAddress } from "@/components/maps"; // Adjust the import path as needed
+import React from "react";
 
 const businesses = [
   { id: "1", name: "Business A", distance: "2 miles", address: "2321 West Bridge Ave", image: "https://as2.ftcdn.net/v2/jpg/01/32/39/21/1000_F_132392106_ZnNsHtzvnxRHxtYwjRTmJKT7CZfOjoN9.jpg",

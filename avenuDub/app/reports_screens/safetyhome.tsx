@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   floatingButton:{
-    position: 'sticky',
+    position: 'absolute',
     paddingTop:0, 
     flexDirection: 'row', 
     justifyContent: 'space-between', 
