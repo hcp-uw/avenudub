@@ -188,6 +188,18 @@ def tblUpdate(table, ID = ["column", "value"], values = {"column":"value"}):
     else:
         print("Entry successfully updated!")
 
+# deletes an entry in a table
+def entryDelete(table, condition="some string"):
+    try:
+        dbConnect()
+        cmd = "DELETE FROM " + table + " WHERE " + condition
+        cursor.execute(cmd)
+        cursor.execute("COMMIT")
+    except MySQLdb.Error as err:
+            print(err)
+    else:
+        print("Entries successfully deleted!")
+
 # closes the connection
 def close():
     global connection
