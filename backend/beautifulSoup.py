@@ -10,7 +10,7 @@ import re
 import mysqlcommands as sql
 
 # number of days to keep a crime log event in the log until deleting it
-daysToLog = 30
+daysToLog = 60
 
 def scrapePDF():
     url = "https://police.uw.edu/60-day-log/attachment/04162025/"
@@ -154,7 +154,7 @@ def formatDate(date):
     return(datetime.strftime(datetime.strptime(date,"%m/%d/%Y\n%H:%M:%S"),"%Y-%m-%d %H:%M:%S"))
 
 # Deletes all crime log older than the specified # of days
-def trimLog(days):
+def trimLog(days = 60):
     sql.entryDelete("crime_log", ("created_at < date_sub(now(), interval " + str(days) + " day)"))
 
 # parses crime data from PDF and inserts into crime_log

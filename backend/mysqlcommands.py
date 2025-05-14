@@ -189,6 +189,7 @@ def tblUpdate(table, ID = ["column", "value"], values = {"column":"value"}):
         print("Entry successfully updated!")
 
 # deletes an entry in a table
+# POTENTIALLY SUSCEPTIBLE TO INJECTION
 def entryDelete(table, condition="some string"):
     try:
         dbConnect()
