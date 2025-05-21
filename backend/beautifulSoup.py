@@ -179,6 +179,6 @@ def updateLog(data):
 
 
 
-sql.connect("avenudub", "JoeyScaresMe!")
+sql.connect("avenudub", input("Admin Password: "))
 updateLog(data=scrapePDF())
             

@@ -43,6 +43,3 @@ def changePw(id = "", pw=None):
 def userInfoToID(username = "", email = ""):
     return sql.tblGet(table="gen_user", columns=["userID"], values={"username":username, "email":email})[0]
 
-sql.connect("avenudub", "JoeyScaresMe!")
-# forgotPw(username="joonho")
-changePw(userInfoToID("joonho"), "newAndNovelPw")
