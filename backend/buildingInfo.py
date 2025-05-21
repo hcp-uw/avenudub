@@ -1,3 +1,10 @@
+from google_apis import create_service
+
+client_secret_file = 'client-secret.json'
+API_NAME = 'places'
+API_VERSION = 'v1'
+SCOPES = ['https://www.googleapis.com/auth/cloud-platform']
+
 # formats all of the building info we want to obtain into our database
 # our key desires:
 # - name
