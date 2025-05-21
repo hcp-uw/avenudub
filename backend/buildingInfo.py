@@ -5,6 +5,33 @@ API_NAME = 'places'
 API_VERSION = 'v1'
 SCOPES = ['https://www.googleapis.com/auth/cloud-platform']
 
+service = create_service(client_secret_file, API_NAME, API_VERSION, SCOPES)
+
+query = 'ramen'
+
+request_body = {
+    'textQuery':query,
+    'regionCode': 'US',
+    'locationRestriction':{
+        'rectangle':{
+            'high':{
+                'latitude': 47.67161,
+                'longitude': -122.30787
+            },
+            'low':{
+                'latitude': 47.64916,
+                'longitude': -122.34662
+            }
+        }
+    },
+    'priceLevels': ['PRICE_LEVEL_MODERATE']
+}
+
+response = service.places().searchText(
+    body=request_body,
+    fields='*'
+).execute()
+
 # formats all of the building info we want to obtain into our database
 # our key desires:
 # - name
