@@ -1,0 +1,5 @@
+node_modules
+backend/output.pdf
+backend/latest_log.pdf
+debug_image.png
+toFix.png

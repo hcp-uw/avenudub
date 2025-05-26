@@ -1,0 +1,17 @@
+Setting up the Virtual Environment
+
+1. brew install mysql pkg-config
+2. cd to the avenudub repo, NOT the front end folder
+3. open a .py file
+4. in the bottom right corner, click on the python version (i.e. 3.12.1)
+5. in the drop down menu at the top of the screen, click "create virtual environment"
+6. choose .venv
+7. select requirements.txt.
+8. profit
+
+Adding new libraries to the Virtual Environment
+
+1. (make sure you're in the avenudub repo directory) run ". .venv/bin/activate"
+2. pip install whatever you want
+3. pip freeze > requirements.txt
+4. commit!
