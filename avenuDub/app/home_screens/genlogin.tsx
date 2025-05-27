@@ -16,7 +16,7 @@ function GenLogin(props: { navigation: { navigate: (arg0: string) => void; }; })
   // TODO: Figure out how to navigate lol
   const navigation = useNavigation();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     let errors = []
     if (!username) {
       errors.push("username")
@@ -25,9 +25,25 @@ function GenLogin(props: { navigation: { navigate: (arg0: string) => void; }; })
       errors.push("password");
     }
     if (errors.length == 0) {
-      setUser({ username, email: username, loggedIn: true });
-      setUsername("");
-      setPassword("");
+      try {
+        const backendURL = 'http://127.0.0.1:5000';
+        const response = await fetch(`${backendURL}/home_screens?user=${username}&passwd=${password}`)
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Login failed (HTTP error):', errorText);
+          return;
+        }
+        const data = await response.json();
+        if (data.logInSuccess) {
+          setUser({ username, email: username, loggedIn: true });
+          setUsername("");
+          setPassword("");
+          props.navigation.navigate("Settings")
+        } else {
+        }
+      } catch (error) {
+        console.error("error from backend?");
+      }
     } else {
       setErrors(errors);
     }
@@ -47,51 +63,48 @@ function GenLogin(props: { navigation: { navigate: (arg0: string) => void; }; })
     setPassword(newPW);
   }
 
-//   const handleLogout = () => {
-//     setUser({ username, email: "", loggedIn: false})
-//   }
 
-    return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.loginContainer}>
-        <BackButton/>
-        <Text style={styles.p}>Username:</Text>
-        <TextInput style={[
-            styles.input, errors.includes("username") ? styles.input_error : null
-            ]} 
-            onChangeText={handleUsername} 
-            value={username}
-        />
-        {errors.includes("username") && 
-            <Text style ={{color: "red"}}>
-            ⚠ Missing username
-            </Text>}
-            <Text style={styles.p}>Password:</Text>
-        <TextInput secureTextEntry={true} 
-            style={[styles.input, errors.includes("password") ? styles.input_error : null]} 
-            onChangeText={handlePassword} 
-            value={password}/>
-        {errors.includes("password") && 
-            <Text style ={{color: "red"}}>
-            ⚠ Missing password
-            </Text>}
-        <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => props.navigation.navigate("Admin Login")}>
-            <Text style={styles.subscripts}>
-            Admin Login 
-            </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => props.navigation.navigate("Register")}>
-            <Text style={styles.subscripts}>
-            Don't have an account? Sign up for one
-            </Text>
-        </TouchableOpacity>
-        </View>
-        </TouchableWithoutFeedback>
-    )
-  } 
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <View style={styles.loginContainer}>
+    <BackButton/>
+    <Text style={styles.p}>Username:</Text>
+    <TextInput style={[
+        styles.input, errors.includes("username") ? styles.input_error : null
+        ]} 
+        onChangeText={handleUsername} 
+        value={username}
+    />
+    {errors.includes("username") && 
+        <Text style ={{color: "red"}}>
+        ⚠ Missing username
+        </Text>}
+        <Text style={styles.p}>Password:</Text>
+    <TextInput secureTextEntry={true} 
+        style={[styles.input, errors.includes("password") ? styles.input_error : null]} 
+        onChangeText={handlePassword} 
+        value={password}/>
+    {errors.includes("password") && 
+        <Text style ={{color: "red"}}>
+        ⚠ Missing password
+        </Text>}
+    <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Login</Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => props.navigation.navigate("Admin Login")}>
+        <Text style={styles.subscripts}>
+        Admin Login 
+        </Text>
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => props.navigation.navigate("Register")}>
+        <Text style={styles.subscripts}>
+        Don't have an account? Sign up for one
+        </Text>
+    </TouchableOpacity>
+    </View>
+    </TouchableWithoutFeedback>
+  )
+} 
 
 const styles = StyleSheet.create({
   subscripts : {

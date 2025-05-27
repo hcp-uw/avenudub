@@ -45,8 +45,8 @@ function Report() {
         const encodedLocation = encodeURIComponent(location);
         const encodedTitle = encodeURIComponent(title); // param type in backend
         const encodedDesc = encodeURIComponent(desc);
-        // const backendURL = 'http://127.0.0.1:5000';
-        const url = `/home_screens/report/${encodedLocation}${encodedTitle}${encodedDesc}`;
+        const backendURL = 'http://127.0.0.1:5000';
+        const url = `${backendURL}/home_screens/report/${encodedLocation}${encodedTitle}${encodedDesc}`;
         console.log("Sending POST request to:", url);
         const response = await fetch(url, {
           method: 'POST',

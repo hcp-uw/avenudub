@@ -2,9 +2,10 @@ import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet } from "react-na
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {Marker} from 'react-native-maps';
 import MapView from 'react-native-maps';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { geocodeAddress } from "@/components/maps"; // Adjust the import path as needed
 import React from "react";
+import UserContext from "@/components/user-context";
 
 const businesses = [
   { id: "1", name: "Business A", distance: "2 miles", address: "2321 West Bridge Ave", image: "https://as2.ftcdn.net/v2/jpg/01/32/39/21/1000_F_132392106_ZnNsHtzvnxRHxtYwjRTmJKT7CZfOjoN9.jpg",
@@ -38,16 +39,25 @@ const crimes= [
 ];
 export default function HomeScreen(props: { navigation: { navigate: (arg0: string) => void; }; }){
   const [coords, setCoords] = useState<{latitude: number; longitude: number }[]>([]);
+  const { user, setUser } = useContext(UserContext);
+  
+  useEffect(() => {
+    const fetchCoordinates = async () => {
+      const locations = await Promise.all(crimes.map((crime: {address: string}) => geocodeAddress(crime.address)));
+      const validLocations = locations.filter((loc): loc is { latitude: number; longitude: number } => loc !== null);
+      console.log(validLocations);
+    setCoords(validLocations);
+    };
+    fetchCoordinates();
+  }, [crimes]);
 
-    useEffect(() => {
-      const fetchCoordinates = async () => {
-        const locations = await Promise.all(crimes.map((crime: {address: string}) => geocodeAddress(crime.address)));
-        const validLocations = locations.filter((loc): loc is { latitude: number; longitude: number } => loc !== null);
-        console.log(validLocations);
-     setCoords(validLocations);
-      };
-      fetchCoordinates();
-    }, [crimes]);
+  const handleSettings = () => {
+    if (user.loggedIn) {
+      props.navigation.navigate("Settings");
+    } else {
+      props.navigation.navigate("Gen Login")
+    }
+  }
   return(
    /* <ImageBackground
       source={require("../assets/images/seattle-2084690_1920.jpg")} // Local image
@@ -87,7 +97,7 @@ export default function HomeScreen(props: { navigation: { navigate: (arg0: strin
       <TouchableOpacity
         //title="Go to Settings"
         style = {styles.button} 
-        onPress={() => props.navigation.navigate('Settings')}
+        onPress={handleSettings}
       >
         <Ionicons name="settings-outline" color="black" size={40}/>
       </TouchableOpacity>
