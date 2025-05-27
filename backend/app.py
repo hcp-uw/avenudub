@@ -27,7 +27,7 @@ def logIn(user, passwd):
 # params: userID
 # returns: acc email, user's favorites
 @app.route("/home_screens/settings<userID>", methods=['GET'])
-def logIn(userID):
+def settings(userID):
     userdata = sql.tblGet('gen_user', columns=['username', 'email'], values={'userID':userID})
     userfavs = sql.tblGet('user_favorites', values={'userID':userID}) # may return a list
     return Flask.jsonify({'user':userdata[0], 'email':userdata[1], 'favorites': userfavs[2]})
