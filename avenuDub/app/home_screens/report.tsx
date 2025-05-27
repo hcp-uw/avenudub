@@ -29,8 +29,7 @@ function Report() {
   // determines if modal for when report is sent successfully/unsuccessfully is shown
   const [modalVisible, toggleModal] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
-
-  const handleReport = () => {
+  const handleReport = async () => {
     let errors = [];
     if (!title) {
       errors.push("title");
@@ -42,10 +41,39 @@ function Report() {
       errors.push("desc")
     }
     if (errors.length === 0) {
-      toggleModal(!modalVisible);
-      setTitle("");
-      setLocation("");
-      setDesc("");
+      try {
+        const encodedLocation = encodeURIComponent(location);
+        const encodedTitle = encodeURIComponent(title); // param type in backend
+        const encodedDesc = encodeURIComponent(desc);
+        // const backendURL = 'http://127.0.0.1:5000';
+        const url = `/home_screens/report/${encodedLocation}${encodedTitle}${encodedDesc}`;
+        console.log("Sending POST request to:", url);
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type' : 'application/json'
+          },
+          body: JSON.stringify({
+            location: location,
+            type: title,
+            description: desc
+          })
+        });
+        console.log(url);
+        console.log("Response:", response);
+        if (response.ok) {
+          toggleModal(!modalVisible);
+          setTitle("");
+          setLocation("");
+          setDesc("");
+        } else {
+          console.error("failed to submit a report :( error 1"); // should prob be client-facing error, make a modal for this later aaa
+        }
+        return response;
+      } catch (error) { // should prob be client-facing error, make a modal for this later aaa
+        console.error("failed to submit a report :( error 2");
+      }
+      
     } else {
       setErrors(errors);
     }

@@ -10,114 +10,35 @@ import { useNavigation } from '@react-navigation/native'
 // add user and email props later
 function Settings(props: { navigation: { navigate: (arg0: string) => void; }; }) {
   const { user, setUser } = useContext(UserContext);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<string[]>([]);
-  // TODO: Figure out how to navigate lol
-  const navigation = useNavigation();
-
-  const handleLogin = () => {
-    let errors = []
-    if (!username) {
-      errors.push("username")
-    }
-    if (!password) {
-      errors.push("password");
-    }
-    if (errors.length == 0) {
-      setUser({ username, email: username, loggedIn: true });
-      setUsername("");
-      setPassword("");
-    } else {
-      setErrors(errors);
-    }
-  }
-
-  const handleUsername = (newUser: string) => {
-    if (errors.includes("username") && newUser) {
-      setErrors(element => element.filter(element => element !== "username"));
-    }
-    setUsername(newUser);
-  }
-
-  const handlePassword = (newPW: string) => {
-    if (errors.includes("password") && newPW) {
-      setErrors(element => element.filter(element => element !== "password"));
-    }
-    setPassword(newPW);
-  }
+  // const navigation = useNavigation();
 
   const handleLogout = () => {
-    setUser({ username, email: "", loggedIn: false})
+    setUser({ username: '', email: '', loggedIn: false });
+    props.navigation.navigate("Gen Login")
   }
-
-  if (!user.loggedIn) {
-    return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.loginContainer}>
-        <BackButton/>
-        <Text style={styles.p}>Username:</Text>
-        <TextInput style={[
-            styles.input, errors.includes("username") ? styles.input_error : null
-            ]} 
-          onChangeText={handleUsername} 
-          value={username}
-        />
-        {errors.includes("username") && 
-          <Text style ={{color: "red"}}>
-            ⚠ Missing username
-          </Text>}
-          <Text style={styles.p}>Password:</Text>
-        <TextInput secureTextEntry={true} 
-          style={[styles.input, errors.includes("password") ? styles.input_error : null]} 
-          onChangeText={handlePassword} 
-          value={password}/>
-        {errors.includes("password") && 
-          <Text style ={{color: "red"}}>
-            ⚠ Missing password
-          </Text>}
-        <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => props.navigation.navigate("Admin Login")}>
-          <Text style={styles.subscripts}>
-            Admin Login 
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => props.navigation.navigate("Register")}>
-          <Text style={styles.subscripts}>
-            Don't have an account? Sign up for one
-          </Text>
-        </TouchableOpacity>
-      </View>
-      </TouchableWithoutFeedback>
-    )
-  } 
-  else { 
-    return (
-    <View style={styles.container}>
-      <BackButton/>
-      <Text style={styles.header}>
-        {user?.username}'s {"\n"}Settings
-      </Text>
-      <Text style={styles.p}>
-        Name: {user?.username} {"\n"}
-        Email: {user?.email} {"\n"}
-        Password:
-      </Text>
-      
-      <View style={styles.separator} />
-      <Text style={styles.p}>
-        Favorite Locations: {"\n"}
-        {/* Pass in an array here?? */}
-        <Text>[Location]</Text>
-      </Text>
-      <TouchableOpacity onPress={handleLogout}>
-        <Text style = {[styles.p, {color: 'red'}]}>Log out</Text>
-      </TouchableOpacity>
-    </View>
-    )
-  }
+  return (
+  <View style={styles.container}>
+    <BackButton/>
+    <Text style={styles.header}>
+      {user?.username}'s {"\n"}Settings
+    </Text>
+    <Text style={styles.p}>
+      Name: {user?.username} {"\n"}
+      Email: {user?.email} {"\n"}
+      Password:
+    </Text>
+    
+    <View style={styles.separator} />
+    <Text style={styles.p}>
+      Favorite Locations: {"\n"}
+      {/* Pass in an array here?? */}
+      <Text>[Location]</Text>
+    </Text>
+    <TouchableOpacity onPress={handleLogout}>
+      <Text style = {[styles.p, {color: 'red'}]}>Log out</Text>
+    </TouchableOpacity>
+  </View>
+  )
 }
 
 const styles = StyleSheet.create({
