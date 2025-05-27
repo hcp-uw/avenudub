@@ -7,6 +7,7 @@ import Report from './home_screens/report';
 import Register from './home_screens/register';
 import Adminlogin from './home_screens/adminlogin';
 import GenLogin from './home_screens/genlogin';
+import UserSettings from './home_screens/settings';
 
 const Stack = createNativeStackNavigator()
 
@@ -14,6 +15,7 @@ function Home() {
   return (
     <Stack.Navigator>
       <Stack.Screen name = "HomePage" component={HomeScreen} options={{headerShown: false}}/>
+      {/* <Stack.Screen name = "Settings" component={Settings} options={{headerShown: false}}/> */}
       <Stack.Screen name = "Settings" component={Settings} options={{headerShown: false}}/>
       <Stack.Screen name = "Reports" component={Report} options={{headerShown: false}}/>
       <Stack.Screen name = "Register" component={Register} options={{headerShown: false}}/>

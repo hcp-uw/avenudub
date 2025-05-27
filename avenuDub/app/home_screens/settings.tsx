@@ -1,5 +1,5 @@
 import BackButton from '@/components/BackButton'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import UserContext from '@/components/user-context'
 import { useContext } from 'react'
@@ -10,12 +10,52 @@ import { useNavigation } from '@react-navigation/native'
 // add user and email props later
 function Settings(props: { navigation: { navigate: (arg0: string) => void; }; }) {
   const { user, setUser } = useContext(UserContext);
+  const userID = user.userID;
+  const [userData, setUserData] = useState(null);
+  const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(true);
   // const navigation = useNavigation();
 
   const handleLogout = () => {
-    setUser({ username: '', email: '', loggedIn: false });
+    setUser({ username: '', email: '', userID: -1, loggedIn: false });
     props.navigation.navigate("Gen Login")
   }
+
+  useEffect(() => {
+    if (userID) {
+      const fetchUserData = async () => {
+        setLoading(true);
+        try {
+          const backendURL = 'http://10.0.0.180:5000'; // expo url
+          const response = await fetch(`${backendURL}/home_screens/settings${userID}`);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          setUser({ username: user.username, email: user.username, userID: -1, loggedIn: false });
+          setFavorites(data.favorites);
+          setLoading(false);
+        } catch (error) {
+          console.error("error fetching data in server-side")
+          setLoading(false);
+        }
+      };
+      fetchUserData();
+    } else {
+      console.error("no user id provided :(")
+      setLoading(false);
+    }
+  }, [userID]);
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <BackButton />
+        <Text style={styles.header}>Loading Settings...</Text>
+      </View>
+    );
+  }
+
   return (
   <View style={styles.container}>
     <BackButton/>
@@ -31,8 +71,9 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
     <View style={styles.separator} />
     <Text style={styles.p}>
       Favorite Locations: {"\n"}
-      {/* Pass in an array here?? */}
-      <Text>[Location]</Text>
+      {favorites.map((location, index) => (
+        <Text key={index}>{location}</Text>
+      ))}
     </Text>
     <TouchableOpacity onPress={handleLogout}>
       <Text style = {[styles.p, {color: 'red'}]}>Log out</Text>

@@ -26,8 +26,17 @@ function GenLogin(props: { navigation: { navigate: (arg0: string) => void; }; })
     }
     if (errors.length == 0) {
       try {
-        const backendURL = 'http://127.0.0.1:5000';
-        const response = await fetch(`${backendURL}/home_screens?user=${username}&passwd=${password}`)
+        const backendURL = 'http://10.0.0.180:5000'; // expo url
+        const response = await fetch(`${backendURL}/home_screens`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            user: username,
+            passwd: password
+          })
+        });
         if (!response.ok) {
           const errorText = await response.text();
           console.error('Login failed (HTTP error):', errorText);
@@ -35,7 +44,7 @@ function GenLogin(props: { navigation: { navigate: (arg0: string) => void; }; })
         }
         const data = await response.json();
         if (data.logInSuccess) {
-          setUser({ username, email: username, loggedIn: true });
+          setUser({ username, email: username, userID: 1, loggedIn: true });
           setUsername("");
           setPassword("");
           props.navigation.navigate("Settings")

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request
 import accountManager
 import mysqlcommands as sql
@@ -19,9 +19,12 @@ app = Flask(__name__)
 # logIn:
 # params: username/email, password
 # returns: true if login successful
-@app.route("/home_screens", methods=['GET'])
-def logIn(user, passwd):
-    return Flask.jsonify({'logInSuccess':accountManager.logIn(user, passwd)})
+@app.route("/home_screens", methods=['POST'])
+def logIn():
+    data = request.get_json()
+    user = data.get("user")
+    passwd = data.get("passwd")
+    return jsonify({'logInSuccess':accountManager.logIn(user, passwd)})
 
 # setting:
 # params: userID
@@ -30,7 +33,7 @@ def logIn(user, passwd):
 def settings(userID):
     userdata = sql.tblGet('gen_user', columns=['username', 'email'], values={'userID':userID})
     userfavs = sql.tblGet('user_favorites', values={'userID':userID}) # may return a list
-    return Flask.jsonify({'user':userdata[0], 'email':userdata[1], 'favorites': userfavs[2]})
+    return jsonify({'user':userdata[0], 'email':userdata[1], 'favorites': userfavs[2]})
 
 # reports:
 # params: location, crime type, description
@@ -38,7 +41,7 @@ def settings(userID):
 @app.route("/home_screens/report/<location><type><description>", methods=['POST'])
 def addReport(location, type, description):
     sql.tblInsert("crime_log", values={'created_at': datetime.strftime(datetime.now, '%Y-%m-%d %H:%M:%S'), 'crime_type':type})
-    return Flask.jsonify({'success':True})
+    return jsonify({'success':True})
 
 # safety info:
 # params: time range in days
@@ -46,7 +49,7 @@ def addReport(location, type, description):
 @app.route("/reports_screens/safetyhome<range>", methods=['GET'])
 def getSafety(range):
     # not super sure if this notation works with my implementation :D
-    return Flask.jsonify(sql.tblGet("crime_log", values={'created_at <= date_sub(now(), interval ' + str(range) + ' day)':''}))
+    return jsonify(sql.tblGet("crime_log", values={'created_at <= date_sub(now(), interval ' + str(range) + ' day)':''}))
 
 # favorite:
 # params: userID, the business to favorite
@@ -54,7 +57,7 @@ def getSafety(range):
 @app.route("/business_screens/businessinfo<businessID>", methods=['POST'])
 def addFavorite(user, businessID):
     sql.tblInsert("user_favorites", values={'userID':user, 'locationID':businessID})
-    return Flask.jsonify({'success':True})
+    return jsonify({'success':True})
  
 # buildings:
 # params: filter??

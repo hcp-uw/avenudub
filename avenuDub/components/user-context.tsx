@@ -7,8 +7,8 @@ import { createContext, ReactNode, useState } from "react";
 // }
 
 const UserContext = createContext({
-    user: { username: "", email: "", loggedIn: false },
-    setUser: (user: { username: string; email: string; loggedIn: boolean }) => {}
+    user: { username: "", email: "", userID: -1, loggedIn: false },
+    setUser: (user: { username: string; email: string; userID: number; loggedIn: boolean }) => {}
   });
   
 
