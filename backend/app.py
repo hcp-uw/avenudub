@@ -19,6 +19,8 @@ app = Flask(__name__)
 # logIn:
 # params: username/email, password
 # returns: true if login successful
+# i think this should be post since we're filling in a form containing sensitive data??
+# feel free to correct me if im wrong lol, my knowledge of api routes ends at 331 :(
 @app.route("/home_screens", methods=['POST'])
 def logIn():
     data = request.get_json()
@@ -40,7 +42,7 @@ def settings(userID):
 # returns: true if successful, report ID 
 @app.route("/home_screens/report/<location><type><description>", methods=['POST'])
 def addReport(location, type, description):
-    sql.tblInsert("crime_log", values={'created_at': datetime.strftime(datetime.now, '%Y-%m-%d %H:%M:%S'), 'crime_type':type})
+    sql.tblInsert("crime_log", values={'created_at': datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S'), 'crime_type':type})
     return jsonify({'success':True})
 
 # safety info:
