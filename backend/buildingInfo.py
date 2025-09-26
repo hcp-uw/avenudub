@@ -9,16 +9,18 @@ service = create_service(client_secret_file, API_NAME, API_VERSION, SCOPES)
 
 query = 'ramen'
 
+# the client-secret.json needs to go in the main (avenuDub) directory, NOT the backend directory
+
 request_body = {
     'textQuery':query,
     'regionCode': 'US',
     'locationRestriction':{
         'rectangle':{
-            'high':{
+            'high':{ #northeast corner
                 'latitude': 47.67161,
                 'longitude': -122.30787
             },
-            'low':{
+            'low':{ #southwest corner
                 'latitude': 47.64916,
                 'longitude': -122.34662
             }
@@ -34,17 +36,18 @@ response = service.places().searchText(
 
 # formats all of the building info we want to obtain into our database
 # our key desires:
-# - name
+# - name!!
 # - ID
 # - displayName
-# - types
-# - nationalPhoneNumber
-# - formatted address
+# - types !!
+# - nationalPhoneNumber !!
+# - formatted address !!
 # - location
 # - rating
-# - reviewSummary
+# - reviewSummary !!
 # - googleMapsLinks
-# - regularOpeningHours
+# - regularOpeningHours !!
 
 # building hours will be a 7 element array -> mon tues wed thur fri sat sun
 
+# print (response)
