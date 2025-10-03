@@ -7,60 +7,65 @@ from datetime import datetime
 #https://code.visualstudio.com/docs/python/tutorial-flask
 #https://flask.palletsprojects.com/en/stable/quickstart/
 
-
 app = Flask(__name__)
-
-# looks like frontend never came up with dynamic routing conventions so I GET TO DECIDE THEM YIPPEE 
 
 # @app.route("/")
 # def home():
 #     return "Hello, Flask!"
     
-# logIn:
+# LOGIN:
+# verifies that a provided login/user exists
 # params: username/email, password
-# returns: true if login successful
+# returns: {'logInSuccess': boolean} depending on login success
 @app.route("/home_screens", methods=['GET'])
 def logIn(user, passwd):
     return Flask.jsonify({'logInSuccess':accountManager.logIn(user, passwd)})
 
-# setting:
+# SETTINGS: (UNFINISHED) #################################################################################################
+# retrieves the user's info and favorites
 # params: userID
-# returns: acc email, user's favorites
-@app.route("/home_screens/settings<userID>", methods=['GET'])
-def logIn(userID):
+# returns: {'user': string, 'email':string, 'favorites':list}
+@app.route("/home_screens/settings/<userID>", methods=['GET'])
+def settings(userID):
     userdata = sql.tblGet('gen_user', columns=['username', 'email'], values={'userID':userID})
     userfavs = sql.tblGet('user_favorites', values={'userID':userID}) # may return a list
-    return Flask.jsonify({'user':userdata[0], 'email':userdata[1], 'favorites': userfavs[2]})
+    return Flask.jsonify({'user':userdata[0], 'email':userdata[1], 'favorites': userfavs})
 
-# reports:
-# params: location, crime type, description
-# returns: true if successful, report ID 
-@app.route("/home_screens/report/<location><type><description>", methods=['POST'])
-def addReport(location, type, description):
-    sql.tblInsert("crime_log", values={'created_at': datetime.strftime(datetime.now, '%Y-%m-%d %H:%M:%S'), 'crime_type':type})
-    return Flask.jsonify({'success':True})
+# ADD REPORTS: 
+# adds an incident to the database of crime
+# params: location, crime type,
+# returns: {'success': boolean} depending on query success 
+@app.route("/home_screens/report/<location>/<type>/<description>", methods=['POST'])
+def addReport(location, type): 
+    success = sql.tblInsert("crime_log", values={'created_at': datetime.strftime(datetime.now, '%Y-%m-%d %H:%M:%S'), 'crime_type':type, 'address':location})
+    return Flask.jsonify({'success':success})
 
-# safety info:
-# params: time range in days
-# returns: crimelog, i think: created_at, case_num, crime_type, address, case_open, case_close
-@app.route("/reports_screens/safetyhome<range>", methods=['GET'])
+# SAFETY INFO: (UNFINISHED) #################################################################################################
+# retrieves all criminal incidents within a specified timeframe
+# params: time range in days before current day
+# returns: 2D list: each element contains: [created_at, case_num, crime_type, address, case_open, case_close]
+@app.route("/reports_screens/safetyhome/<range>", methods=['GET'])
 def getSafety(range):
     # not super sure if this notation works with my implementation :D
     return Flask.jsonify(sql.tblGet("crime_log", values={'created_at <= date_sub(now(), interval ' + str(range) + ' day)':''}))
 
-# favorite:
+# ADD FAVORITE:
+# adds a specified location the user's favorites catalogue
 # params: userID, the business to favorite
-# returns: true if successful?
-@app.route("/business_screens/businessinfo<businessID>", methods=['POST'])
+# returns: {'success': boolean} depending on query success 
+@app.route("/business_screens/businessinfo/<businessID>", methods=['POST'])
 def addFavorite(user, businessID):
-    sql.tblInsert("user_favorites", values={'userID':user, 'locationID':businessID})
-    return Flask.jsonify({'success':True})
+    success = sql.tblInsert("user_favorites", values={'userID':user, 'locationID':businessID})
+    return Flask.jsonify({'success':success})
  
-# buildings:
+# GET BUILDINGS: (UNFINISHED) #################################################################################################
+# retrives all buildings that meet a certain criteria
 # params: filter??
 # returns: list of buildings
-@app.route("/business_screens/businesshome<filter>", methods=['GET'])
+@app.route("/business_screens/businesshome/<filter>", methods=['GET'])
 def getBuildings(filter):
+    #honestly, it might be easier to just do the google api call instead of using the database
     sql.tblGet("buildings") # add filter implementation if necessary
+
     return
 # TODO: THIS LMFAO

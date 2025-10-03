@@ -1,21 +1,26 @@
 # Allows Python to communicate with MySQL database with MySQLclient
 # Current functions:
+    # setDefaultDB
     # connect
     # dbConnect
+    # dbCreate
     # dbDelete
     # tblCreate
-    # tblInsert
     # tblDelete
+    # tblInsert
+    # tblGet (susceptible to injection)
+    # tblUpdate
+    # entryDelete (susceptible to injection)
+    # close
 
 import MySQLdb
 
 connection = None
 cursor = None
-serverName = "avenudubmysql.mysql.database.azure.com" 
+serverName = "avenudubmysqldb.mysql.database.azure.com" 
 defaultDB = "avenudb"
 # IF THE FOLDER NAME FOR THE BACKEND CHANGES, THIS PATH WILL ALSO NEED TO CHANGE
-certificate="backend/DigiCertGlobalRootCA.crt.pem"
-# currently a test/dev server, subject to change
+certificate="backend/combined-ca-certificates.pem"
 
 def setDefaultDB(name):
     global defaultDB
@@ -126,6 +131,7 @@ def tblDelete(table):
         print("Table successfully deleted!")
 
 # inserts data into a table. Assumes that all columns will be filled or given null values.
+# returns True if successful
 def tblInsert(table, values = []):
     try:
         dbConnect()
@@ -137,13 +143,12 @@ def tblInsert(table, values = []):
         cursor.execute(cmd, values)
         cursor.execute("COMMIT")
     except MySQLdb.Error as err:
-        print(err)
+        return False
     else:
-        print("Entry successfully added!")
+        return True
 
 # returns requested columns from a table
 # TODO: use dynamic sql to avoid injection hazards
-
 def tblGet(table, columns = ["*"], values = {"column":"value"}):
     try:
         dbConnect()
