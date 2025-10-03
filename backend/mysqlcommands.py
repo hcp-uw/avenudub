@@ -17,7 +17,7 @@ import MySQLdb
 
 connection = None
 cursor = None
-serverName = "avenudubmysqldb.mysql.database.azure.com" 
+serverName = "avenudubmysql.mysql.database.azure.com" 
 defaultDB = "avenudb"
 # IF THE FOLDER NAME FOR THE BACKEND CHANGES, THIS PATH WILL ALSO NEED TO CHANGE
 certificate="backend/combined-ca-certificates.pem"
