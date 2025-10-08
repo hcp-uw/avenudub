@@ -12,22 +12,22 @@ def createAcc(username, passwd, specialID = 0):
 
 def logIn(username, passwd):
     if not username or not passwd:
-        raise Exception("Please enter both your username and your password.")
+        return False
     print(passmanage.passcheck(username, passwd))
-    return "success! " + username + passwd
-    #not done
+    return True
+    #not done - 
     
 #api-ify this part and return true to frontend, they have a "isLoggedIn" status var
 
 
-#implement forgot password
+#!!!!!!!!!!!!!!!!!!!!implement forgot password
 def forgotPw(username = "", email = ""):
     userdata = sql.tblGet(table="gen_user", columns=["username", "email"], values={"username":username, "email":email})
     if(not userdata):
        #no such account found!
        print("no such account found")
        return
-    print("we have sent an email to " + userdata[1] + " with instructions to reset your password")
+    print("we have sent an email to " + userdata[1] + " with a code.") #frontend will need a page for this
     #TODO: email the user a verification code!!
     print(userdata)
 
