@@ -1,6 +1,6 @@
 import colors from '@/assets/colors'
 import BackButton from '@/components/BackButton'
-import React, { useState } from 'react'
+import React, { useState, useEffect} from 'react'
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Modal, ScrollView } from 'react-native'
 import UserContext from '@/components/user-context'
 import { useContext } from 'react'
@@ -29,6 +29,18 @@ function Report() {
   // determines if modal for when report is sent successfully/unsuccessfully is shown
   const [modalVisible, toggleModal] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
+
+  useEffect(() => {
+    function sendReport(){
+      fetch(`/home_screens/report/${title}/${location}/${desc}`, {
+        method: "POST",
+      }).then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+    }
+    sendReport();
+  }, [title, location, desc]);
 
   const handleReport = () => {
     let errors = [];
