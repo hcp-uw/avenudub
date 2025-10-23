@@ -16,7 +16,7 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
   // TODO: Figure out how to navigate lol
   const navigation = useNavigation();
 
-  const handleLogin = () => {
+  async function handleLogin() {
     let errors = []
     if (!username) {
       errors.push("username")
@@ -24,12 +24,24 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
     if (!password) {
       errors.push("password");
     }
-    if (errors.length == 0) {
-      setUser({ username, email: username, loggedIn: true });
-      setUsername("");
-      setPassword("");
-    } else {
+    if (errors.length > 0) {
       setErrors(errors);
+      return;
+    }
+    try {
+      // should prob be a post method since
+      // we're sending data (login creds) to the
+      // backend
+      const response = await fetch("/home_screens");
+      const data = await response.json();
+      if (response.ok && data.logInSuccess) {
+        console.log("Login successful:", data.logInSuccess);
+      } else {
+        console.error("Login failed:", data.error || "Unknown error");
+        // should have some pop up where log in failed
+      }
+    } catch (err) {
+      console.error("Network or unexpected error:", err);
     }
   }
 
