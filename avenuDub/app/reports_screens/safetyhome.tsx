@@ -31,10 +31,24 @@ const data= [
 const Safety: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredInput, setFilteredInput] = useState(data);
+  const range = 30;
 
   useEffect(() => {
-    setFilteredInput(data);
-  }, [data]);
+    async function getReport() {
+      try {
+        // should range just be 30?
+        const response = await fetch(`/reports_screens/safetyhome/${range}`, {
+          method: "GET",
+        });
+        const data = await response.json();
+        console.log(data);
+        setFilteredInput(data);
+      } catch (error) {
+        console.error("Error fetching report:", error);
+      }
+    }
+    getReport();
+  }, [data, range]);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   return (
