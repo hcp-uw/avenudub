@@ -36,7 +36,7 @@ const Safety: React.FC = () => {
   useEffect(() => {
     async function getReport() {
       try {
-        // should range just be 30?
+        // should range just be 30? 
         const response = await fetch(`/reports_screens/safetyhome/${range}`, {
           method: "GET",
         });
