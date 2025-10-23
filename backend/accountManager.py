@@ -27,7 +27,7 @@ def forgotPw(username = "", email = ""):
        #no such account found!
        print("no such account found")
        return
-    print("we have sent an email to " + userdata[1] + " with a code.") #frontend will need a page for this
+    print("we have sent an email to " + userdata.get("email") + " with a code.") #frontend will need a page for this
     #TODO: email the user a verification code!!
     print(userdata)
 
@@ -40,6 +40,7 @@ def changePw(id = "", pw=None):
     else:
         sql.tblUpdate(table="gen_user", ID=["userID", id], values={"salt": pwSalt, "pwhash": pwHash})
     
+# returns a dictionary of all users (hopefully 1!) with the username and email given
 def userInfoToID(username = "", email = ""):
     return sql.tblGet(table="gen_user", columns=["userID"], values={"username":username, "email":email})[0]
 

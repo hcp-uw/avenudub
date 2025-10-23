@@ -37,8 +37,7 @@ def settings(userID):
 # returns: {'success': boolean} depending on query success 
 @app.route("/home_screens/report/<location>/<type>/<description>", methods=['POST'])
 def addReport(location, type): 
-    success = sql.tblInsert("crime_log", values={'created_at': datetime.strftime(datetime.now, '%Y-%m-%d %H:%M:%S'), 'crime_type':type, 'address':location})
-    return Flask.jsonify({'success':success})
+    return Flask.jsonify({'success':sql.tblInsert("crime_log", values={'created_at': datetime.strftime(datetime.now, '%Y-%m-%d %H:%M:%S'), 'crime_type':type, 'address':location})})
 
 # SAFETY INFO: (UNFINISHED) #################################################################################################
 # retrieves all criminal incidents within a specified timeframe
@@ -55,8 +54,7 @@ def getSafety(range):
 # returns: {'success': boolean} depending on query success 
 @app.route("/business_screens/businessinfo/<businessID>", methods=['POST'])
 def addFavorite(user, businessID):
-    success = sql.tblInsert("user_favorites", values={'userID':user, 'locationID':businessID})
-    return Flask.jsonify({'success':success})
+    return Flask.jsonify({'success':sql.tblInsert("user_favorites", values={'userID':user, 'locationID':businessID})})
  
 # GET BUILDINGS: (UNFINISHED) #################################################################################################
 # retrives all buildings that meet a certain criteria
@@ -64,8 +62,7 @@ def addFavorite(user, businessID):
 # returns: list of buildings
 @app.route("/business_screens/businesshome/<filter>", methods=['GET'])
 def getBuildings(filter):
-    #honestly, it might be easier to just do the google api call instead of using the database
-    sql.tblGet("buildings") # add filter implementation if necessary
-
+    # honestly, it might be easier to just do the google api call instead of using the database
+    # reviews WILL be obtained via database tho
     return
 # TODO: THIS LMFAO

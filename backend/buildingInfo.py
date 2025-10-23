@@ -7,6 +7,7 @@ SCOPES = ['https://www.googleapis.com/auth/cloud-platform']
 
 service = create_service(client_secret_file, API_NAME, API_VERSION, SCOPES)
 
+#example query
 query = 'ramen'
 
 request_body = {
@@ -15,12 +16,12 @@ request_body = {
     'locationRestriction':{
         'rectangle':{
             'high':{
-                'latitude': 47.67161,
-                'longitude': -122.30787
+                'latitude': 47.6699,
+                'longitude': -122.301
             },
             'low':{
-                'latitude': 47.64916,
-                'longitude': -122.34662
+                'latitude': 47.64912,
+                'longitude': -122.321748
             }
         }
     },
@@ -31,20 +32,23 @@ response = service.places().searchText(
     body=request_body,
     fields='*'
 ).execute()
+# returns a dict w/ keys "places" (a list of dicts), "contextualContents", "nextPageToken", "searchUri"
 
 # formats all of the building info we want to obtain into our database
 # our key desires:
-# - name
-# - ID
 # - displayName
+# - primaryTypeDisplayName
 # - types
 # - nationalPhoneNumber
-# - formatted address
-# - location
+# - formattedAddress
 # - rating
-# - reviewSummary
-# - googleMapsLinks
+# - googleMapsUri
 # - regularOpeningHours
+# - priceLevel (not sure the differences)
+# - priceRange (not sure the differences)
+# - photos?
+# - generativeSummary
+
 
 # building hours will be a 7 element array -> mon tues wed thur fri sat sun
 
@@ -105,6 +109,7 @@ def format_building_data(api_response):
 formatted_data = format_building_data(response)
 print("Formatted building data:")
 for building in formatted_data:
+    # print(f"place_id: {building['place_id']}")
     print(f"Name: {building['name']}")
     print(f"Address: {building['address']}")
     print(f"Phone: {building['phone']}")
