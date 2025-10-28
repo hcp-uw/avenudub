@@ -77,7 +77,18 @@ const BusinessesInfoScreen = () => {
     const [isFavorite, setIsFavorite] = useState(false);
     const { user } = useContext(UserContext);
 
-
+  useEffect(() => {
+        function makeFavorite(){
+          fetch(`/business_screens/businessinfo/${business.id}/${user.username}`, {
+            method: "POST",
+          }).then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+          })
+        }
+        makeFavorite();
+      }, [isFavorite]);
+      
   useEffect(() => {
     const fetchCoordinates = async () => {
       const location = await geocodeAddress(business.address);
