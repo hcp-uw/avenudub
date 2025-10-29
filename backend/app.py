@@ -21,7 +21,7 @@ app = Flask(__name__)
 def logIn(user, passwd):
     return Flask.jsonify({'logInSuccess':accountManager.logIn(user, passwd)})
 
-# SETTINGS: (UNFINISHED) #################################################################################################
+# SETTINGS:
 # retrieves the user's info and favorites
 # params: userID
 # returns: {'success' : boolean, 'resp': {user': string, 'email':string, 'favorites':tuple of dictionaries}} ( resp is None if failure occurred)
