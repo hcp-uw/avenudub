@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 import accountManager
+import passmanage
 import mysqlcommands as sql
 from datetime import datetime
 
@@ -13,13 +14,15 @@ app = Flask(__name__)
 # def home():
 #     return "Hello, Flask!"
     
-# LOGIN:
+# LOGIN: (nearly identical to the one in accountManager.py -> accountManager.py and passmanage.py should get refactored into one file once frontend and backend are connected)
 # verifies that a provided login/user exists
 # params: username/email, password
-# returns: {'logInSuccess' : boolean} depending on login success
+# returns: {'success' : boolean, 'userID' : int} (userID is None if login failed)
 @app.route("/home_screens", methods=['GET'])
 def logIn(user, passwd):
-    return Flask.jsonify({'logInSuccess':accountManager.logIn(user, passwd)})
+    if user and passwd:    
+        return Flask.jsonify(passmanage.passcheck(user, passwd))
+    return Flask.jsonify({'success':False, 'userID':None})
 
 # SETTINGS:
 # retrieves the user's info and favorites

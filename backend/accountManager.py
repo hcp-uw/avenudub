@@ -11,11 +11,9 @@ def createAcc(username, passwd, specialID = 0):
     sql.tblInsert("gen_user", login)
 
 def logIn(username, passwd):
-    if not username or not passwd:
-        return False
-    print(passmanage.passcheck(username, passwd))
-    return True
-    #not done - 
+    if username and passwd:    
+        return passmanage.passcheck(username, passwd)
+    return {'success':False, 'userID':None}
     
 #api-ify this part and return true to frontend, they have a "isLoggedIn" status var
 

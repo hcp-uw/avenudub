@@ -159,4 +159,3 @@ mock_rating = {
             'anonymous': True}
 # print(create_rating_route(mock_rating))
 
-print(sql.tblGet('gen_user', columns=['username', 'email'], values={'user_id':1015}))
