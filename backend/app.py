@@ -50,11 +50,19 @@ def getSafety(range):
 
 # ADD FAVORITE:
 # adds a specified location the user's favorites catalogue
+# params: the business to favorite
+# returns: {'success': boolean} depending on query success 
+@app.route("/business_screens/businessinfo/<userID>/<businessID>", methods=['POST'])
+def addFavorite(user, businessID):
+    return Flask.jsonify({'success':sql.tblInsert("user_favorites", values={'userID':user, 'locationID':businessID}).get('success')})
+
+# REMOVE FAVORITE:
+# deletes a specified location the user's favorites catalogue
 # params: userID, the business to favorite
 # returns: {'success': boolean} depending on query success 
-@app.route("/business_screens/businessinfo/<businessID>", methods=['POST'])
-def addFavorite(user, businessID):
-    return Flask.jsonify({'success':sql.tblInsert("user_favorites", values={'userID':user, 'locationID':businessID})})
+@app.route("/business_screens/businessinfo/<userID>/<businessID>/", methods=['POST'])
+def removeFavorite(user, businessID):
+    return Flask.jsonify({'success':sql.entryDelete("user_favorites", values={'userID':user, 'locationID':businessID}).get('success')})
  
 # GET BUILDINGS: (UNFINISHED) #################################################################################################
 # retrives all buildings that meet a certain criteria
