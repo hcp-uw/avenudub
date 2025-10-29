@@ -38,9 +38,9 @@ def changePw(id = "", pw=None):
         #no password provided aw hell naw
         print("Please enter a valid password.")
     else:
-        sql.tblUpdate(table="gen_user", ID=["userID", id], values={"salt": pwSalt, "pwhash": pwHash})
+        sql.tblUpdate(table="gen_user", ID=["user_id", id], values={"salt": pwSalt, "pwhash": pwHash})
     
 # returns a dictionary of all users (hopefully 1!) with the username and email given
 def userInfoToID(username = "", email = ""):
-    return sql.tblGet(table="gen_user", columns=["userID"], values={"username":username, "email":email})[0]
+    return sql.tblGet(table="gen_user", columns=["user_id"], values={"username":username, "email":email})[0]
 

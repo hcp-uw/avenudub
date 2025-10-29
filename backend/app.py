@@ -16,7 +16,7 @@ app = Flask(__name__)
 # LOGIN:
 # verifies that a provided login/user exists
 # params: username/email, password
-# returns: {'logInSuccess': boolean} depending on login success
+# returns: {'logInSuccess' : boolean} depending on login success
 @app.route("/home_screens", methods=['GET'])
 def logIn(user, passwd):
     return Flask.jsonify({'logInSuccess':accountManager.logIn(user, passwd)})
@@ -24,25 +24,29 @@ def logIn(user, passwd):
 # SETTINGS: (UNFINISHED) #################################################################################################
 # retrieves the user's info and favorites
 # params: userID
-# returns: {'user': string, 'email':string, 'favorites':list}
+# returns: {'success' : boolean, 'resp': {user': string, 'email':string, 'favorites':tuple of dictionaries}} ( resp is None if failure occurred)
 @app.route("/home_screens/settings/<userID>", methods=['GET'])
 def settings(userID):
-    userdata = sql.tblGet('gen_user', columns=['username', 'email'], values={'userID':userID})
-    userfavs = sql.tblGet('user_favorites', values={'userID':userID}) # may return a list
-    return Flask.jsonify({'user':userdata[0], 'email':userdata[1], 'favorites': userfavs})
+    userdata = sql.tblGet('gen_user', columns=['username', 'email'], values={'user_id':userID})
+    userfavs = sql.tblGet('user_favorites', values={'user_id':userID}) #returns a tuple of dictionaries {user_id, place_id}
+    if userdata.get('success') and userdata.get('success'):
+        userdata = userdata.get('resp')
+        userfavs = userfavs.get('resp')
+        return Flask.jsonify({'success' : True, 'resp' : {'user':userdata.get('username'), 'email':userdata.get("email"), 'favorites': userfavs}})
+    return Flask.jsonify({'success' : True, 'resp' : None})
 
 # ADD REPORTS: 
 # adds an incident to the database of crime
 # params: location, crime type,
-# returns: {'success': boolean} depending on query success 
+# returns: {'success' : boolean} depending on query success 
 @app.route("/home_screens/report/<location>/<type>/<description>", methods=['POST'])
 def addReport(location, type): 
-    return Flask.jsonify({'success':sql.tblInsert("crime_log", values={'created_at': datetime.strftime(datetime.now, '%Y-%m-%d %H:%M:%S'), 'crime_type':type, 'address':location})})
+    return Flask.jsonify({'success':sql.tblInsert("crime_log", values={'created_at': datetime.strftime(datetime.now, '%Y-%m-%d %H:%M:%S'), 'crime_type':type, 'address':location}).get('success')})
 
 # SAFETY INFO: (UNFINISHED) #################################################################################################
 # retrieves all criminal incidents within a specified timeframe
 # params: time range in days before current day
-# returns: 2D list: each element contains: [created_at, case_num, crime_type, address, case_open, case_close]
+# returns: {'success' : bool, 'resp' : 2D list} - each element contains: [created_at, case_num, crime_type, address, case_open, case_close]
 @app.route("/reports_screens/safetyhome/<range>", methods=['GET'])
 def getSafety(range):
     # not super sure if this notation works with my implementation :D
@@ -50,19 +54,19 @@ def getSafety(range):
 
 # ADD FAVORITE:
 # adds a specified location the user's favorites catalogue
-# params: the business to favorite
-# returns: {'success': boolean} depending on query success 
+# params: userID, the business to favorite
+# returns: {'success' : boolean} depending on query success 
 @app.route("/business_screens/businessinfo/<userID>/<businessID>", methods=['POST'])
 def addFavorite(user, businessID):
-    return Flask.jsonify({'success':sql.tblInsert("user_favorites", values={'userID':user, 'locationID':businessID}).get('success')})
+    return Flask.jsonify({'success':sql.tblInsert("user_favorites", values={'user_id':user, 'place_id':businessID}).get('success')})
 
 # REMOVE FAVORITE:
 # deletes a specified location the user's favorites catalogue
 # params: userID, the business to favorite
-# returns: {'success': boolean} depending on query success 
+# returns: {'success' : boolean} depending on query success 
 @app.route("/business_screens/businessinfo/<userID>/<businessID>/", methods=['POST'])
 def removeFavorite(user, businessID):
-    return Flask.jsonify({'success':sql.entryDelete("user_favorites", values={'userID':user, 'locationID':businessID}).get('success')})
+    return Flask.jsonify({'success':sql.entryDelete("user_favorites", values={'user_id':user, 'place_id':businessID}).get('success')})
  
 # GET BUILDINGS: (UNFINISHED) #################################################################################################
 # retrives all buildings that meet a certain criteria

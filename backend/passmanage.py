@@ -10,7 +10,7 @@ def encrypt(password):
     
 # checks user password against MySQL database
 def passcheck(username = "", ID = "", passwd = ""):
-    pw = bytes(sql.tblGet("gen_user", columns = ["pwhash"], values = {"username":username, "userID":ID})[0], "utf-8")
+    pw = bytes(sql.tblGet("gen_user", columns = ["pwhash"], values = {"username":username, "user_id":ID})[0], "utf-8")
     passwd = bytes(passwd, "utf-8")
     return bcrypt.checkpw(passwd, pw)
     

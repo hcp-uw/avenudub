@@ -105,7 +105,7 @@ def register_user_route(user_data):
         # Get the created user data
         user_info = sql.tblGet(
             table="gen_user", 
-            columns=["userID", "username", "email", "created_at"], 
+            columns=["user_id", "username", "email", "created_at"], 
             values={"username": user_data['username']}
         )
         
@@ -140,7 +140,7 @@ def login_user_route(credentials):
             # Get user data from database
             user_info = sql.tblGet(
                 table="gen_user", 
-                columns=["userID", "username", "email", "created_at"], 
+                columns=["user_id", "username", "email", "created_at"], 
                 values={"username": credentials['username']}
             )
             
@@ -175,8 +175,8 @@ def get_user_profile_route(user_id):
         # Fetch user data from database
         user_info = sql.tblGet(
             table="gen_user", 
-            columns=["userID", "username", "email", "created_at"], 
-            values={"userID": user_id}
+            columns=["user_id", "username", "email", "created_at"], 
+            values={"user_id": user_id}
         )
         
         if user_info:
@@ -206,8 +206,8 @@ def update_user_profile_route(user_id, update_data):
         # Check if user exists
         user_info = sql.tblGet(
             table="gen_user", 
-            columns=["userID", "username", "email", "created_at"], 
-            values={"userID": user_id}
+            columns=["user_id", "username", "email", "created_at"], 
+            values={"user_id": user_id}
         )
         
         if not user_info:
@@ -224,15 +224,15 @@ def update_user_profile_route(user_id, update_data):
         if update_values:
             sql.tblUpdate(
                 table="gen_user", 
-                ID=["userID", user_id], 
+                ID=["user_id", user_id], 
                 values=update_values
             )
         
         # Get updated user data
         updated_user_info = sql.tblGet(
             table="gen_user", 
-            columns=["userID", "username", "email", "created_at"], 
-            values={"userID": user_id}
+            columns=["user_id", "username", "email", "created_at"], 
+            values={"user_id": user_id}
         )
         
         if updated_user_info:
