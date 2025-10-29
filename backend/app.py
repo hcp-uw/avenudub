@@ -3,6 +3,7 @@ from flask import request
 import accountManager
 import mysqlcommands as sql
 from datetime import datetime
+import rating_api
 
 #https://code.visualstudio.com/docs/python/tutorial-flask
 #https://flask.palletsprojects.com/en/stable/quickstart/
@@ -69,3 +70,24 @@ def getBuildings(filter):
 
     return
 # TODO: THIS LMFAO
+
+# RATINGS API ROUTES ##########################################################################################################
+
+# Create a new rating
+@app.route("/api/ratings", methods=['POST'])
+def create_rating():
+    rating_data = request.get_json(silent=True) or {}
+    body, status = rating_api.create_rating_route(rating_data)
+    return Flask.jsonify(body), status
+
+# Get all ratings for a place
+@app.route("/api/ratings/<place_id>", methods=['GET'])
+def get_ratings(place_id):
+    body, status = rating_api.get_ratings_route(place_id)
+    return Flask.jsonify(body), status
+
+# Get rating summary for a place
+@app.route("/api/ratings/<place_id>/summary", methods=['GET'])
+def get_rating_summary(place_id):
+    body, status = rating_api.get_rating_summary_route(place_id)
+    return Flask.jsonify(body), status
