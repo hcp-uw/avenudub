@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import Home from './Home';
+import Home from './index';
 import Business from './Business';
 import Safety from './Safety';
 import UserContext from '@/components/user-context';
