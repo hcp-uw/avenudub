@@ -60,25 +60,6 @@ def format_auth_response(user_data, token=None):
     
     return response
 
-def hash_password(password):
-    """
-    Simple password hashing (in production, use bcrypt or similar)
-    """
-    salt = secrets.token_hex(16)
-    password_hash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.encode('utf-8'), 100000)
-    return f"{salt}:{password_hash.hex()}"
-
-def verify_password(password, stored_hash):
-    """
-    Verify password against stored hash
-    """
-    try:
-        salt, hash_value = stored_hash.split(':')
-        password_hash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.encode('utf-8'), 100000)
-        return password_hash.hex() == hash_value
-    except:
-        return False
-
 # Example API route handlers (would be used with Flask/FastAPI)
 def register_user_route(user_data):
     """
