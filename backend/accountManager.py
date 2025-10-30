@@ -11,23 +11,21 @@ def createAcc(username, passwd, specialID = 0):
     sql.tblInsert("gen_user", login)
 
 def logIn(username, passwd):
-    if not username or not passwd:
-        raise Exception("Please enter both your username and your password.")
-    print(passmanage.passcheck(username, passwd))
-    return "success! " + username + passwd
-    #not done
+    if username and passwd:    
+        return passmanage.passcheck(username, passwd)
+    return {'success':False, 'userID':None}
     
 #api-ify this part and return true to frontend, they have a "isLoggedIn" status var
 
 
-#implement forgot password
+#!!!!!!!!!!!!!!!!!!!!implement forgot password
 def forgotPw(username = "", email = ""):
     userdata = sql.tblGet(table="gen_user", columns=["username", "email"], values={"username":username, "email":email})
     if(not userdata):
        #no such account found!
        print("no such account found")
        return
-    print("we have sent an email to " + userdata[1] + " with instructions to reset your password")
+    print("we have sent an email to " + userdata.get("email") + " with a code.") #frontend will need a page for this
     #TODO: email the user a verification code!!
     print(userdata)
 
@@ -38,8 +36,9 @@ def changePw(id = "", pw=None):
         #no password provided aw hell naw
         print("Please enter a valid password.")
     else:
-        sql.tblUpdate(table="gen_user", ID=["userID", id], values={"salt": pwSalt, "pwhash": pwHash})
+        sql.tblUpdate(table="gen_user", ID=["user_id", id], values={"salt": pwSalt, "pwhash": pwHash})
     
+# returns a dictionary of all users (hopefully 1!) with the username and email given
 def userInfoToID(username = "", email = ""):
-    return sql.tblGet(table="gen_user", columns=["userID"], values={"username":username, "email":email})[0]
+    return sql.tblGet(table="gen_user", columns=["user_id"], values={"username":username, "email":email})[0]
 

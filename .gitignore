@@ -1,5 +1,7 @@
 node_modules
 backend/output.pdf
 backend/latest_log.pdf
+backend/combined-ca-certificates.pem
+client-secret.json
 debug_image.png
 toFix.png

@@ -1,11 +1,17 @@
 # Allows Python to communicate with MySQL database with MySQLclient
 # Current functions:
+    # setDefaultDB
     # connect
     # dbConnect
+    # dbCreate
     # dbDelete
     # tblCreate
-    # tblInsert
     # tblDelete
+    # tblInsert
+    # tblGet (susceptible to injection)
+    # tblUpdate
+    # entryDelete (susceptible to injection)
+    # close
 
 import MySQLdb
 
@@ -14,8 +20,7 @@ cursor = None
 serverName = "avenudubmysql.mysql.database.azure.com" 
 defaultDB = "avenudb"
 # IF THE FOLDER NAME FOR THE BACKEND CHANGES, THIS PATH WILL ALSO NEED TO CHANGE
-certificate="backend/DigiCertGlobalRootCA.crt.pem"
-# currently a test/dev server, subject to change
+certificate="backend/combined-ca-certificates.pem"
 
 def setDefaultDB(name):
     global defaultDB
@@ -27,7 +32,7 @@ def connect(usr, passwd = None):
     global serverName
 
     try:
-        cursor = connection.cursor()
+        cursor = connection.cursor(MySQLdb.cursors.DictCursor)
         loginsuccess = True
     except:
         loginsuccess = False
@@ -46,9 +51,9 @@ def connect(usr, passwd = None):
             else:
                 print(err)
         else:
-            print("Login success!")
             loginsuccess = True
-    cursor = connection.cursor()
+    cursor = connection.cursor(MySQLdb.cursors.DictCursor)
+    return {'success':True, 'resp':"Login success."}
 
 # connects to a specific database
 def dbConnect(db = defaultDB):
@@ -56,10 +61,9 @@ def dbConnect(db = defaultDB):
         # USE does not take parameters
         cursor.execute("USE " + db) 
     except MySQLdb.Error as err:
-        if err.args[0] == 1008:
-            print("Database does not exist")
-        else:
-            print(err)
+        return {'success':False, 'err':err}
+    else:
+        return {'success':True, 'resp':"Successfuly connected to database."}
 
 # creates a database (likely will not use)
 def dbCreate(name):
@@ -69,12 +73,9 @@ def dbCreate(name):
         # CREATE does not take parameters
         cursor.execute("CREATE DATABASE " + name)
     except MySQLdb.Error as err:
-        if err.args[0] == 1007:
-            print("Database already exists")
-        else:
-            print(err)
+        return {'success':False, 'err':err}
     else:
-        print("Database successfully created!")
+        return {'success':True, 'resp':"Database successfully created!"}
     
 # deletes a database (likely will not use)
 def dbDelete(name):
@@ -83,12 +84,20 @@ def dbDelete(name):
         # DROP does not take parameters
         cursor.execute("DROP DATABASE " + name)
     except MySQLdb.Error as err:
-        if err.args[0] == 1008:
-            print("Database does not exist")
-        else:
-            print(err)
+        return {'success':False, 'err':err}
     else:
-        print("Database successfully deleted!")
+        return {'success':True, 'resp':"Database successfully deleted."}
+
+# gets the info regarding a table's columns, given the table's name.
+# returns a dictionary (table:description) if successful, False otherwise
+def tblInfo(table):
+    try:
+        dbConnect()
+        cursor.execute("SHOW COLUMNS FROM " + table)
+    except MySQLdb.Error as err:
+        return {'success':False, 'err':err}
+    else:
+        return {'success':True, 'resp':cursor.fetchall()}
 
 # creates a table. Columns are specified by "(column name) (datatype)|(new column) (new data)" etc.
 # the delimiter parameter can be used to change delimiter if default pipe (|) is part of the parameters
@@ -104,12 +113,9 @@ def tblCreate(table, entries = "(column name) (datatype)", delimiter = "|"):
         cmd = cmd[:(len(cmd)-1)] + ");"
         cursor.execute(cmd)
     except MySQLdb.Error as err:
-        if err.args[0] == 1050:
-            print("Table already exists")
-        else:
-            print(err)
+        return {'success':False, 'err':err}
     else:
-        print("Table successfully created!")
+        return {'success':True, 'resp':'Table successfully deleted.'}
 
 # deletes a table
 def tblDelete(table):
@@ -122,10 +128,13 @@ def tblDelete(table):
             print("Table does not exist")
         else:
             print(err)
+    except MySQLdb.Error as err:
+        return {'success':False, 'err':err}
     else:
-        print("Table successfully deleted!")
+        return {'success':True, 'resp':"Table successfully deleted."}
 
 # inserts data into a table. Assumes that all columns will be filled or given null values.
+# returns True if successful
 def tblInsert(table, values = []):
     try:
         dbConnect()
@@ -137,13 +146,32 @@ def tblInsert(table, values = []):
         cursor.execute(cmd, values)
         cursor.execute("COMMIT")
     except MySQLdb.Error as err:
-        print(err)
+        return {'success':False, 'err':err}
     else:
-        print("Entry successfully added!")
+        return {'success':True, 'resp':"Entry successfully inserted."}
+    
+# inserts data into a table. Will not insert values if not given, use only with tables using default values
+# returns True if successful
+def tblDictInsert(table, values = {}):
+    try:
+        dbConnect()
+        cmd = "INSERT INTO " + table + " VALUES ("
+        params = []
+        for i in tblInfo(table).get('resp'):
+            # This parameterization DOES work
+            if i.get('Field') in values.keys():
+                cmd += "%s, "
+                params.append(values.get(i.get('Field')))
+        cmd = cmd[:len(cmd)-2] + ");"
+        cursor.execute(cmd, params)
+        cursor.execute("COMMIT")
+    except MySQLdb.Error as err:
+        return {'success':False, 'err':err}
+    else:
+        return {'success':True, 'resp':"Entry successfully inserted."}
 
 # returns requested columns from a table
 # TODO: use dynamic sql to avoid injection hazards
-
 def tblGet(table, columns = ["*"], values = {"column":"value"}):
     try:
         dbConnect()
@@ -160,14 +188,11 @@ def tblGet(table, columns = ["*"], values = {"column":"value"}):
                     cmd += i + " = %s AND "
                     params.append(values.get(i))
             cmd = cmd[:-5] + ";"
-            # print(cmd)
         cursor.execute(cmd, params)
-        # print(cursor._executed)
     except MySQLdb.Error as err:
-        print(err)
+        return {'success':False, 'err':err}
     else:
-        print("Data successfully accessed!")
-        return cursor.fetchone() #returns a touple
+        return {'success':True, 'resp':cursor.fetchall()}
 
 # changes/updates a specified value in a table (search by ID)
 def tblUpdate(table, ID = ["column", "value"], values = {"column":"value"}):
@@ -184,9 +209,30 @@ def tblUpdate(table, ID = ["column", "value"], values = {"column":"value"}):
         # print(cursor._executed)
         cursor.execute("COMMIT")
     except MySQLdb.Error as err:
-        print(err)
+        return {'success':False, 'err':err}
     else:
-        print("Entry successfully updated!")
+        return {'success':True, 'resp':'Entry successfully updated.'}
+
+# averages values of a column in a table - used for average rating
+def columnAvg(table, column, values = {"column":"value"}):
+    try:
+        dbConnect()
+        params = []
+        cmd = "SELECT AVG(" + column + ") FROM "+table
+        if(len(values) != 0):
+            cmd += " WHERE "
+            for i in values.keys():
+                if(len(str(values.get(i))) != 0):
+                    cmd += i + " = %s AND "
+                    params.append(values.get(i))
+            cmd = cmd[:-5] + ";"
+
+        print(cmd)
+        cursor.execute(cmd, params)
+    except MySQLdb.Error as err:
+        return {'success':False, 'err':err}
+    else:
+        return {'success':True, 'resp':cursor.fetchall()}
 
 # deletes an entry in a table
 # POTENTIALLY SUSCEPTIBLE TO INJECTION
@@ -197,9 +243,9 @@ def entryDelete(table, condition="some string"):
         cursor.execute(cmd)
         cursor.execute("COMMIT")
     except MySQLdb.Error as err:
-            print(err)
+        return {'success':False, 'err':err}
     else:
-        print("Entries successfully deleted!")
+        return {'success':True, 'resp':"Entries successfully deleted."}
 
 # closes the connection
 def close():
