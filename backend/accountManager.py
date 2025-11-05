@@ -1,14 +1,38 @@
 import mysqlcommands as sql
 import passmanage
 
-def createAcc(username, passwd, specialID = 0):
+def createAcc(username, passwd, email="", specialID = 0):
     if not username or not passwd:
-        raise Exception()
+        raise Exception("Username and password are required")
     
-    #TODO: password validation - make sure its a good password!
-
-    login = [username] + passmanage.encrypt(passwd) + [specialID] #if 0, ID will be autoincremented
-    sql.tblInsert("gen_user", login)
+    # Encrypt password
+    pwSalt, pwHash = passmanage.encrypt(passwd)
+    
+    # Prepare values dictionary for tblDictInsert
+    # Note: tblDictInsert only inserts columns that are in the values dict
+    # Columns with defaults or auto-increment will be handled by the database
+    values = {
+        'username': username,
+        'salt': pwSalt,
+        'pwhash': pwHash
+    }
+    
+    # Add email if provided
+    if email:
+        values['email'] = email
+    
+    # Add specialID if provided (0 means auto-increment, so we can omit it)
+    # But if explicitly provided, include it
+    if specialID != 0:
+        values['specialID'] = specialID
+    
+    # Insert into database using dictionary insert
+    result = sql.tblDictInsert("gen_user", values)
+    
+    if not result.get('success'):
+        raise Exception(f"Failed to create account: {result.get('err', 'Unknown error')}")
+    
+    return result
 
 def logIn(username, passwd):
     if username and passwd:    

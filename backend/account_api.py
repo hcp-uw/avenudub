@@ -64,30 +64,64 @@ def format_auth_response(user_data, token=None):
 def register_user_route(user_data):
     """
     POST /api/auth/register - Create a new user account
+    Expected params: username, password, email
     """
     # Validate required fields
-    required_fields = ['username', 'password']
+    required_fields = ['username', 'password', 'email']
     for field in required_fields:
         if field not in user_data or not user_data[field]:
             return {'error': f'Missing required field: {field}'}, 400
     
+    # Validate username
+    username = user_data['username'].strip()
+    if not username:
+        return {'error': 'Username cannot be empty'}, 400
+    
+    # Validate email format (basic validation)
+    email = user_data['email'].strip()
+    if not email or '@' not in email or '.' not in email.split('@')[-1]:
+        return {'error': 'Invalid email format'}, 400
+    
     # Validate password strength
-    if len(user_data['password']) < 8:
+    password = user_data['password']
+    if len(password) < 8:
         return {'error': 'Password must be at least 8 characters long'}, 400
     
     try:
-        # Use existing accountManager function
-        accountManager.createAcc(
-            username=user_data['username'],
-            passwd=user_data['password'],
+        # Check if username already exists
+        existing_user = sql.tblGet(
+            table="gen_user",
+            columns=["user_id"],
+            values={"username": username}
+        )
+        if existing_user.get('success') and existing_user.get('resp') and len(existing_user['resp']) > 0:
+            return {'error': 'Username already exists'}, 400
+        
+        # Check if email already exists
+        existing_email = sql.tblGet(
+            table="gen_user",
+            columns=["user_id"],
+            values={"email": email}
+        )
+        if existing_email.get('success') and existing_email.get('resp') and len(existing_email['resp']) > 0:
+            return {'error': 'Email already registered'}, 400
+        
+        # Create account using accountManager function
+        create_result = accountManager.createAcc(
+            username=username,
+            passwd=password,
+            email=email,
             specialID=user_data.get('specialID', 0)
         )
+        
+        if not create_result.get('success'):
+            return {'error': f'Failed to create account: {create_result.get("err", "Unknown error")}'}, 400
         
         # Get the created user data
         user_info = sql.tblGet(
             table="gen_user", 
             columns=["user_id", "username", "email", "created_at"], 
-            values={"username": user_data['username']}
+            values={"username": username}
         )
         
         if user_info.get('success') and user_info.get('resp') and len(user_info['resp']) > 0:
