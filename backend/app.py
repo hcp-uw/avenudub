@@ -5,6 +5,7 @@ import passmanage
 import mysqlcommands as sql
 from datetime import datetime
 import rating_api
+import account_api
 
 #https://code.visualstudio.com/docs/python/tutorial-flask
 #https://flask.palletsprojects.com/en/stable/quickstart/
@@ -82,6 +83,49 @@ def getBuildings(filter):
     # reviews WILL be obtained via database tho
     return
 # TODO: THIS LMFAO
+
+# AUTH API ROUTES ###########################################################################################################
+
+# User registration/signup
+@app.route("/api/auth/register", methods=['POST'])
+def register():
+    user_data = request.get_json(silent=True) or {}
+    body, status = account_api.register_user_route(user_data)
+    return Flask.jsonify(body), status
+
+# Request password reset (forgot password)
+@app.route("/api/auth/forgot-password", methods=['POST'])
+def forgot_password():
+    request_data = request.get_json(silent=True) or {}
+    body, status = account_api.forgot_password_route(request_data)
+    return Flask.jsonify(body), status
+
+# Verify reset token
+@app.route("/api/auth/verify-reset-token", methods=['POST'])
+def verify_reset_token():
+    request_data = request.get_json(silent=True) or {}
+    body, status = account_api.verify_reset_token_route(request_data)
+    return Flask.jsonify(body), status
+
+# Reset password with token
+@app.route("/api/auth/reset-password", methods=['POST'])
+def reset_password():
+    request_data = request.get_json(silent=True) or {}
+    body, status = account_api.reset_password_route(request_data)
+    return Flask.jsonify(body), status
+
+# Get user profile
+@app.route("/api/auth/profile/<user_id>", methods=['GET'])
+def get_profile(user_id):
+    body, status = account_api.get_user_profile_route(user_id)
+    return Flask.jsonify(body), status
+
+# Update user profile
+@app.route("/api/auth/profile/<user_id>", methods=['PUT'])
+def update_profile(user_id):
+    update_data = request.get_json(silent=True) or {}
+    body, status = account_api.update_user_profile_route(user_id, update_data)
+    return Flask.jsonify(body), status
 
 # RATINGS API ROUTES ##########################################################################################################
 
