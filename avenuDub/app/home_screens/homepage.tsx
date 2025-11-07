@@ -106,7 +106,7 @@ export default function HomeScreen(props: { navigation: { navigate: (arg0: strin
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor:'#f2e8dc',
+    backgroundColor:'white',
     flexDirection: 'column', // Align children horizontally
     justifyContent: 'space-around', // Evenly space buttons 
     textAlign: 'center',
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   buttonContainer:{
     flexDirection: 'row',
     margin: 10,
-    backgroundColor:'#f2e8dc',
+    backgroundColor:'white',
   },
   mapContainer:{
     width: "95%",
