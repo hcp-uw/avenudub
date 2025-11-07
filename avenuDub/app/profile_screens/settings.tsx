@@ -100,6 +100,9 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
           <Text style ={{color: "red"}}>
             ⚠ Missing password
           </Text>}
+        <TouchableOpacity onPress={() => props.navigation.navigate("forgot pw")}>
+          <Text>Forgot password?</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
@@ -168,14 +171,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
     padding: 30,
     paddingTop: 50,
-    backgroundColor: '#f2e8dc',
+    backgroundColor: '#ffffffff',
   },
   loginContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f2e8dc',
+    backgroundColor: '#ffffffff',
   },
   input: {
     width: '80%',

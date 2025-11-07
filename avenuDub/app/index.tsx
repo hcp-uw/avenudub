@@ -13,10 +13,10 @@ function Home() {
   return (
     <Stack.Navigator>
       <Stack.Screen name = "HomePage" component={HomeScreen} options={{headerShown: false}}/>
-      <Stack.Screen name = "Settings" component={Settings} options={{headerShown: false}}/>
+      {/* <Stack.Screen name = "Settings" component={Settings} options={{headerShown: false}}/> */}
       <Stack.Screen name = "Reports" component={Report} options={{headerShown: false}}/>
-      <Stack.Screen name = "Register" component={Register} options={{headerShown: false}}/>
-      <Stack.Screen name = "Admin Login" component={Adminlogin} options={{headerShown: false}}/>
+      {/* <Stack.Screen name = "Register" component={Register} options={{headerShown: false}}/>
+      <Stack.Screen name = "Admin Login" component={Adminlogin} options={{headerShown: false}}/> */}
     </Stack.Navigator>
   )
 }
