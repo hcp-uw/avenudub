@@ -133,7 +133,7 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
       <View style={styles.separator} />
       <Text style={styles.p}>
         Favorite Locations: {"\n"}
-        {user.favorites}
+        {user?.favorites}
       </Text>
       <TouchableOpacity onPress={handleLogout}>
         <Text style = {[styles.p, {color: 'red'}]}>Log out</Text>
