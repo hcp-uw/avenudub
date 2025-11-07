@@ -9,10 +9,10 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //import { Button } from '@react-navigation/elements';
 import { TouchableOpacity } from 'react-native';
-import Settings from "../home_screens/settings";
+import Settings from "../profile_screens/settings";
 import Report from "../home_screens/report";
-import Register from "../home_screens/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
-import adminlogin from "../home_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import Register from "../profile_screens/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import adminlogin from "../profile_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
 import { useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons';

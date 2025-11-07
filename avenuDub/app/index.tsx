@@ -1,11 +1,11 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Settings from '@/app/home_screens/settings';
+import Settings from '@/app/profile_screens/settings';
 import HomeScreen from './home_screens/homepage';
 import Report from './home_screens/report';
-import Register from './home_screens/register';
-import Adminlogin from './home_screens/adminlogin';
+import Register from './profile_screens/register';
+import Adminlogin from './profile_screens/adminlogin';
 
 const Stack = createNativeStackNavigator()
 
