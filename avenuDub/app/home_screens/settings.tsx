@@ -1,5 +1,5 @@
 import BackButton from '@/components/BackButton'
-import React, { useState } from 'react'
+import React, { useState, useEffect} from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import UserContext from '@/components/user-context'
 import { useContext } from 'react'
@@ -16,7 +16,18 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
   // TODO: Figure out how to navigate lol
   const navigation = useNavigation();
 
-  const handleLogin = () => {
+  async function retrieveSettings(userId: number) {
+    const response = await fetch(`/home_screens/${userId}`);
+    const data = await response.json();
+    if(response.ok){
+      const favorites = data.favorites.map((favorite: string) => {
+        <Text>{favorite}</Text>
+      })
+      setUser({username: data.user, email: data.email, userId: userId, favorites: favorites, loggedIn: true})
+    }
+
+  }
+  async function handleLogin() {
     let errors = []
     if (!username) {
       errors.push("username")
@@ -24,12 +35,25 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
     if (!password) {
       errors.push("password");
     }
-    if (errors.length == 0) {
-      setUser({ username, email: username, loggedIn: true });
-      setUsername("");
-      setPassword("");
-    } else {
+    if (errors.length > 0) {
       setErrors(errors);
+      return;
+    }
+    try {
+      // should prob be a post method since
+      // we're sending data (login creds) to the
+      // backend
+      const response = await fetch(`/home_screens/${username}/${password}`);
+      const data = await response.json();
+      if (response.ok && data.logInSuccess) {
+        console.log("Login successful:", data.logInSuccess);
+        retrieveSettings(data.userId);
+      } else {
+        console.error("Login failed:", data.error || "Unknown error");
+        // should have some pop up where log in failed
+      }
+    } catch (err) {
+      console.error("Network or unexpected error:", err);
     }
   }
 
@@ -48,7 +72,7 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
   }
 
   const handleLogout = () => {
-    setUser({ username, email: "", loggedIn: false})
+    setUser({ username, email: "", userId: 0, favorites: [], loggedIn: false})
   }
 
   if (!user.loggedIn) {
@@ -109,8 +133,7 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
       <View style={styles.separator} />
       <Text style={styles.p}>
         Favorite Locations: {"\n"}
-        {/* Pass in an array here?? */}
-        <Text>[Location]</Text>
+        {user?.favorites}
       </Text>
       <TouchableOpacity onPress={handleLogout}>
         <Text style = {[styles.p, {color: 'red'}]}>Log out</Text>

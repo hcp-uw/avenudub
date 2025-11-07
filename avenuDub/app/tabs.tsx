@@ -10,7 +10,7 @@ import UserContext from '@/components/user-context';
 const Tab = createBottomTabNavigator();
 
 function Tabs() {
-  const [user, setUser] = useState({ username: "", email: "", loggedIn: false });
+  const [user, setUser] = useState({ username: "", email: "", userId: 0, favorites: [], loggedIn: false });
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Tab.Navigator 

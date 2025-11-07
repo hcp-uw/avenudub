@@ -14,7 +14,7 @@ import { TouchableOpacity, Linking} from 'react-native';
 // import Register from "./register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
 // import adminlogin from "../../app/tabs/home_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBarComponent from '@/components/searchbar';
 //import FadeImage from '@/components/FadeImage';
@@ -74,18 +74,54 @@ const BusinessesInfoScreen = () => {
     const {id, name, distance, address, image, foodType, priceRange, discounts} = business;
 
     const [coords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
+    const [isFavorite, setIsFavorite] = useState(false);
+    const { user } = useContext(UserContext);
 
+  useEffect(() => {
+        function makeFavorite(){
+          fetch(`/business_screens/businessinfo/${business.id}/${user.username}`, {
+            method: "POST",
+          }).then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+          })
+        }
+        function removeFavorite(){
+          fetch(`/business_screens/businessinfo/${business.id}/${user.username}`, {
+            method: "POST",
+          }).then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+          })
+        }
+        if(isFavorite){
+           removeFavorite();
+        }else{
+            makeFavorite();
+        }
+      }, [isFavorite]);
+      
   useEffect(() => {
     const fetchCoordinates = async () => {
       const location = await geocodeAddress(business.address);
       if (location) {
         setCoords({ latitude: location.latitude, longitude: location.longitude });
       }
-    };
+    fetch(`/business_screens/businessinfo/${id}/${user.username}`,{
+        method: 'POST',
+    }) .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+    })
 
     fetchCoordinates();
-  }, [business.address]);
+    };
+    fetchCoordinates();
+  }, [isFavorite]);
 
+  function toggleFavorite() {
+    setIsFavorite(!isFavorite);
+  }
     return(
         <>
         <View style={styles.back}>
@@ -98,7 +134,7 @@ const BusinessesInfoScreen = () => {
                         <Text style={styles.headers}>{name}</Text>
                         <View style={styles.favoriteContainer}>
                             <Text style={styles.subtext}>Favorite:</Text>
-                            <Favorite/>
+                            <Favorite toggleFavorite={toggleFavorite}/>
                         </View>
                     </View>
                     <View style={styles.infoContainer}>
