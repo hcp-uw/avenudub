@@ -46,6 +46,7 @@ function Business() {
   },[data]);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   
+  
   return (
     <View style={styles.container}>
       {/*Buttons on the side*/}

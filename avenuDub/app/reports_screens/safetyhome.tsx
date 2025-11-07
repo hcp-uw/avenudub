@@ -32,7 +32,8 @@ const Safety: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredInput, setFilteredInput] = useState(data);
   const range = 30;
-
+  
+  
   useEffect(() => {
     async function getReport() {
       try {

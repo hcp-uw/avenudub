@@ -14,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from "react";
 
 const Favorite: React.FC<{
-    toggleFavorite?: () => void;
+    toggleFavorite: () => void;
 }> = () => {
     
     const [filled, setFilled] = useState(true);
@@ -25,7 +25,7 @@ const Favorite: React.FC<{
         }
         else{
             setFilled(true);
-            toggleFavorite!();
+            toggleFavorite();
         }
     }
     

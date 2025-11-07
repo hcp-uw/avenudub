@@ -86,7 +86,19 @@ const BusinessesInfoScreen = () => {
             console.log(data);
           })
         }
-        makeFavorite();
+        function removeFavorite(){
+          fetch(`/business_screens/businessinfo/${business.id}/${user.username}`, {
+            method: "POST",
+          }).then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+          })
+        }
+        if(isFavorite){
+           removeFavorite();
+        }else{
+            makeFavorite();
+        }
       }, [isFavorite]);
       
   useEffect(() => {
