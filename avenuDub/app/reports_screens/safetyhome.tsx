@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     //marginHorizontal: 0,
     padding: 50,
-    backgroundColor: '#f2e8dc',
+    backgroundColor: 'white',
   },
   crimeText: {
     paddingTop: 5,
@@ -128,9 +128,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     shadowColor: '#171717',
     shadowOffset: {width: -2, height: 4},
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.4,
     shadowRadius: 3,
     margin: 15,
+    borderWidth: 1,
     borderRadius: 30,
   },
   floatingButton:{
