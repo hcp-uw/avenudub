@@ -107,7 +107,7 @@ function Report() {
       <Text style={styles.header}>
         Report a {"\n"}Hazard
       </Text>
-      <Text>
+      <Text style={styles.p}>
         Report Title
       </Text>
       <TextInput 
@@ -120,7 +120,7 @@ function Report() {
         <Text style={{color: "red"}}>
         ⚠ Please input a title
         </Text>}
-      <Text>
+      <Text style={styles.p}>
         Location
       </Text>
       <TextInput 
@@ -133,7 +133,7 @@ function Report() {
         <Text style={{color: "red"}}>
         ⚠ Please input a location
         </Text>}
-      <Text>
+      <Text style={styles.p}>
         Description
       </Text>
       <TextInput
@@ -180,6 +180,11 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  p: {
+    fontSize: 16,
+    marginTop: 10,
+    marginBottom: 5
+  },
   closeButton: {
     backgroundColor: colors.primary,
     justifyContent: 'center',
@@ -201,14 +206,14 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 50,
-    textAlign: 'center',
+    textAlign: 'left',
   },
   container: {
     flex: 1,
     marginHorizontal: 0,
     padding: 30,
-    paddingTop: 50,
-    backgroundColor: '#f2e8dc',
+    paddingTop: 100,
+    backgroundColor: '#ffffffff',
   },
   input: {
     height: 40,
@@ -233,7 +238,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     width: 225,
     height: 60,
-    borderRadius: 5,
+    borderRadius: 20,
   },
   buttonText: {
     color: 'white',
