@@ -84,20 +84,20 @@ export default function HomeScreen(props: { navigation: { navigate: (arg0: strin
             </MapView>
         </View>
       <View style = {styles.buttonContainer}>
-      <TouchableOpacity
+      {/* /* <TouchableOpacity
         //title="Go to Settings"
         style = {styles.button} 
         onPress={() => props.navigation.navigate('Settings')}
       >
         <Ionicons name="settings-outline" color="black" size={40}/>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity
         //title="Go to Reports"
         onPress={() => props.navigation.navigate('Reports')}
         style = {styles.button}
       > 
        <Ionicons name="checkmark-circle-outline" color="black" size={40}/>
-      </TouchableOpacity>
+      </TouchableOpacity> */
       </View>
     </View>
     //</ImageBackground>
