@@ -27,7 +27,7 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
     }
 
   }
-  async function handleLogin() {
+  async function handleLogin(test: boolean = false) {
     let errors = []
     if (!username) {
       errors.push("username")
@@ -37,6 +37,12 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
     }
     if (errors.length > 0) {
       setErrors(errors);
+      return;
+    }
+    if (test) {
+      setUser({ username, email: username, userId: 1, favorites: [], loggedIn: true });
+      setUsername("");
+      setPassword("");
       return;
     }
     try {
@@ -103,7 +109,7 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
         <TouchableOpacity onPress={() => props.navigation.navigate("forgot pw")}>
           <Text>Forgot password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
+        <TouchableOpacity style={styles.submitButton} onPress={() => handleLogin(true)}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => props.navigation.navigate("Admin Login")}>
@@ -124,22 +130,24 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
     return (
     <View style={styles.container}>
       <BackButton/>
-      <Text style={styles.header}>
-        {user?.username}'s {"\n"}Settings
-      </Text>
-      <Text style={styles.p}>
-        Name: {user?.username} {"\n"}
-        Email: {user?.email} {"\n"}
-        Password:
-      </Text>
-      
-      <View style={styles.separator} />
-      <Text style={styles.p}>
-        Favorite Locations: {"\n"}
-        {user?.favorites}
-      </Text>
-      <TouchableOpacity onPress={handleLogout}>
-        <Text style = {[styles.p, {color: 'red'}]}>Log out</Text>
+      <View style={styles.content}>
+        <Text style={styles.header}>
+          Settings
+        </Text>
+        <Text style={styles.p}>
+          Name: {"\n"}{user?.username} {"\n"}{"\n"}
+          Email: {"\n"}{user?.email} {"\n"}{"\n"}
+          Password: {"\n"}
+          {/* TODO: make it so that password initially shows asterisked out, but actually shows when you tap on it */}
+          {/* tbh we should prob add a reset password here */}
+        </Text>
+      </View>
+
+      <TouchableOpacity style={styles.buttonBox} onPress={handleLogout}>
+        <Text style = {styles.accText}>Log Out</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={[styles.buttonBox, styles.delAcc]}>
+        <Text style = {styles.accText}>Delete Account</Text>
       </TouchableOpacity>
     </View>
     )
@@ -154,7 +162,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 50,
-    textAlign: 'center',
+    marginBottom: 20
   },
   p: {
     fontSize: 20,
@@ -172,6 +180,12 @@ const styles = StyleSheet.create({
     padding: 30,
     paddingTop: 50,
     backgroundColor: '#ffffffff',
+  },
+  content: {
+    flex: 1,
+    width: '100%',
+    paddingTop: 60,
+    marginLeft: 20
   },
   loginContainer: {
     flex: 1,
@@ -205,6 +219,30 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20
   },
+  buttonBox: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    paddingVertical: 18,
+    paddingHorizontal: 16,
+    borderRadius: 28,
+    marginTop: 12,
+    marginBottom: 12,
+    backgroundColor: '#4a4a4a',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    minHeight: 64,
+  },
+  delAcc: {
+    backgroundColor: '#b00020',
+    borderColor: '#b00020',
+  },
+  accText: {
+    fontSize: 22,
+    color: '#fff',
+    textAlign: 'center'
+  }
 })
 
 export default Settings

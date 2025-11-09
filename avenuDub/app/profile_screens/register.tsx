@@ -3,8 +3,7 @@ import BackButton from '@/components/BackButton';
 import UserContext from '@/components/user-context';
 import { useNavigation } from 'expo-router';
 import React, { useContext, useState } from 'react'
-import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, Platform } from 'react-native'
-import Constants from 'expo-constants'
+import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 
 function Register() {
   const { user, setUser } = useContext(UserContext);
@@ -16,23 +15,9 @@ function Register() {
   // TODO: Figure out how to navigate lol
   const navigation = useNavigation();
 
-  // Determine a reachable API base for physical devices while using Expo Go.
-  // If running in Expo, debuggerHost usually contains the dev machine IP (e.g. 192.168.x.y:19000).
-  const BACKEND_PORT = 3000; // change if your backend uses a different port
-  const getDevHost = () => {
-    const debuggerHost = (Constants as any)?.manifest?.debuggerHost || (Constants as any)?.debuggerHost;
-    if (debuggerHost) {
-      return debuggerHost.split(':')[0];
-    }
-    if (Platform.OS === 'android') return '10.0.2.2';
-    return 'localhost';
-  }
-  const API_BASE = `http://${getDevHost()}:${BACKEND_PORT}`;
-  console.log('Using API_BASE:', API_BASE);
-
   async function retrieveSettings(userId: number) {
     try {
-  const response = await fetch(`${API_BASE}/api/users/${userId}/settings`);
+      const response = await fetch(`/api/users/${userId}/settings`);
       const data = await response.json();
       if (response.ok) {
         const favorites = Array.isArray(data.favorites) ? data.favorites : [];
@@ -65,40 +50,14 @@ function Register() {
         email: email,
         password: password
       }
-      const response = await fetch(`${API_BASE}/api/auth/register`, {
+      const response = await fetch(`/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
       });
-      
-        // Debug info
-        const contentType = response.headers.get('content-type') || '';
-        console.log('Register response status:', response.status, 'content-type:', contentType);
-
-        // Safely parse JSON, fallback to text for non-JSON responses
-        let resData: any = null;
-        if (contentType.includes('application/json')) {
-          try {
-            resData = await response.json();
-          } catch (parseErr) {
-            // JSON parse failed — read raw text for debugging
-            const raw = await response.text().catch(() => null);
-            console.error('Failed to parse JSON response:', parseErr, 'raw response:', raw);
-            setErrors(prev => [...prev, raw || `Invalid JSON response (status ${response.status})`]);
-            setLoading(false);
-            return;
-          }
-        } else {
-          // Not JSON — read as text and surface the message
-          const raw = await response.text().catch(() => null);
-          console.warn('Non-JSON response from register endpoint:', response.status, raw);
-          setErrors(prev => [...prev, raw || `Unexpected response (status ${response.status})`]);
-          setLoading(false);
-          return;
-        }
-
+      const resData = await response.json();
       if (response.ok) {
         const newUserId = resData.userId || resData.id || 0;
         const favorites = Array.isArray(resData.favorites) ? resData.favorites : [];
