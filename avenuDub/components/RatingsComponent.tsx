@@ -12,22 +12,18 @@ import { useState } from "react";
 //import IonIcon from '@reacticons/ionicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from "react";
-
-const RatingsComponent: React.FC<{
-}> = () => {
-
+interface RatingsProps { placeId: number }
+// should pass in place id into component
+function RatingsComponent({placeId}: RatingsProps) {
     const stars = [1, 2, 3, 4, 5];
     const filledStars: number[] = [];
     const [filled, setFilled] = useState(filledStars);
     const [rating, setRating] = useState(0);
 
-    const handleRating = (item: number) =>{
-        if(item == 1){
-            setRating(0);
-        }
-        else{
-            setRating(item);
-        }
+    async function handleRating (star: number){
+      setRating(star)
+      // just realized that we need to make a review form to put in
+      // description :')
     }
     const componentArray = stars.map(item => (
         <View key={item}>
