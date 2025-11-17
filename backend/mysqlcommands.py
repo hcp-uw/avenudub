@@ -20,7 +20,7 @@ cursor = None
 serverName = "avenudubmysql.mysql.database.azure.com" 
 defaultDB = "avenudb"
 # IF THE FOLDER NAME FOR THE BACKEND CHANGES, THIS PATH WILL ALSO NEED TO CHANGE
-certificate="backend/combined-ca-certificates.pem"
+certificate="combined-ca-certificates.pem"
 
 def setDefaultDB(name):
     global defaultDB
