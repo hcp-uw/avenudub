@@ -1,5 +1,6 @@
 import React from "react";
 import { makeObservable, action, observable, makeAutoObservable } from 'mobx';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Theme = 'light' | 'dark';
 
@@ -15,16 +16,24 @@ export class ThemeStore {
         this.save();
     }
 
-    save() {
-        localStorage.setItem("darkMode", String(this.currentTheme === 'dark'))
+    async load() {
+        try {
+            const saved = await AsyncStorage.getItem('currentTheme');
+            if (saved !== null) {
+                this.currentTheme = saved as Theme;
+            }
+        } catch (e) {
+        console.error('Failed to load theme', e);
+        }
     }
 
-    load() {
-        const darkMode = localStorage.getItem("darkMode");
-        if (darkMode === 'true') {
-            this.currentTheme = 'dark';
-        } else {
-            this.currentTheme = 'light';
+    async save() {
+        try {
+            await AsyncStorage.setItem('currentTheme', this.currentTheme);
+        } catch (e) {
+            console.error('Failed to save theme', e);
         }
     }
 }
+
+export const themeStore = new ThemeStore();

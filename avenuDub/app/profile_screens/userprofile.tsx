@@ -1,6 +1,8 @@
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { themeStore } from '@/stores/theme-store';
 import { useNavigation } from 'expo-router';
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function UserProfile() {
@@ -25,6 +27,11 @@ export default function UserProfile() {
         <Ionicons name="bookmarks" color="#fff" size={30} style={styles.icon} />
         <Text style={styles.optionText}>Favorite Locations</Text>
       </TouchableOpacity>
+      <View style={styles.optionBox}>
+        <Ionicons name="moon" color="#fff" size={30} style={styles.icon} />
+        <Text style={styles.optionText}>Dark Mode</Text>
+        <ThemeToggle themeStore={themeStore} />
+      </View>
       
     </View>
   )
@@ -65,6 +72,8 @@ const styles = StyleSheet.create({
   optionText: {
     fontSize: 25,
     color: '#fff',
+    flex: 1,
+    marginRight: 10,
   },
   icon: {
     marginRight: 30,
