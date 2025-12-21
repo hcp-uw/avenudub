@@ -2,7 +2,7 @@ import React from "react";
 import { makeObservable, action, observable, makeAutoObservable } from 'mobx';
 import { Account } from "../types/account";
 
-class AccountStore {
+export class AccountStore {
     accountInfo: Account;
     loggedIn = false;
 

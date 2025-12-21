@@ -3,7 +3,7 @@ import { makeObservable, action, observable, makeAutoObservable } from 'mobx';
 import { Place } from "@/types/place";
 
 // see types/place.ts
-class PlaceStore {
+export class PlaceStore {
     places: Place[] = [];
     selectedPlace?: Place;
     loading = false;
