@@ -17,6 +17,7 @@ import UserContext from "@/components/user-context";
 import { useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBarComponent from "../../components/searchbar";
+import { themeStore } from '@/stores/theme-store';
 //import FadeImage from '@/components/FadeImage';
 
 const data = [
@@ -40,6 +41,7 @@ const data = [
 function Business() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredInput, setFilteredInput] = useState(data);
+  const { theme } = themeStore;
 
   useEffect(() => {
     setFilteredInput(data);
@@ -48,7 +50,7 @@ function Business() {
   
   
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       {/*Buttons on the side*/}
       <View style={styles.floatingButton}>
         <TouchableOpacity

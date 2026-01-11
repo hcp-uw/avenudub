@@ -24,6 +24,7 @@ import {Marker} from 'react-native-maps';
 import MapView from 'react-native-maps';
 import RatingsComponent from '@/components/RatingsComponent';
 import Favorite from '@/components/Favorite';
+import { themeStore } from '@/stores/theme-store';
 
 type BusinessInfoParams = {
    business:{
@@ -68,14 +69,15 @@ const openInMaps = async (latitude: number, longitude: number, label: string) =>
   };
 
 const BusinessesInfoScreen = () => {
-    // const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-    const route = useRoute<RouteProp<{ BusinessesInfo: BusinessInfoParams }, 'BusinessesInfo'>>();
-    const {business} = route.params;
-    const {id, name, distance, address, image, foodType, priceRange, discounts} = business;
+  // const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const route = useRoute<RouteProp<{ BusinessesInfo: BusinessInfoParams }, 'BusinessesInfo'>>();
+  const {business} = route.params;
+  const {id, name, distance, address, image, foodType, priceRange, discounts} = business;
 
-    const [coords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
-    const [isFavorite, setIsFavorite] = useState(false);
-    const { user } = useContext(UserContext);
+  const [coords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const { user } = useContext(UserContext);
+  const { theme } = themeStore;
 
   useEffect(() => {
     function makeFavorite(){
@@ -129,7 +131,7 @@ const BusinessesInfoScreen = () => {
       <View style={styles.back}>
           <BackButton />
       </View>
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: theme.background}]}>
           <ScrollView>
                   <View style={styles.imageContainer}>
                       <Image source={{ uri: image }} style={styles.image} />
