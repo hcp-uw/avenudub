@@ -6,6 +6,7 @@ import { useContext } from 'react'
 import colors from '@/assets/colors'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { themeStore } from '@/stores/theme-store'
 
 // add user and email props later
 function Settings(props: { navigation: { navigate: (arg0: string) => void; }; }) {
@@ -13,6 +14,7 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
+  const { theme } = themeStore;
   // TODO: Figure out how to navigate lol
   const navigation = useNavigation();
 
@@ -84,9 +86,9 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
   if (!user.loggedIn) {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.loginContainer}>
+      <View style={[styles.loginContainer, { backgroundColor: theme.background }]}>
         <BackButton/>
-        <Text style={styles.p}>Username:</Text>
+        <Text style={[styles.p, { color: theme.text}]}>Username:</Text>
         <TextInput style={[
             styles.input, errors.includes("username") ? styles.input_error : null
             ]} 
@@ -97,7 +99,7 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
           <Text style ={{color: "red"}}>
             ⚠ Missing username
           </Text>}
-          <Text style={styles.p}>Password:</Text>
+          <Text style={[styles.p, { color: theme.text}]}>Password:</Text>
         <TextInput secureTextEntry={true} 
           style={[styles.input, errors.includes("password") ? styles.input_error : null]} 
           onChangeText={handlePassword} 
@@ -107,18 +109,18 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
             ⚠ Missing password
           </Text>}
         <TouchableOpacity onPress={() => props.navigation.navigate("forgot pw")}>
-          <Text>Forgot password?</Text>
+          <Text style={{ color: theme.text}}>Forgot password?</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.submitButton} onPress={() => handleLogin(true)}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => props.navigation.navigate("Admin Login")}>
-          <Text style={styles.subscripts}>
+          <Text style={[styles.subscripts, { color: theme.text}]}>
             Admin Login 
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => props.navigation.navigate("Register")}>
-          <Text style={styles.subscripts}>
+          <Text style={[styles.subscripts, { color: theme.text}]}>
             Don't have an account? Sign up for one
           </Text>
         </TouchableOpacity>
@@ -128,13 +130,13 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
   } 
   else { 
     return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       <BackButton/>
       <View style={styles.content}>
-        <Text style={styles.header}>
+        <Text style={[styles.header, { color: theme.text}]}>
           Settings
         </Text>
-        <Text style={styles.p}>
+        <Text style={[styles.p, { color: theme.text}]}>
           Name: {"\n"}{user?.username} {"\n"}{"\n"}
           Email: {"\n"}{user?.email} {"\n"}{"\n"}
           Password: {"\n"}

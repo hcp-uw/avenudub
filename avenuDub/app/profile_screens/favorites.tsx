@@ -1,12 +1,15 @@
 import BackButton from '@/components/BackButton'
+import { themeStore } from '@/stores/theme-store';
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
 export default function Favorites() {
+  const { theme } = themeStore;
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
         <BackButton/>
-        <Text style={styles.title}>Favorite Locations</Text>
+        <Text style={[styles.title, { color: theme.text}]}>Favorite Locations</Text>
     </View>
   )
 }

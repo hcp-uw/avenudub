@@ -4,13 +4,15 @@ import { useNavigation } from 'expo-router';
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { observer } from 'mobx-react-lite';
 
-export default function UserProfile() {
+const UserProfile = observer(() => {
   const navigation = useNavigation();
+  const { theme } = themeStore;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Account Information</Text>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <Text style={[styles.title, { color: theme.text }]}>Account Information</Text>
 
       <TouchableOpacity
         style={styles.optionBox}
@@ -35,7 +37,7 @@ export default function UserProfile() {
       
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {
@@ -43,7 +45,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
     padding: 30,
     paddingTop: 0,
-    backgroundColor: '#ffffffff',
+    // backgroundColor: '#ffffffff', // change this
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: '500',
     marginBottom: 16,
-    color: '#333',
+    // color: '#333', // change this
   },
   optionBox: {
     width: '100%',
@@ -79,3 +81,5 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
 })
+
+export default UserProfile;
