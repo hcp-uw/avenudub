@@ -5,6 +5,7 @@ import MapView from 'react-native-maps';
 import { useState, useEffect } from "react";
 import { geocodeAddress } from "@/components/maps"; // Adjust the import path as needed
 import React from "react";
+import { themeStore } from "@/stores/theme-store";
 
 const businesses = [
   { id: "1", name: "Business A", distance: "2 miles", address: "2321 West Bridge Ave", image: "https://as2.ftcdn.net/v2/jpg/01/32/39/21/1000_F_132392106_ZnNsHtzvnxRHxtYwjRTmJKT7CZfOjoN9.jpg",
@@ -38,6 +39,7 @@ const crimes= [
 ];
 export default function HomeScreen(props: { navigation: { navigate: (arg0: string) => void; }; }){
   const [coords, setCoords] = useState<{latitude: number; longitude: number }[]>([]);
+  const { theme } = themeStore;
 
     useEffect(() => {
       const fetchCoordinates = async () => {
@@ -55,7 +57,7 @@ export default function HomeScreen(props: { navigation: { navigate: (arg0: strin
       resizeMode="cover"
     >
       */
-    <View style = {styles.container}>
+    <View style = {[styles.container, {backgroundColor: theme.background}]}>
     <SafeAreaView style={styles.textBlock}>
       <Text style = {styles.text}>Welcome Back!</Text>
     </SafeAreaView>
@@ -161,7 +163,6 @@ const styles = StyleSheet.create({
   buttonContainer:{
     flexDirection: 'row',
     margin: 10,
-    backgroundColor:'white',
   },
   mapContainer:{
     width: "95%",
