@@ -1,4 +1,4 @@
-import {Text,Button,View, StyleSheet,ImageBackground,SafeAreaView} from "react-native";
+import {Text,Button,View, StyleSheet,ImageBackground, TextInput} from "react-native";
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import { NavigationContainer } 
          from '@react-navigation/native';
@@ -19,7 +19,7 @@ function RatingsComponent({placeId}: RatingsProps) {
     const filledStars: number[] = [];
     const [filled, setFilled] = useState(filledStars);
     const [rating, setRating] = useState(0);
-
+    const [text, setText] = useState("");
     async function handleRating (star: number){
       setRating(star)
       // just realized that we need to make a review form to put in
@@ -30,6 +30,12 @@ function RatingsComponent({placeId}: RatingsProps) {
           <TouchableOpacity onPress={() => handleRating(item)}>
                 <Ionicons name="star" size={30} color= {item <= rating? "#5e30b3" : "black"}/>
         </TouchableOpacity>
+        <TextInput 
+        placeholder="Review" 
+        value = {text}
+        onChangeText={setText}
+        multiline={true}
+        />
         </View>
       ));
     return(
