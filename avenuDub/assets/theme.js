@@ -1,5 +1,5 @@
 export const darkMode = {
-  background: "#0e0e0eff",
+  background: "#1b1919ff",
   text: "#ffffffff",
 }
 
