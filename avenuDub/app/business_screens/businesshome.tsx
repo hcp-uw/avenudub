@@ -18,6 +18,7 @@ import { useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBarComponent from "../../components/searchbar";
 import { themeStore } from '@/stores/theme-store';
+import { observer } from 'mobx-react-lite';
 //import FadeImage from '@/components/FadeImage';
 
 const data = [
@@ -38,7 +39,7 @@ const data = [
   }
 ];
 
-function Business() {
+const Business = observer(() => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredInput, setFilteredInput] = useState(data);
   const { theme } = themeStore;
@@ -92,7 +93,7 @@ function Business() {
       />
     </View>
   )
-}
+})
 const styles = StyleSheet.create({
   header: {
     fontSize: 50,

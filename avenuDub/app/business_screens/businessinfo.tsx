@@ -25,6 +25,7 @@ import MapView from 'react-native-maps';
 import RatingsComponent from '@/components/RatingsComponent';
 import Favorite from '@/components/Favorite';
 import { themeStore } from '@/stores/theme-store';
+import { observer } from 'mobx-react-lite';
 
 type BusinessInfoParams = {
    business:{
@@ -68,7 +69,7 @@ const openInMaps = async (latitude: number, longitude: number, label: string) =>
       }
   };
 
-const BusinessesInfoScreen = () => {
+const BusinessesInfoScreen = observer(() => {
   // const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   const route = useRoute<RouteProp<{ BusinessesInfo: BusinessInfoParams }, 'BusinessesInfo'>>();
   const {business} = route.params;
@@ -213,9 +214,7 @@ const BusinessesInfoScreen = () => {
       
       </>
     )
-
-
-}
+})
 
 const styles = StyleSheet.create({
     container:{
