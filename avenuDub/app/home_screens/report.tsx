@@ -6,8 +6,9 @@ import UserContext from '@/components/user-context'
 import { useContext } from 'react'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { themeStore } from '@/stores/theme-store'
+import { observer } from 'mobx-react-lite'
 
-function Report() {
+const Report = observer(() => {
   const { user } = useContext(UserContext);
   const { theme } = themeStore;
 
@@ -159,7 +160,7 @@ function Report() {
     </View>
     </TouchableWithoutFeedback>
   )
-}
+})
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -254,4 +255,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Report
+export default Report;

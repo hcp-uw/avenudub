@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { geocodeAddress } from "@/components/maps"; // Adjust the import path as needed
 import React from "react";
 import { themeStore } from "@/stores/theme-store";
+import { observer } from "mobx-react-lite";
 
 const businesses = [
   { id: "1", name: "Business A", distance: "2 miles", address: "2321 West Bridge Ave", image: "https://as2.ftcdn.net/v2/jpg/01/32/39/21/1000_F_132392106_ZnNsHtzvnxRHxtYwjRTmJKT7CZfOjoN9.jpg",
@@ -37,7 +38,10 @@ const crimes= [
   { id: "5", name: "Bike Theft", description: "Someone was very determined to not walk home. Must have had sore legs after the gym.", 
     location: "IMA", address: "3924 Montlake Blvd NE, Seattle, WA 98195"},
 ];
-export default function HomeScreen(props: { navigation: { navigate: (arg0: string) => void; }; }){
+const HomeScreen = observer((props: {
+  navigation: { navigate: (arg0: string) => void };
+}) => {
+
   const [coords, setCoords] = useState<{latitude: number; longitude: number }[]>([]);
   const { theme } = themeStore;
 
@@ -104,7 +108,7 @@ export default function HomeScreen(props: { navigation: { navigate: (arg0: strin
     </View>
     //</ImageBackground>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {
@@ -185,3 +189,5 @@ map:{
   flex:1,
  }
 });
+
+export default HomeScreen;
