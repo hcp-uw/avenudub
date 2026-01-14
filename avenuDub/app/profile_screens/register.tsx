@@ -2,10 +2,11 @@ import colors from '@/assets/colors';
 import BackButton from '@/components/BackButton';
 import UserContext from '@/components/user-context';
 import { useNavigation } from 'expo-router';
+import { observer } from 'mobx-react-lite';
 import React, { useContext, useState } from 'react'
 import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 
-function Register() {
+const Register = observer(() => {
   const { user, setUser } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -145,7 +146,7 @@ function Register() {
     </View>
     </TouchableWithoutFeedback>
   )        
-}
+})
 
 const styles = StyleSheet.create({
   p: {

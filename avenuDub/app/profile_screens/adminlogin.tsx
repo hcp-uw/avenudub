@@ -4,8 +4,9 @@ import UserContext from '@/components/user-context';
 import React, { useContext, useState } from 'react'
 import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
 
-function Adminlogin() {
+const Adminlogin = observer(() => {
   const { user, setUser } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -78,7 +79,7 @@ function Adminlogin() {
     </View>
     </TouchableWithoutFeedback>
   )        
-}
+})
 
 const styles = StyleSheet.create({
   header: {

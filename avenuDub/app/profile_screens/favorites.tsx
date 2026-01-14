@@ -1,9 +1,10 @@
 import BackButton from '@/components/BackButton'
 import { themeStore } from '@/stores/theme-store';
+import { observer } from 'mobx-react-lite';
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-export default function Favorites() {
+const Favorites = observer(() => {
   const { theme } = themeStore;
 
   return (
@@ -12,7 +13,7 @@ export default function Favorites() {
         <Text style={[styles.title, { color: theme.text}]}>Favorite Locations</Text>
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
     container: {
@@ -32,3 +33,5 @@ const styles = StyleSheet.create({
     color: '#333',
   },
 })
+
+export default Favorites;

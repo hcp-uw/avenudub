@@ -2,8 +2,9 @@ import BackButton from '@/components/BackButton'
 import { useNavigation } from 'expo-router';
 import React from 'react'
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Touchable } from 'react-native'
+import { observer } from 'mobx-react-lite';
 
-function ForgotPW() {
+const ForgotPW = observer(() => {
   // reset password button should use reset-password route
   async function resetPassword(email: string) {
       // implement reset logic here
@@ -46,7 +47,7 @@ function ForgotPW() {
       </TouchableOpacity>
     </View>
   )
-}
+})
 
 export default ForgotPW
 

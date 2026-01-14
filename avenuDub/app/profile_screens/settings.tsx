@@ -7,9 +7,10 @@ import colors from '@/assets/colors'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { themeStore } from '@/stores/theme-store'
+import { observer } from 'mobx-react-lite'
 
 // add user and email props later
-function Settings(props: { navigation: { navigate: (arg0: string) => void; }; }) {
+const Settings = observer((props: { navigation: { navigate: (arg0: string) => void; }; }) => {
   const { user, setUser } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -154,7 +155,7 @@ function Settings(props: { navigation: { navigate: (arg0: string) => void; }; })
     </View>
     )
   }
-}
+})
 
 const styles = StyleSheet.create({
   subscripts : {
