@@ -14,6 +14,8 @@ import UserContext from "@/components/user-context";
 import { useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons'; 
 import SearchBarComponent from '@/components/searchbar';
+import { themeStore } from '@/stores/theme-store';
+import { observer } from 'mobx-react-lite';
 
 const data= [
   { id: "1", name:"Attempted Robbery", description: "Armed Suspect attempted to hijack the dorm", 
@@ -28,11 +30,11 @@ const data= [
     location: "IMA", address: "a place"}
 ];
 
-const Safety: React.FC = () => {
+const Safety = observer(() => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredInput, setFilteredInput] = useState(data);
   const range = 30;
-  
+  const { theme } = themeStore;
   
   useEffect(() => {
     async function getReport() {
@@ -53,7 +55,7 @@ const Safety: React.FC = () => {
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   return (
-    <View style={styles.container}>
+    <View style={[ styles.container, {backgroundColor: theme.background }]}>
       {/*Buttons on the side*/}
       <View style={styles.floatingButton}>
         <TouchableOpacity
@@ -95,7 +97,7 @@ const Safety: React.FC = () => {
       />
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
   header: {

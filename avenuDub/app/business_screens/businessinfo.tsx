@@ -24,6 +24,8 @@ import {Marker} from 'react-native-maps';
 import MapView from 'react-native-maps';
 import RatingsComponent from '@/components/RatingsComponent';
 import Favorite from '@/components/Favorite';
+import { themeStore } from '@/stores/theme-store';
+import { observer } from 'mobx-react-lite';
 
 type BusinessInfoParams = {
    business:{
@@ -67,39 +69,40 @@ const openInMaps = async (latitude: number, longitude: number, label: string) =>
       }
   };
 
-const BusinessesInfoScreen = () => {
-    // const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
-    const route = useRoute<RouteProp<{ BusinessesInfo: BusinessInfoParams }, 'BusinessesInfo'>>();
-    const {business} = route.params;
-    const {id, name, distance, address, image, foodType, priceRange, discounts} = business;
+const BusinessesInfoScreen = observer(() => {
+  // const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const route = useRoute<RouteProp<{ BusinessesInfo: BusinessInfoParams }, 'BusinessesInfo'>>();
+  const {business} = route.params;
+  const {id, name, distance, address, image, foodType, priceRange, discounts} = business;
 
-    const [coords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
-    const [isFavorite, setIsFavorite] = useState(false);
-    const { user } = useContext(UserContext);
+  const [coords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const { user } = useContext(UserContext);
+  const { theme } = themeStore;
 
   useEffect(() => {
-        function makeFavorite(){
-          fetch(`/business_screens/businessinfo/${business.id}/${user.username}`, {
-            method: "POST",
-          }).then((response) => response.json())
-          .then((data) => {
-            console.log(data);
-          })
-        }
-        function removeFavorite(){
-          fetch(`/business_screens/businessinfo/${business.id}/${user.username}`, {
-            method: "POST",
-          }).then((response) => response.json())
-          .then((data) => {
-            console.log(data);
-          })
-        }
-        if(isFavorite){
-           removeFavorite();
-        }else{
-            makeFavorite();
-        }
-      }, [isFavorite]);
+    function makeFavorite(){
+      fetch(`/business_screens/businessinfo/${business.id}/${user.username}`, {
+        method: "POST",
+      }).then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+    }
+    function removeFavorite(){
+      fetch(`/business_screens/businessinfo/${business.id}/${user.username}`, {
+        method: "POST",
+      }).then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+      })
+    }
+    if (isFavorite){
+        removeFavorite();
+    } else{
+        makeFavorite();
+    }
+  }, [isFavorite]);
       
   useEffect(() => {
     const fetchCoordinates = async () => {
@@ -111,7 +114,7 @@ const BusinessesInfoScreen = () => {
         method: 'POST',
     }) .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
     })
 
     fetchCoordinates();
@@ -119,99 +122,99 @@ const BusinessesInfoScreen = () => {
     fetchCoordinates();
   }, [isFavorite]);
 
+
+
   function toggleFavorite() {
     setIsFavorite(!isFavorite);
   }
-    return(
-        <>
-        <View style={styles.back}>
-            <BackButton />
-        </View>
-        <View style={styles.container}>
-            <ScrollView>
-                    <View style={styles.imageContainer}>
-                        <Image source={{ uri: image }} style={styles.image} />
-                        <Text style={styles.headers}>{name}</Text>
-                        <View style={styles.favoriteContainer}>
-                            <Text style={styles.subtext}>Favorite:</Text>
-                            <Favorite toggleFavorite={toggleFavorite}/>
-                        </View>
-                    </View>
-                    <View style={styles.infoContainer}>
-                        <View style={styles.categoryContainer}>
-                            <Text style={styles.subtext}>Category:</Text>
-                            <Text style={{fontSize: 20}}>{foodType}</Text>
-                        </View>
-                        {priceRange === "$" && (
-                            <View style={styles.priceRange}>
-                                <Text style={styles.subtext}>Price Range:</Text>
-                                <Text style={styles.priceText}>$</Text>
-                            </View>
-                        )}
-                        {priceRange === "$$" && (
-                            <View style={styles.priceRange}>
-                                <Text style={styles.subtext}>Price Range:</Text>
-                                <Text style={styles.priceText}>$$</Text>
-                            </View>
-                        )}
-                        {priceRange === "$$$" && (
-                            <View style={styles.priceRange}>
-                                <Text style={styles.text}>Price Range:</Text>
-                                <Text style={styles.priceText}>$$$</Text>
-                            </View>
-                        )}
-                    </View>
-                    <View style={styles.addresses}>
-                        <Text style={styles.address}>{address}</Text>
-                        {coords && (
-                        <TouchableOpacity style={styles.addressButton} 
-                        onPress={() => openInMaps(coords.latitude, coords.longitude, business.name)}>
-                            <Text style={styles.addressText}>
-                                Take me there!
-                            </Text>
-                        </TouchableOpacity>
-                        )}
-                        <Text style={styles.subtext}>
-                            Discounts Available:
-                        </Text>
-                        {discounts.map((item) => (
-                            <Text key={item}>{item}</Text>
-                    ))}
-                    </View>
-                    <View style={styles.hoursContainer}>
-                        <Text style={styles.headers}>Hours:</Text>
-                        {business.hours.map((item) => (
-                            <Text key={item} style={styles.text}>{item}</Text>
-                    ))}
-                    </View>
-                    <View>
-                        <RatingsComponent/>
-                    </View>
-                    {coords && (
-                        <View style={styles.mapContainer}>
-                            <Text style={styles.subtext}>Location on Map:</Text>
-                            <MapView
-                                style={styles.map}
-                                initialRegion={{
-                                latitude: coords?.latitude || 0,
-                                longitude: coords?.longitude || 0,
-                                latitudeDelta: 0.02,
-                                longitudeDelta: 0.02,
-                                }}
-                            >
-                            {coords && (
-                                <Marker coordinate={coords} title={business.name} description={business.address} />
-                            )}
-                            </MapView>
-                            </View>)}
-                </ScrollView>
-            </View>
-        
-        </>
+  return(
+      <>
+      <View style={styles.back}>
+          <BackButton />
+      </View>
+      <View style={[styles.container, { backgroundColor: theme.background}]}>
+          <ScrollView>
+                  <View style={styles.imageContainer}>
+                      <Image source={{ uri: image }} style={styles.image} />
+                      <Text style={styles.headers}>{name}</Text>
+                      <View style={styles.favoriteContainer}>
+                          <Text style={styles.subtext}>Favorite:</Text>
+                          <Favorite toggleFavorite={toggleFavorite}/>
+                      </View>
+                  </View>
+                  <View style={styles.infoContainer}>
+                      <View style={styles.categoryContainer}>
+                          <Text style={styles.subtext}>Category:</Text>
+                          <Text style={{fontSize: 20}}>{foodType}</Text>
+                      </View>
+                      {priceRange === "$" && (
+                          <View style={styles.priceRange}>
+                              <Text style={styles.subtext}>Price Range:</Text>
+                              <Text style={styles.priceText}>$</Text>
+                          </View>
+                      )}
+                      {priceRange === "$$" && (
+                          <View style={styles.priceRange}>
+                              <Text style={styles.subtext}>Price Range:</Text>
+                              <Text style={styles.priceText}>$$</Text>
+                          </View>
+                      )}
+                      {priceRange === "$$$" && (
+                          <View style={styles.priceRange}>
+                              <Text style={styles.text}>Price Range:</Text>
+                              <Text style={styles.priceText}>$$$</Text>
+                          </View>
+                      )}
+                  </View>
+                  <View style={styles.addresses}>
+                      <Text style={styles.address}>{address}</Text>
+                      {coords && (
+                      <TouchableOpacity style={styles.addressButton} 
+                      onPress={() => openInMaps(coords.latitude, coords.longitude, business.name)}>
+                          <Text style={styles.addressText}>
+                              Take me there!
+                          </Text>
+                      </TouchableOpacity>
+                      )}
+                      <Text style={styles.subtext}>
+                          Discounts Available:
+                      </Text>
+                      {discounts.map((item) => (
+                          <Text key={item}>{item}</Text>
+                  ))}
+                  </View>
+                  <View style={styles.hoursContainer}>
+                      <Text style={styles.headers}>Hours:</Text>
+                      {business.hours.map((item) => (
+                          <Text key={item} style={styles.text}>{item}</Text>
+                  ))}
+                  </View>
+                  <View>
+                      <RatingsComponent placeId={Number(business.id)}/>
+                  </View>
+                  {coords && (
+                      <View style={styles.mapContainer}>
+                          <Text style={styles.subtext}>Location on Map:</Text>
+                          <MapView
+                              style={styles.map}
+                              initialRegion={{
+                              latitude: coords?.latitude || 0,
+                              longitude: coords?.longitude || 0,
+                              latitudeDelta: 0.02,
+                              longitudeDelta: 0.02,
+                              }}
+                          >
+                          {coords && (
+                              <Marker coordinate={coords} title={business.name} description={business.address} />
+                          )}
+                          </MapView>
+                          </View>)}
+              </ScrollView>
+          </View>
+      
+      </>
     )
-
-
-}
+})
 
 const styles = StyleSheet.create({
     container:{

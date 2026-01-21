@@ -5,14 +5,18 @@ import { Text, View, StyleSheet, TextInput, TouchableOpacity, Modal, ScrollView 
 import UserContext from '@/components/user-context'
 import { useContext } from 'react'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { themeStore } from '@/stores/theme-store'
+import { observer } from 'mobx-react-lite'
 
-function Report() {
+const Report = observer(() => {
   const { user } = useContext(UserContext);
+  const { theme } = themeStore;
+
   if (!user.loggedIn) {
     return (
-      <View style={styles.notLoggedInContainer}>
+      <View style={[styles.notLoggedInContainer, { backgroundColor: theme.background }]}>
         <BackButton/>
-        <Text style={styles.notLoggedIn}>
+        <Text style={[styles.notLoggedIn, { color: theme.text }]}>
           In order to prevent spam, you must be logged in to submit a report.{"\n"}
           Please login through the settings page.
         </Text>
@@ -83,7 +87,7 @@ function Report() {
   }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       <BackButton/>
       <ScrollView>
       <Modal
@@ -104,10 +108,10 @@ function Report() {
           </View>
         </View>
       </Modal>
-      <Text style={styles.header}>
+      <Text style={[styles.header, { color: theme.text }]}>
         Report a {"\n"}Hazard
       </Text>
-      <Text>
+      <Text style={[styles.p, { color: theme.text }]}>
         Report Title
       </Text>
       <TextInput 
@@ -120,7 +124,7 @@ function Report() {
         <Text style={{color: "red"}}>
         ⚠ Please input a title
         </Text>}
-      <Text>
+      <Text style={[styles.p, { color: theme.text }]}>
         Location
       </Text>
       <TextInput 
@@ -133,7 +137,7 @@ function Report() {
         <Text style={{color: "red"}}>
         ⚠ Please input a location
         </Text>}
-      <Text>
+      <Text style={[styles.p, { color: theme.text }]}>
         Description
       </Text>
       <TextInput
@@ -156,7 +160,7 @@ function Report() {
     </View>
     </TouchableWithoutFeedback>
   )
-}
+})
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -180,6 +184,11 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  p: {
+    fontSize: 16,
+    marginTop: 10,
+    marginBottom: 5
+  },
   closeButton: {
     backgroundColor: colors.primary,
     justifyContent: 'center',
@@ -201,14 +210,14 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 50,
-    textAlign: 'center',
+    textAlign: 'left',
   },
   container: {
     flex: 1,
     marginHorizontal: 0,
     padding: 30,
-    paddingTop: 50,
-    backgroundColor: '#f2e8dc',
+    paddingTop: 100,
+    backgroundColor: '#ffffffff',
   },
   input: {
     height: 40,
@@ -233,7 +242,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     width: 225,
     height: 60,
-    borderRadius: 5,
+    borderRadius: 20,
   },
   buttonText: {
     color: 'white',
@@ -246,4 +255,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Report
+export default Report;
