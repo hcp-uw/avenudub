@@ -1,12 +1,10 @@
 import React from 'react';
 
-import {NavigationContainer} from '@react-navigation/native';
-
 import Tabs from './tabs';
+import { observer } from 'mobx-react-lite';
 
-export default function App() {
+const App = observer(() => {
+  return <Tabs />;
+});
 
-   return (
-      <Tabs />
-   )
-}
+export default App;

@@ -9,14 +9,16 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //import { Button } from '@react-navigation/elements';
 import { TouchableOpacity } from 'react-native';
-import Settings from "../home_screens/settings";
+import Settings from "../profile_screens/settings";
 import Report from "../home_screens/report";
-import Register from "../home_screens/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
-import adminlogin from "../home_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import Register from "../profile_screens/register" // REMOVE WHEN NAVIGATION IS FIGURED OUT
+import adminlogin from "../profile_screens/adminlogin"; // REMOVE WHEN NAVIGATION IS FIGURED OUT
 import UserContext from "@/components/user-context";
 import { useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBarComponent from "../../components/searchbar";
+import { themeStore } from '@/stores/theme-store';
+import { observer } from 'mobx-react-lite';
 //import FadeImage from '@/components/FadeImage';
 
 const data = [
@@ -37,17 +39,19 @@ const data = [
   }
 ];
 
-function Business() {
+const Business = observer(() => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredInput, setFilteredInput] = useState(data);
+  const { theme } = themeStore;
 
   useEffect(() => {
     setFilteredInput(data);
   },[data]);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   
+  
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
       {/*Buttons on the side*/}
       <View style={styles.floatingButton}>
         <TouchableOpacity
@@ -89,7 +93,7 @@ function Business() {
       />
     </View>
   )
-}
+})
 const styles = StyleSheet.create({
   header: {
     fontSize: 50,
@@ -105,7 +109,7 @@ const styles = StyleSheet.create({
     //marginHorizontal: 0,
     flexDirection: 'column',
     padding: 50,
-    backgroundColor: '#f2e8dc',
+    backgroundColor: 'white',
   },
   businessText: {
     paddingTop: 5,
@@ -131,13 +135,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     shadowColor: '#171717',
     shadowOffset: {width: -2, height: 4},
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.6,
     shadowRadius: 3,
     margin: 15,
+    borderWidth: 1,
     borderRadius: 30,
   },
   floatingButton:{
-    position: 'sticky',
+    position: 'static',
     paddingTop:10, 
     flexDirection: 'row', 
     justifyContent: 'space-between', 

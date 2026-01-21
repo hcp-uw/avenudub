@@ -14,6 +14,8 @@ import UserContext from "@/components/user-context";
 import { useState } from "react";
 import Ionicons from 'react-native-vector-icons/Ionicons'; 
 import SearchBarComponent from '@/components/searchbar';
+import { themeStore } from '@/stores/theme-store';
+import { observer } from 'mobx-react-lite';
 
 const data= [
   { id: "1", name:"Attempted Robbery", description: "Armed Suspect attempted to hijack the dorm", 
@@ -28,17 +30,32 @@ const data= [
     location: "IMA", address: "a place"}
 ];
 
-const Safety: React.FC = () => {
+const Safety = observer(() => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredInput, setFilteredInput] = useState(data);
-
+  const range = 30;
+  const { theme } = themeStore;
+  
   useEffect(() => {
-    setFilteredInput(data);
-  }, [data]);
+    async function getReport() {
+      try {
+        // should range just be 30? 
+        const response = await fetch(`/reports_screens/safetyhome/${range}`, {
+          method: "GET",
+        });
+        const data = await response.json();
+        console.log(data);
+        setFilteredInput(data);
+      } catch (error) {
+        console.error("Error fetching report:", error);
+      }
+    }
+    getReport();
+  }, [data, range]);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   return (
-    <View style={styles.container}>
+    <View style={[ styles.container, {backgroundColor: theme.background }]}>
       {/*Buttons on the side*/}
       <View style={styles.floatingButton}>
         <TouchableOpacity
@@ -80,7 +97,7 @@ const Safety: React.FC = () => {
       />
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
   header: {
@@ -96,7 +113,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     //marginHorizontal: 0,
     padding: 50,
-    backgroundColor: '#f2e8dc',
+    backgroundColor: 'white',
   },
   crimeText: {
     paddingTop: 5,
@@ -113,13 +130,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     shadowColor: '#171717',
     shadowOffset: {width: -2, height: 4},
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.4,
     shadowRadius: 3,
     margin: 15,
+    borderWidth: 1,
     borderRadius: 30,
   },
   floatingButton:{
-    position: 'sticky',
+    position: 'static',
     paddingTop:10, 
     flexDirection: 'row', 
     justifyContent: 'space-between', 

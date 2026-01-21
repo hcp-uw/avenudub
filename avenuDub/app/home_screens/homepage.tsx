@@ -5,6 +5,8 @@ import MapView from 'react-native-maps';
 import { useState, useEffect } from "react";
 import { geocodeAddress } from "@/components/maps"; // Adjust the import path as needed
 import React from "react";
+import { themeStore } from "@/stores/theme-store";
+import { observer } from "mobx-react-lite";
 
 const businesses = [
   { id: "1", name: "Business A", distance: "2 miles", address: "2321 West Bridge Ave", image: "https://as2.ftcdn.net/v2/jpg/01/32/39/21/1000_F_132392106_ZnNsHtzvnxRHxtYwjRTmJKT7CZfOjoN9.jpg",
@@ -36,8 +38,12 @@ const crimes= [
   { id: "5", name: "Bike Theft", description: "Someone was very determined to not walk home. Must have had sore legs after the gym.", 
     location: "IMA", address: "3924 Montlake Blvd NE, Seattle, WA 98195"},
 ];
-export default function HomeScreen(props: { navigation: { navigate: (arg0: string) => void; }; }){
+const HomeScreen = observer((props: {
+  navigation: { navigate: (arg0: string) => void };
+}) => {
+
   const [coords, setCoords] = useState<{latitude: number; longitude: number }[]>([]);
+  const { theme } = themeStore;
 
     useEffect(() => {
       const fetchCoordinates = async () => {
@@ -55,7 +61,7 @@ export default function HomeScreen(props: { navigation: { navigate: (arg0: strin
       resizeMode="cover"
     >
       */
-    <View style = {styles.container}>
+    <View style = {[styles.container, {backgroundColor: theme.background}]}>
     <SafeAreaView style={styles.textBlock}>
       <Text style = {styles.text}>Welcome Back!</Text>
     </SafeAreaView>
@@ -84,29 +90,29 @@ export default function HomeScreen(props: { navigation: { navigate: (arg0: strin
             </MapView>
         </View>
       <View style = {styles.buttonContainer}>
-      <TouchableOpacity
+      {/* /* <TouchableOpacity
         //title="Go to Settings"
         style = {styles.button} 
         onPress={() => props.navigation.navigate('Settings')}
       >
         <Ionicons name="settings-outline" color="black" size={40}/>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity
         //title="Go to Reports"
         onPress={() => props.navigation.navigate('Reports')}
         style = {styles.button}
       > 
        <Ionicons name="checkmark-circle-outline" color="black" size={40}/>
-      </TouchableOpacity>
+      </TouchableOpacity> */
       </View>
     </View>
     //</ImageBackground>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor:'#f2e8dc',
+    backgroundColor:'white',
     flexDirection: 'column', // Align children horizontally
     justifyContent: 'space-around', // Evenly space buttons 
     textAlign: 'center',
@@ -161,7 +167,6 @@ const styles = StyleSheet.create({
   buttonContainer:{
     flexDirection: 'row',
     margin: 10,
-    backgroundColor:'#f2e8dc',
   },
   mapContainer:{
     width: "95%",
@@ -184,3 +189,5 @@ map:{
   flex:1,
  }
 });
+
+export default HomeScreen;
