@@ -167,9 +167,9 @@ def updateLog(data):
         crimeData = []
 
         crimeData.append(formatDate(i[0]))
-        crimeData.append((i[1][:i[1].index("\n")] + i[1][i[1].index("\n")+2:]))
+        crimeData.append((i[1][:i[1].index("\n")] + i[1][i[1].index("\n")+1:]))
         crimeData.append(i[2])
-        crimeData.append((i[3][:i[3].index("\n")]+ " " + i[3][i[3].index("\n")+2:]))
+        crimeData.append((i[3][:i[3].index("\n")]+ " " + i[3][i[3].index("\n")+1:]))
         crimeData.append(formatDate(i[5]))
         crimeData.append(formatDate(i[6]))
 

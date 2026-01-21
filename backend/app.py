@@ -3,6 +3,7 @@ from flask import request
 import accountManager
 import passmanage
 import mysqlcommands as sql
+import buildingInfo
 from datetime import datetime
 import rating_api
 import account_api
@@ -29,7 +30,7 @@ def logIn(user, passwd):
 # SETTINGS:
 # retrieves the user's info and favorites
 # params: userID
-# returns: {'success' : boolean, 'resp': {user': string, 'email':string, 'favorites':tuple of dictionaries}} ( resp is None if failure occurred)
+# returns: {'success' : boolean, 'resp': {user': string, 'email':string, 'favorites':tuple of dictionaries}} (resp is None if failure occurred)
 @app.route("/home_screens/settings/<userID>", methods=['GET'])
 def settings(userID):
     userdata = sql.tblGet('gen_user', columns=['username', 'email'], values={'user_id':userID})
@@ -48,7 +49,7 @@ def settings(userID):
 def addReport(location, type): 
     return Flask.jsonify({'success':sql.tblInsert("crime_log", values={'created_at': datetime.strftime(datetime.now, '%Y-%m-%d %H:%M:%S'), 'crime_type':type, 'address':location}).get('success')})
 
-# SAFETY INFO: (UNFINISHED) #################################################################################################
+# SAFETY INFO: (UNTESTED) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # retrieves all criminal incidents within a specified timeframe
 # params: time range in days before current day
 # returns: {'success' : bool, 'resp' : 2D list} - each element contains: [created_at, case_num, crime_type, address, case_open, case_close]
@@ -73,15 +74,24 @@ def addFavorite(user, businessID):
 def removeFavorite(user, businessID):
     return Flask.jsonify({'success':sql.entryDelete("user_favorites", values={'user_id':user, 'place_id':businessID}).get('success')})
  
-# GET BUILDINGS: (UNFINISHED) #################################################################################################
-# retrives all buildings that meet a certain criteria
-# params: filter??
-# returns: list of buildings
-@app.route("/business_screens/businesshome/<filter>", methods=['GET'])
-def getBuildings(filter):
-    # honestly, it might be easier to just do the google api call instead of using the database
-    # reviews WILL be obtained via database tho
-    return
+# GET BUILDINGS: (UNTESTED) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# retrives all buildings that meet a certain criteria (without filter, the criteria is geographic (see buildingInfo.py))
+# params: filter (None by default)
+# returns: {'success' : boolean, 'resp' : 2D list of dicts} (see below for format) (resp is None if failure occurred, string if filter NOT None)
+# 
+# {name, place_id, types, phone, address, rating, google_maps_link, latitude, longitude, review_summary, opening_hours} 
+@app.route("/business_screens/businesshome/", methods=['GET'])
+def getBuildings(filter = None):
+    if filter:
+        return Flask.jsonify({'success': False, 'resp':"feature not yet implemented!"})
+
+    try:
+        resp = buildingInfo.format_building_data()
+        return Flask.jsonify({'success': True, 'resp':resp}) 
+    except Exception as e:
+        return Flask.jsonify({'success': False, 'resp':None}) 
+        
+        
 # TODO: THIS LMFAO
 
 # AUTH API ROUTES ###########################################################################################################
