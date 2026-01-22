@@ -82,7 +82,7 @@ const BusinessesInfoScreen = observer(() => {
 
   useEffect(() => {
     function makeFavorite(){
-      fetch(`/business_screens/businessinfo/${business.id}/${user.username}`, {
+      fetch(`/business_screens/businessinfo/${user.username}/${business.id}/${true}`, {
         method: "POST",
       }).then((response) => response.json())
       .then((data) => {
@@ -90,7 +90,7 @@ const BusinessesInfoScreen = observer(() => {
       })
     }
     function removeFavorite(){
-      fetch(`/business_screens/businessinfo/${business.id}/${user.username}`, {
+      fetch(`/business_screens/businessinfo/${user.username}/${business.id}/${false}`, {
         method: "POST",
       }).then((response) => response.json())
       .then((data) => {
@@ -110,18 +110,10 @@ const BusinessesInfoScreen = observer(() => {
       if (location) {
         setCoords({ latitude: location.latitude, longitude: location.longitude });
       }
-    fetch(`/business_screens/businessinfo/${id}/${user.username}`,{
-        method: 'POST',
-    }) .then((response) => response.json())
-      .then((data) => {
-        // console.log(data);
-    })
-
     fetchCoordinates();
     };
     fetchCoordinates();
-  }, [isFavorite]);
-
+  });
 
 
   function toggleFavorite() {

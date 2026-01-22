@@ -36,7 +36,7 @@ const Report = observer(() => {
 
   useEffect(() => {
     function sendReport(){
-      fetch(`/home_screens/report/${title}/${location}/${desc}`, {
+      fetch(`/home_screens/report/${location}}/${title}/${desc}`, {
         method: "POST",
       }).then((response) => response.json())
       .then((data) => {

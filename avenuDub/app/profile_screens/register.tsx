@@ -60,15 +60,15 @@ const Register = observer(() => {
       });
       const resData = await response.json();
       if (response.ok) {
-        const newUserId = resData.userId || resData.id || 0;
-        const favorites = Array.isArray(resData.favorites) ? resData.favorites : [];
-        setUser({ username: resData.username || username, 
-                  email: resData.email || email, 
-                  userId: newUserId, favorites: favorites, loggedIn: true });
+        const newUserId = resData.user.user_id || 0;
+        //const favorites = Array.isArray(resData.favorites) ? resData.favorites : [];
+        setUser({ username: resData.user.username || username, 
+                  email: resData.user.email || email, 
+                  userId: newUserId, favorites: [], loggedIn: true });
         try { (navigation as any).navigate('Home'); } catch {}
       } else {
         // server returned an error
-        const msg = resData?.message || resData?.error || 'Registration failed';
+        const msg = resData?.error || 'Registration failed';
         setErrors(prev => [...prev, msg]);
       }
 
