@@ -172,6 +172,7 @@ def updateLog(data):
         crimeData.append((i[3][:i[3].index("\n")]+ " " + i[3][i[3].index("\n")+1:]))
         crimeData.append(formatDate(i[5]))
         crimeData.append(formatDate(i[6]))
+        crimeData.append("")
 
         sql.tblInsert("crime_log", crimeData)
     trimLog(daysToLog)

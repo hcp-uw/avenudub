@@ -67,7 +67,7 @@ def register_user_route(user_data):
     Expected params: username, password, email
     """
     # Validate required fields
-    required_fields = ['username', 'password', 'email']
+    required_fields = {'username', 'password', 'email'}
     for field in required_fields:
         if field not in user_data or not user_data[field]:
             return {'error': f'Missing required field: {field}'}, 400

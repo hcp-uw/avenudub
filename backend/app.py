@@ -21,7 +21,7 @@ app = Flask(__name__)
 # verifies that a provided login/user exists
 # params: username/email, password
 # returns: {'success' : boolean, 'userID' : int} (userID is None if login failed)
-@app.route("/home_screens", methods=['GET'])
+@app.route("/home_screens/<user>/<password>", methods=['GET'])
 def logIn(user, passwd):
     if user and passwd:    
         return Flask.jsonify(passmanage.passcheck(user, passwd))
@@ -46,33 +46,28 @@ def settings(userID):
 # params: location, crime type,
 # returns: {'success' : boolean} depending on query success 
 @app.route("/home_screens/report/<location>/<type>/<description>", methods=['POST'])
-def addReport(location, type): 
-    return Flask.jsonify({'success':sql.tblInsert("crime_log", values={'created_at': datetime.strftime(datetime.now, '%Y-%m-%d %H:%M:%S'), 'crime_type':type, 'address':location}).get('success')})
+def addReport(location, type, description): 
+    return Flask.jsonify({'success':sql.tblInsert("crime_log", values={'created_at': datetime.strftime(datetime.now, '%Y-%m-%d %H:%M:%S'), 'crime_type':type, 'address':location, 'description':description}).get('success')})
 
 # SAFETY INFO: (UNTESTED) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # retrieves all criminal incidents within a specified timeframe
 # params: time range in days before current day
-# returns: {'success' : bool, 'resp' : 2D list} - each element contains: [created_at, case_num, crime_type, address, case_open, case_close]
+# returns: {'success' : bool, 'resp' : list of dicts} - each element contains: {created_at, case_num, crime_type, address, case_open, case_close}
 @app.route("/reports_screens/safetyhome/<range>", methods=['GET'])
 def getSafety(range):
     # not super sure if this notation works with my implementation :D
     return Flask.jsonify(sql.tblGet("crime_log", values={'created_at <= date_sub(now(), interval ' + str(range) + ' day)':''}))
 
-# ADD FAVORITE:
-# adds a specified location the user's favorites catalogue
-# params: userID, the business to favorite
+# ADD/REMOVE FAVORITE:
+# adds/deletes a specified location the user's favorites catalogue
+# params: userID, businessID, add (boolean)
 # returns: {'success' : boolean} depending on query success 
-@app.route("/business_screens/businessinfo/<userID>/<businessID>", methods=['POST'])
-def addFavorite(user, businessID):
-    return Flask.jsonify({'success':sql.tblInsert("user_favorites", values={'user_id':user, 'place_id':businessID}).get('success')})
-
-# REMOVE FAVORITE:
-# deletes a specified location the user's favorites catalogue
-# params: userID, the business to favorite
-# returns: {'success' : boolean} depending on query success 
-@app.route("/business_screens/businessinfo/<userID>/<businessID>/", methods=['POST'])
-def removeFavorite(user, businessID):
-    return Flask.jsonify({'success':sql.entryDelete("user_favorites", values={'user_id':user, 'place_id':businessID}).get('success')})
+@app.route("/business_screens/businessinfo/<userID>/<businessID>/<add>", methods=['POST'])
+def addFavorite(user, businessID, add):
+    if(add):
+        return Flask.jsonify({'success':sql.tblInsert("user_favorites", values={'user_id':user, 'place_id':businessID}).get('success')})
+    else:
+        return Flask.jsonify({'success':sql.entryDelete("user_favorites", values={'user_id':user, 'place_id':businessID}).get('success')})
  
 # GET BUILDINGS: (UNTESTED) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # retrives all buildings that meet a certain criteria (without filter, the criteria is geographic (see buildingInfo.py))
@@ -140,9 +135,12 @@ def update_profile(user_id):
 # RATINGS API ROUTES ##########################################################################################################
 
 # Create a new rating
-@app.route("/api/ratings", methods=['POST'])
-def create_rating():
-    rating_data = request.get_json(silent=True) or {}
+# params: ['place_id, 'user_id', 'rating_val' (1-5)]
+# returns: {'message': 'Rating created successfully', 'rating_id': 'generated_id'} on success
+#           {'error': dbResp.get('err')}
+@app.route("/api/ratings/<place_id>/<user_id>/<rating_val>", methods=['POST'])
+def create_rating(place_id, user_id, rating_val):
+    rating_data = {'place_id':place_id, 'user_id':user_id, 'rating_val':rating_val}
     body, status = rating_api.create_rating_route(rating_data)
     return Flask.jsonify(body), status
 
