@@ -24,8 +24,8 @@ app = Flask(__name__)
 @app.route("/home_screens/<user>/<password>", methods=['GET'])
 def logIn(user, passwd):
     if user and passwd:    
-        return Flask.jsonify(passmanage.passcheck(user, passwd))
-    return Flask.jsonify({'success':False, 'userID':None})
+        return jsonify(passmanage.passcheck(user, passwd))
+    return jsonify({'success':False, 'userID':None})
 
 # SETTINGS:
 # retrieves the user's info and favorites
@@ -38,8 +38,8 @@ def settings(userID):
     if userdata.get('success') and userdata.get('success'):
         userdata = userdata.get('resp')
         userfavs = userfavs.get('resp')
-        return Flask.jsonify({'success' : True, 'resp' : {'user':userdata.get('username'), 'email':userdata.get("email"), 'favorites': userfavs}})
-    return Flask.jsonify({'success' : True, 'resp' : None})
+        return jsonify({'success' : True, 'resp' : {'user':userdata.get('username'), 'email':userdata.get("email"), 'favorites': userfavs}})
+    return jsonify({'success' : True, 'resp' : None})
 
 # ADD REPORTS: 
 # adds an incident to the database of crime
@@ -47,7 +47,7 @@ def settings(userID):
 # returns: {'success' : boolean} depending on query success 
 @app.route("/home_screens/report/<location>/<type>/<description>", methods=['POST'])
 def addReport(location, type, description): 
-    return Flask.jsonify({'success':sql.tblInsert("crime_log", values={'created_at': datetime.strftime(datetime.now, '%Y-%m-%d %H:%M:%S'), 'crime_type':type, 'address':location, 'description':description}).get('success')})
+    return jsonify({'success':sql.tblInsert("crime_log", values={'created_at': datetime.strftime(datetime.now, '%Y-%m-%d %H:%M:%S'), 'crime_type':type, 'address':location, 'description':description}).get('success')})
 
 # SAFETY INFO: (UNTESTED) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # retrieves all criminal incidents within a specified timeframe
@@ -56,7 +56,7 @@ def addReport(location, type, description):
 @app.route("/reports_screens/safetyhome/<range>", methods=['GET'])
 def getSafety(range):
     # not super sure if this notation works with my implementation :D
-    return Flask.jsonify(sql.tblGet("crime_log", values={'created_at <= date_sub(now(), interval ' + str(range) + ' day)':''}))
+    return jsonify(sql.tblGet("crime_log", values={'created_at <= date_sub(now(), interval ' + str(range) + ' day)':''}))
 
 # ADD/REMOVE FAVORITE:
 # adds/deletes a specified location the user's favorites catalogue
@@ -65,9 +65,9 @@ def getSafety(range):
 @app.route("/business_screens/businessinfo/<userID>/<businessID>/<add>", methods=['POST'])
 def addFavorite(user, businessID, add):
     if(add):
-        return Flask.jsonify({'success':sql.tblInsert("user_favorites", values={'user_id':user, 'place_id':businessID}).get('success')})
+        return jsonify({'success':sql.tblInsert("user_favorites", values={'user_id':user, 'place_id':businessID}).get('success')})
     else:
-        return Flask.jsonify({'success':sql.entryDelete("user_favorites", values={'user_id':user, 'place_id':businessID}).get('success')})
+        return jsonify({'success':sql.entryDelete("user_favorites", values={'user_id':user, 'place_id':businessID}).get('success')})
  
 # GET BUILDINGS: (UNTESTED) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # retrives all buildings that meet a certain criteria (without filter, the criteria is geographic (see buildingInfo.py))
@@ -96,41 +96,41 @@ def getBuildings(filter = None):
 def register():
     user_data = request.get_json(silent=True) or {}
     body, status = account_api.register_user_route(user_data)
-    return Flask.jsonify(body), status
+    return jsonify(body), status
 
 # Request password reset (forgot password)
 @app.route("/api/auth/forgot-password", methods=['POST'])
 def forgot_password():
     request_data = request.get_json(silent=True) or {}
     body, status = account_api.forgot_password_route(request_data)
-    return Flask.jsonify(body), status
+    return jsonify(body), status
 
 # Verify reset token
 @app.route("/api/auth/verify-reset-token", methods=['POST'])
 def verify_reset_token():
     request_data = request.get_json(silent=True) or {}
     body, status = account_api.verify_reset_token_route(request_data)
-    return Flask.jsonify(body), status
+    return jsonify(body), status
 
 # Reset password with token
 @app.route("/api/auth/reset-password", methods=['POST'])
 def reset_password():
     request_data = request.get_json(silent=True) or {}
     body, status = account_api.reset_password_route(request_data)
-    return Flask.jsonify(body), status
+    return jsonify(body), status
 
 # Get user profile
 @app.route("/api/auth/profile/<user_id>", methods=['GET'])
 def get_profile(user_id):
     body, status = account_api.get_user_profile_route(user_id)
-    return Flask.jsonify(body), status
+    return jsonify(body), status
 
 # Update user profile
 @app.route("/api/auth/profile/<user_id>", methods=['PUT'])
 def update_profile(user_id):
     update_data = request.get_json(silent=True) or {}
     body, status = account_api.update_user_profile_route(user_id, update_data)
-    return Flask.jsonify(body), status
+    return jsonify(body), status
 
 # RATINGS API ROUTES ##########################################################################################################
 
@@ -142,18 +142,19 @@ def update_profile(user_id):
 def create_rating(place_id, user_id, rating_val):
     rating_data = {'place_id':place_id, 'user_id':user_id, 'rating_val':rating_val}
     body, status = rating_api.create_rating_route(rating_data)
-    return Flask.jsonify(body), status
+    return jsonify(body), status
 
 # Get all ratings for a place
 @app.route("/api/ratings/<place_id>", methods=['GET'])
 def get_ratings(place_id):
     body, status = rating_api.get_ratings_route(place_id)
-    return Flask.jsonify(body), status
+    return jsonify(body), status
 
 # Get rating summary for a place
 @app.route("/api/ratings/<place_id>/summary", methods=['GET'])
 def get_rating_summary(place_id):
     body, status = rating_api.get_rating_summary_route(place_id)
-    return Flask.jsonify(body), status
+    return jsonify(body), status
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True)
