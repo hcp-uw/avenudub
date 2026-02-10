@@ -37,3 +37,4 @@ yarn-error.*
 
 app-example
 package-lock.json
+config.js
