@@ -2,10 +2,11 @@ export const businesses = []
 
 export const incidents = []
 
-import { BASE_URL } from "./config";
+import { FULL_URL } from "../config"
 
 export function places(){
-  return fetch(`${BASE_URL}/business_screens/businesshome/`)
+  console.log(`${FULL_URL}/business_screens/businesshome/`)
+  return fetch(`${FULL_URL}/business_screens/businesshome/`)
   .then(response => response.json())
   .then(data => {
     // data may be { success: true, resp: [...] } or an array

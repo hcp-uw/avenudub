@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask import request
 import accountManager
 import passmanage
@@ -78,13 +78,13 @@ def addFavorite(user, businessID, add):
 @app.route("/business_screens/businesshome/", methods=['GET'])
 def getBuildings(filter = None):
     if filter:
-        return Flask.jsonify({'success': False, 'resp':"feature not yet implemented!"})
+        return jsonify({'success': False, 'resp':"feature not yet implemented!"})
 
     try:
         resp = buildingInfo.format_building_data()
-        return Flask.jsonify({'success': True, 'resp':resp}) 
+        return jsonify({'success': True, 'resp':resp}) 
     except Exception as e:
-        return Flask.jsonify({'success': False, 'resp':None}) 
+        return jsonify({'success': False, 'resp':None}) 
         
         
 # TODO: THIS LMFAO
@@ -155,3 +155,5 @@ def get_ratings(place_id):
 def get_rating_summary(place_id):
     body, status = rating_api.get_rating_summary_route(place_id)
     return Flask.jsonify(body), status
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000, debug=True)
