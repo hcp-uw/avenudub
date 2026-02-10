@@ -8,6 +8,7 @@ import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { themeStore } from '@/stores/theme-store'
 import { observer } from 'mobx-react-lite'
+import { FULL_URL } from '@/config'
 
 // add user and email props later
 const Settings = observer((props: { navigation: { navigate: (arg0: string) => void; }; }) => {
@@ -52,7 +53,7 @@ const Settings = observer((props: { navigation: { navigate: (arg0: string) => vo
       // should prob be a post method since
       // we're sending data (login creds) to the
       // backend
-      const response = await fetch(`/home_screens/${username}/${password}`);
+      const response = await fetch(`${FULL_URL}/home_screens/${username}/${password}`);
       const data = await response.json();
       if (response.ok && data.success) {
         console.log("Login successful:", data.success);

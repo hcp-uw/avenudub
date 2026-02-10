@@ -5,6 +5,7 @@ import { useNavigation } from 'expo-router';
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useState } from 'react'
 import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import { FULL_URL } from '@/config';
 
 const Register = observer(() => {
   const { user, setUser } = useContext(UserContext);
@@ -18,7 +19,7 @@ const Register = observer(() => {
 
   async function retrieveSettings(userId: number) {
     try {
-      const response = await fetch(`/api/users/${userId}/settings`);
+      const response = await fetch(`${FULL_URL}/api/users/${userId}/settings`);
       const data = await response.json();
       if (response.ok) {
         const favorites = Array.isArray(data.favorites) ? data.favorites : [];
@@ -51,7 +52,7 @@ const Register = observer(() => {
         email: email,
         password: password
       }
-      const response = await fetch(`/api/auth/register`, {
+      const response = await fetch(`${FULL_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

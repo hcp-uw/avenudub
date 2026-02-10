@@ -3,23 +3,39 @@ import { useNavigation } from 'expo-router';
 import React from 'react'
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Touchable } from 'react-native'
 import { observer } from 'mobx-react-lite';
+import { FULL_URL } from '@/config';
 
 const ForgotPW = observer(() => {
   // reset password button should use reset-password route
-  async function resetPassword(email: string) {
+  async function resetPassword(username: string, email: string) {
       // implement reset logic here
-      setReset(true);
+      const payload = {
+        username: username,
+        email: email
+      }
+      const response = await fetch(`${FULL_URL}/api/auth/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      const resData = await response.json();
+      if (response.ok) {
+        setReset(true);
+      }
   }
 
-  const [email, setEmail] = React.useState('')
-  const [reset, setReset] = React.useState(false)
+  const [email, setEmail] = React.useState('');
+  const [username, setUsername] = React.useState('');
+  const [reset, setReset] = React.useState(false);
   const navigation = useNavigation();
 
   if (!reset) {
     return (
         <View style={styles.container}>
           <BackButton/>
-          <Text style={styles.instructions}>Forgot Password? Enter the email associated with your account to reset it</Text>
+          <Text style={styles.instructions}>Forgot Password? Enter your email and username to reset it.</Text>
           <TextInput
             style={styles.input}
             placeholder="Email"
@@ -28,7 +44,14 @@ const ForgotPW = observer(() => {
             keyboardType="email-address"
             autoCapitalize="none"
           />
-          <TouchableOpacity style={styles.button} onPress={() => resetPassword(email)}>
+          <TextInput
+            style={styles.input}
+            placeholder="Username"
+            value={username}
+            onChangeText={setUsername}
+            autoCapitalize="none"
+          />
+          <TouchableOpacity style={styles.button} onPress={() => resetPassword(username, email)}>
             <Text style={styles.buttonText}>Reset</Text>
           </TouchableOpacity>
         </View>
@@ -38,7 +61,7 @@ const ForgotPW = observer(() => {
     <View style={styles.container}>
       <Text style={styles.instructions}>Follow the link sent to your email to reset your password.</Text>
       <Text style={styles.instructions}>Didn't get an email?</Text>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => resetPassword(username, email)}>
         <Text style={styles.buttonText}>Resend</Text>
       </TouchableOpacity>
       {/* tbh for user sanity, we should prob have an option to go back to reset pw screen in case they put in wrong email */}

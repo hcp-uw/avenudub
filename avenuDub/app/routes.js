@@ -23,7 +23,6 @@ export function places(){
 }
 
 export function crimes(){
-  console.log(`${FULL_URL}/reports_screens/safetyhome/${30}`)
     return fetch(`${FULL_URL}/reports_screens/safetyhome/${30}`)
     .then(response => response.json())
     .then(data => {

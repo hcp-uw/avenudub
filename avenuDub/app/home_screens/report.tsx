@@ -7,6 +7,7 @@ import { useContext } from 'react'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { themeStore } from '@/stores/theme-store'
 import { observer } from 'mobx-react-lite'
+import { FULL_URL } from '@/config'
 
 const Report = observer(() => {
   const { user } = useContext(UserContext);
@@ -36,7 +37,7 @@ const Report = observer(() => {
 
   useEffect(() => {
     function sendReport(){
-      fetch(`/home_screens/report/${location}}/${title}/${desc}`, {
+      fetch(`${FULL_URL}/home_screens/report/${location}}/${title}/${desc}`, {
         method: "POST",
       }).then((response) => response.json())
       .then((data) => {
