@@ -1,6 +1,8 @@
 In order to be able to call the api endpoints when running the app using Expo Go,
-you have to put your *computer's* IP address in config.js into BASE_URL.
-To get your computer's IP address, open a terminal and run `ifconfig | grep inet`, or
+you have to use your computer's IP address instead of localhost.
+Make a copy of the file example-config.js and rename it `config.js`. It must have the
+exact same filename, otherwise you'll get a bunch of import errors
+To get your computer's IP address, open a terminal and run `ifconfig | grep inet` on Mac, or
 `ipconfig` on Windows
 
 For MacOS/Linux:
@@ -8,4 +10,13 @@ Your IP address will be on the line under the line that has `en0` in it. It shou
 the format XXX.XXX.XXX.XXX if using IPv4 or in XXXX:XXXX:XXXX:XXXX if using IPv6
 If the line has multiple IP addresses, use the first one.
 
-You may also have to change the port number.
+Set the BASE_URL variable to your computer's IP address, run the backend in a separate terminal,
+and then the frontend should be able to hit the API endpoints.
+
+IMPORTANT: .gitignore should not be able to add config.js to a commit, but make sure it isn't added
+when you're doing a commit so your IP address isn't publicly available.
+
+If you're running the frontend under a different wifi network than the last time you ran it, you'll
+most likely have to change the IP address in config.js
+
+You may also have to change the port number depending on how the backend is ran

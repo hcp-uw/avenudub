@@ -26,6 +26,7 @@ import RatingsComponent from '@/components/RatingsComponent';
 import Favorite from '@/components/Favorite';
 import { themeStore } from '@/stores/theme-store';
 import { observer } from 'mobx-react-lite';
+import { FULL_URL } from '@/config';
 
 type BusinessInfoParams = {
    business:{
@@ -82,7 +83,7 @@ const BusinessesInfoScreen = observer(() => {
 
   useEffect(() => {
     function makeFavorite(){
-      fetch(`/business_screens/businessinfo/${user.username}/${business.id}/${true}`, {
+      fetch(`${FULL_URL}/business_screens/businessinfo/${user.username}/${business.id}/${true}`, {
         method: "POST",
       }).then((response) => response.json())
       .then((data) => {
@@ -90,7 +91,7 @@ const BusinessesInfoScreen = observer(() => {
       })
     }
     function removeFavorite(){
-      fetch(`/business_screens/businessinfo/${user.username}/${business.id}/${false}`, {
+      fetch(`${FULL_URL}/business_screens/businessinfo/${user.username}/${business.id}/${false}`, {
         method: "POST",
       }).then((response) => response.json())
       .then((data) => {
