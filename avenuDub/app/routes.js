@@ -22,8 +22,9 @@ export function places(){
   })
 }
 
-export function crimes(){
-    return fetch(`${FULL_URL}/reports_screens/safetyhome/${30}`)
+// Range: number that dictates how many days back the crime log should go up to
+export function crimes(range){
+    return fetch(`${FULL_URL}/reports_screens/safetyhome/${range}`)
     .then(response => response.json())
     .then(data => {
         // returns: { success: bool, resp: [...] }
