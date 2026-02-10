@@ -1,1 +1,0 @@
-const BASE_URL = 'PUT IP ADDRESS HERE';
