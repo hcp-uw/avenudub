@@ -56,7 +56,8 @@ def addReport(location, type, description):
 @app.route("/reports_screens/safetyhome/<range>", methods=['GET'])
 def getSafety(range):
     # not super sure if this notation works with my implementation :D
-    return jsonify(sql.tblGet("crime_log", values={'created_at <= date_sub(now(), interval ' + str(range) + ' day)':''}))
+    values = {f"created_at <= date_sub(now(), interval {range} day)": ""}
+    return jsonify(sql.tblGet("crime_log", values=values))
 
 # ADD/REMOVE FAVORITE:
 # adds/deletes a specified location the user's favorites catalogue

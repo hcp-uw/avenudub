@@ -16,42 +16,40 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBarComponent from '@/components/searchbar';
 import { themeStore } from '@/stores/theme-store';
 import { observer } from 'mobx-react-lite';
+import { crimes } from '../routes';
 
-const data= [
-  { id: "1", name:"Attempted Robbery", description: "Armed Suspect attempted to hijack the dorm", 
-    location:"Oak Hall", address: "123 Main St"},
-  { id: "2", name: "Sexual Assault", description: "Attempted rape in front of the library", 
-    location: "Odegaard Library", address: "456 Elm St"},
-  { id: "3", name: "Shoplifting", description: "Female Suspect tried to steal an orange", 
-    location: "District Market - Alder", address: "789 Oak St"},
-  { id: "4", name: "Tresspassing", description: "Someone tried to get into a place they don't belong", 
-    location: "Elm Hall", address: "101 Pine St"},
-  { id: "5", name: "Bike Theft", description: "Someone was very determined to not walk home. Must have had sore legs after the gym.", 
-    location: "IMA", address: "a place"}
-];
+// const data= [
+//   { id: "1", name:"Attempted Robbery", description: "Armed Suspect attempted to hijack the dorm", 
+//     location:"Oak Hall", address: "123 Main St"},
+//   { id: "2", name: "Sexual Assault", description: "Attempted rape in front of the library", 
+//     location: "Odegaard Library", address: "456 Elm St"},
+//   { id: "3", name: "Shoplifting", description: "Female Suspect tried to steal an orange", 
+//     location: "District Market - Alder", address: "789 Oak St"},
+//   { id: "4", name: "Tresspassing", description: "Someone tried to get into a place they don't belong", 
+//     location: "Elm Hall", address: "101 Pine St"},
+//   { id: "5", name: "Bike Theft", description: "Someone was very determined to not walk home. Must have had sore legs after the gym.", 
+//     location: "IMA", address: "a place"}
+// ];
+
+type Incident = {
+  id: string;
+  name: string;
+  description: string;
+  location: string;
+  address: string;
+}
 
 const Safety = observer(() => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredInput, setFilteredInput] = useState(data);
+  const [filteredInput, setFilteredInput] = useState<Incident[]>([]);
   const range = 30;
   const { theme } = themeStore;
-  
+
   useEffect(() => {
-    async function getReport() {
-      try {
-        // should range just be 30? 
-        const response = await fetch(`/reports_screens/safetyhome/${range}`, {
-          method: "GET",
-        });
-        const data = await response.json();
-        console.log(data);
-        setFilteredInput(data);
-      } catch (error) {
-        console.error("Error fetching report:", error);
-      }
-    }
-    getReport();
-  }, [data, range]);
+      crimes().then(items => {
+        if (Array.isArray(items)) setFilteredInput(items)
+      }).catch(err => console.error(err))
+  }, [])
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   return (
