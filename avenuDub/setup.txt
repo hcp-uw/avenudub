@@ -7,3 +7,5 @@ For MacOS/Linux:
 Your IP address will be on the line under the line that has `en0` in it. It should be in
 the format XXX.XXX.XXX.XXX if using IPv4 or in XXXX:XXXX:XXXX:XXXX if using IPv6
 If the line has multiple IP addresses, use the first one.
+
+You may also have to change the port number.
