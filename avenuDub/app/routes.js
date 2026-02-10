@@ -1,29 +1,41 @@
-export const places = []
+export const businesses = []
 
 export const incidents = []
 
+import { BASE_URL } from "./config";
+
 export function places(){
-    fetch('/business_screens/businesshome/')
-    .then(response => response.json())
-    .then(data => {
-//# {name, place_id, types, phone, address, rating, google_maps_link, latitude, longitude, review_summary, opening_hours} 
-        if(data.success == True){
-           data.forEach(item => {
-            places.append(item);
-           })
-        }
-    })
+  return fetch(`${BASE_URL}/business_screens/businesshome/`)
+  .then(response => response.json())
+  .then(data => {
+    // data may be { success: true, resp: [...] } or an array
+    let items = data
+    if (data && data.success === true && Array.isArray(data.resp)) {
+      items = data.resp
+    }
+    if (Array.isArray(items)){
+       items.forEach(item => {
+      businesses.push(item);
+       })
+    }
+    return businesses
+  })
 }
 
 export function Safety(){
-    fetch(`/reports_screens/safetyhome/${30}`)
+    return fetch(`${BASE_URL}/reports_screens/safetyhome/${30}`)
     .then(response => response.json())
     .then(data => {
-// returns: {'success' : bool, 'resp' : list of dicts} - each element contains: {created_at, case_num, crime_type, address, case_open, case_close}
-        if(data.success == True){
-          data.forEach(item => {
-            incidents.append(item)
+        // returns: { success: bool, resp: [...] }
+        let items = data
+        if (data && data.success === true && Array.isArray(data.resp)) {
+            items = data.resp
+        }
+        if (Array.isArray(items)){
+          items.forEach(item => {
+            incidents.push(item)
           })
         }
+        return incidents
     })
 }

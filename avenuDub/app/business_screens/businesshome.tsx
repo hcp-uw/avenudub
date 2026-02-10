@@ -19,34 +19,52 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import SearchBarComponent from "../../components/searchbar";
 import { themeStore } from '@/stores/theme-store';
 import { observer } from 'mobx-react-lite';
-//import FadeImage from '@/components/FadeImage';
+import { places } from '../routes';
 
-const data = [
-  { id: "1", name: "Business A", distance: "2 miles", address: "2321 West Bridge Ave", image: "https://as2.ftcdn.net/v2/jpg/01/32/39/21/1000_F_132392106_ZnNsHtzvnxRHxtYwjRTmJKT7CZfOjoN9.jpg",
-    foodType:"Asian-American", priceRange:"$",discounts:["nope", "still nope"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"] //Starts on Monday
-  },
-  { id: "2", name: "Business B", distance: "5 miles", address: "456 Elm St", image: "https://via.placeholder.com/150",
-    foodType:"Italian", priceRange:"$$",discounts: ["nope", "still nope"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"]
-  },
-  { id: "3", name: "Business C", distance: "3 miles", address: "789 Oak St", image: "https://via.placeholder.com/150",
-    foodType:"Gross", priceRange:"$$$",discounts: ["N/A", "N/A"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"]
-  },
-  { id: "4", name: "Business D", distance: "4 miles", address: "101 Pine St", image: "https://via.placeholder.com/150",
-    foodType:"Mexican", priceRange:"$$",discounts: ["Maybe, if you ask nicely", "Nope"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"]
-  },
-  { id: "5", name: "Business E", distance: "10 miles", address: "a place", image: "https://via.placeholder.com/150",
-    foodType:"Greek", priceRange:"$",discounts:["N/A", "N/A"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"]
-  }
-];
+// const data = [
+//   { id: "1", name: "Business A", distance: "2 miles", address: "2321 West Bridge Ave", image: "https://as2.ftcdn.net/v2/jpg/01/32/39/21/1000_F_132392106_ZnNsHtzvnxRHxtYwjRTmJKT7CZfOjoN9.jpg",
+//     foodType:"Asian-American", priceRange:"$",discounts:["nope", "still nope"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"] //Starts on Monday
+//   },
+//   { id: "2", name: "Business B", distance: "5 miles", address: "456 Elm St", image: "https://via.placeholder.com/150",
+//     foodType:"Italian", priceRange:"$$",discounts: ["nope", "still nope"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"]
+//   },
+//   { id: "3", name: "Business C", distance: "3 miles", address: "789 Oak St", image: "https://via.placeholder.com/150",
+//     foodType:"Gross", priceRange:"$$$",discounts: ["N/A", "N/A"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"]
+//   },
+//   { id: "4", name: "Business D", distance: "4 miles", address: "101 Pine St", image: "https://via.placeholder.com/150",
+//     foodType:"Mexican", priceRange:"$$",discounts: ["Maybe, if you ask nicely", "Nope"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"]
+//   },
+//   { id: "5", name: "Business E", distance: "10 miles", address: "a place", image: "https://via.placeholder.com/150",
+//     foodType:"Greek", priceRange:"$",discounts:["N/A", "N/A"], hours:["Monday: 10am - 8pm", "Tuesday: 10am - 8pm", "Wednesday: 10am - 8pm", "Thursday: 10am - 8pm", "Friday: 10am - 8pm", "Saturday: Closed", "Sunday: Closed"]
+//   }
+// ];
+
+type Business = {
+  id: string;
+  name: string;
+  distance: string;
+  address: string;
+  image: string;
+  foodType: string;
+  priceRange: string;
+  discounts: string[];
+  hours: string[];
+}
 
 const Business = observer(() => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredInput, setFilteredInput] = useState(data);
+  const [filteredInput, setFilteredInput] = useState<Business[]>([]);
   const { theme } = themeStore;
 
+
+  // useEffect(() => {
+  //   setFilteredInput(data);
+  // },[data]);
   useEffect(() => {
-    setFilteredInput(data);
-  },[data]);
+    places().then(items => {
+      if (Array.isArray(items)) setFilteredInput(items)
+    }).catch(err => console.error(err))
+  }, [])
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
   
   
@@ -63,7 +81,7 @@ const Business = observer(() => {
         </TouchableOpacity>
 
         <SearchBarComponent 
-        data={data}
+        data={filteredInput}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         setFilteredInput={setFilteredInput}

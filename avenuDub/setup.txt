@@ -1,0 +1,9 @@
+In order to be able to call the api endpoints when running the app using Expo Go,
+you have to put your *computer's* IP address in config.js into BASE_URL.
+To get your computer's IP address, open a terminal and run `ifconfig | grep inet`, or
+`ipconfig` on Windows
+
+For MacOS/Linux:
+Your IP address will be on the line under the line that has `en0` in it. It should be in
+the format XXX.XXX.XXX.XXX if using IPv4 or in XXXX:XXXX:XXXX:XXXX if using IPv6
+If the line has multiple IP addresses, use the first one.
