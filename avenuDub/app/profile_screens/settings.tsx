@@ -21,7 +21,7 @@ const Settings = observer((props: { navigation: { navigate: (arg0: string) => vo
   const navigation = useNavigation();
 
   async function retrieveSettings(userId: number) {
-    const response = await fetch(`/home_screens/settings/${userId}`);
+    const response = await fetch(`${FULL_URL}/home_screens/settings/${userId}`);
     const data = await response.json();
     if(response.ok){
       const favorites = data.favorites.forEach((item: any[]) => {
@@ -29,8 +29,8 @@ const Settings = observer((props: { navigation: { navigate: (arg0: string) => vo
       })
       setUser({username: data.user, email: data.email, userId: userId, favorites: favorites, loggedIn: true})
     }
-
   }
+  
   async function handleLogin(test: boolean = false) {
     let errors = []
     if (!username) {

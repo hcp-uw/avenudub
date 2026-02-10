@@ -46,7 +46,7 @@ const Safety = observer(() => {
   const { theme } = themeStore;
 
   useEffect(() => {
-      crimes().then(items => {
+      crimes(range).then(items => {
         if (Array.isArray(items)) setFilteredInput(items)
       }).catch(err => console.error(err))
   }, [])

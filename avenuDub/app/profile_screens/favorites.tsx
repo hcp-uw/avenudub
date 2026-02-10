@@ -6,7 +6,7 @@ import { View, Text, StyleSheet } from 'react-native'
 
 const Favorites = observer(() => {
   const { theme } = themeStore;
-
+  // TODO: Figure how to get favorites from user settings
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
         <BackButton/>
